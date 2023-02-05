@@ -30,6 +30,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
+.angular
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -41,3 +42,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+.husky
