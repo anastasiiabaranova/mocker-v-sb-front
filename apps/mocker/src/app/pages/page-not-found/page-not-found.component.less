@@ -1,0 +1,28 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+:host {
+	display: block;
+	text-align: center;
+	padding: 3rem 0;
+}
+
+.error-code {
+	margin: 0;
+	font-weight: bold;
+	font-size: 11.75rem;
+	line-height: 0.8;
+	font-family: var(--tui-font-heading);
+	color: var(--tui-accent-hover);
+
+	@media @tui-mobile {
+		font-size: 8.875rem;
+	}
+}
+
+.error-description {
+	.text-h3();
+
+	@media @tui-mobile {
+		.text-h5();
+	}
+}
