@@ -1,0 +1,30 @@
+{
+	"affected": {
+		"defaultBase": "main"
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx/tasks-runners/default",
+			"options": {
+				"cacheableOperations": ["build", "lint", "e2e", "cypress-run"]
+			}
+		}
+	},
+	"namedInputs": {
+		"sharedGlobals": [],
+		"default": ["{projectRoot}/**/*", "sharedGlobals"],
+		"production": ["default", "!{projectRoot}/.eslintrc.json"]
+	},
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["production", "^production"]
+		},
+		"lint": {
+			"inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+		},
+		"e2e": {
+			"inputs": ["default", "^production"]
+		}
+	}
+}

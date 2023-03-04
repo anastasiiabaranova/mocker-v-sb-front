@@ -1,0 +1,96 @@
+{
+	"name": "mocker",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"generators": {
+		"@schematics/angular:component": {
+			"style": "less"
+		}
+	},
+	"sourceRoot": "apps/mocker/src",
+	"prefix": "mocker",
+	"targets": {
+		"build": {
+			"executor": "@angular-devkit/build-angular:browser",
+			"options": {
+				"outputPath": "dist/apps/mocker",
+				"index": "apps/mocker/src/index.html",
+				"main": "apps/mocker/src/main.ts",
+				"polyfills": ["zone.js"],
+				"tsConfig": "apps/mocker/tsconfig.app.json",
+				"inlineStyleLanguage": "less",
+				"assets": ["apps/mocker/src/favicon.ico", "apps/mocker/src/assets"],
+				"styles": [
+					"node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+					"node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+					"apps/mocker/src/styles.less"
+				],
+				"scripts": []
+			},
+			"configurations": {
+				"production": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
+				},
+				"development": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				}
+			},
+			"defaultConfiguration": "production"
+		},
+		"serve": {
+			"executor": "@angular-devkit/build-angular:dev-server",
+			"configurations": {
+				"production": {
+					"browserTarget": "mocker:build:production"
+				},
+				"development": {
+					"browserTarget": "mocker:build:development"
+				}
+			},
+			"defaultConfiguration": "development"
+		},
+		"extract-i18n": {
+			"executor": "@angular-devkit/build-angular:extract-i18n",
+			"options": {
+				"browserTarget": "mocker:build"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["apps/mocker/**/*.ts", "apps/mocker/**/*.html"]
+			}
+		},
+		"ct": {
+			"executor": "@cypress/schematic:cypress",
+			"options": {
+				"devServerTarget": "mocker:serve",
+				"watch": true,
+				"headless": false,
+				"testingType": "component"
+			},
+			"configurations": {
+				"development": {
+					"devServerTarget": "mocker:serve:development"
+				}
+			}
+		}
+	}
+}
