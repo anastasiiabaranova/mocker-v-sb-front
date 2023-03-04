@@ -19,10 +19,11 @@
 				"polyfills": ["zone.js"],
 				"tsConfig": "apps/mocker/tsconfig.app.json",
 				"inlineStyleLanguage": "less",
-				"assets": ["apps/mocker/src/favicon.ico", "apps/mocker/src/assets"],
+				"assets": ["apps/mocker/src/pig-logo.svg"],
 				"styles": [
-					"node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+					"node_modules/@taiga-ui/styles/taiga-ui-global.less",
 					"node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+					"node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
 					"apps/mocker/src/styles.less"
 				],
 				"scripts": []
@@ -75,7 +76,10 @@
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
 			"options": {
-				"lintFilePatterns": ["apps/mocker/**/*.ts", "apps/mocker/**/*.html"]
+				"lintFilePatterns": [
+					"apps/mocker/**/*.ts",
+					"apps/mocker/**/*.html"
+				]
 			}
 		},
 		"ct": {
