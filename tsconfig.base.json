@@ -20,7 +20,19 @@
 		"useDefineForClassFields": false,
 		"lib": ["ES2022", "dom"],
 		"esModuleInterop": true,
-		"paths": {},
+		"paths": {
+			"@mocker/rest/domain": ["libs/rest/domain/src/index.ts"],
+			"@mocker/rest/feature-rest": [
+				"libs/rest/feature-rest/src/index.ts"
+			],
+			"@mocker/rest/feature-rest-service": [
+				"libs/rest/feature-rest-service/src/index.ts"
+			],
+			"@mocker/rest/shell": ["libs/rest/shell/src/index.ts"],
+			"@mocker/shared/ui/service-list": [
+				"libs/shared/ui/service-list/src/index.ts"
+			]
+		},
 		"rootDir": "."
 	},
 	"angularCompilerOptions": {

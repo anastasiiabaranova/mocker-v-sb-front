@@ -19,7 +19,14 @@
 				"polyfills": ["zone.js"],
 				"tsConfig": "apps/mocker/tsconfig.app.json",
 				"inlineStyleLanguage": "less",
-				"assets": ["apps/mocker/src/pig-logo.svg"],
+				"assets": [
+					"apps/mocker/src/pig-logo.svg",
+					{
+						"glob": "**/*",
+						"input": "node_modules/@taiga-ui/icons/src",
+						"output": "assets/taiga-ui/icons"
+					}
+				],
 				"styles": [
 					"node_modules/@taiga-ui/styles/taiga-ui-global.less",
 					"node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",

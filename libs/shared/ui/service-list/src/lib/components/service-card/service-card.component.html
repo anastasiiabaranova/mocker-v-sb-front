@@ -1,0 +1,13 @@
+<div class="container">
+	<div>{{ service.name }}</div>
+
+	<div>
+		<tui-badge
+			*ngIf="service.mocksCount"
+			status="info"
+			size="m"
+			[value]="'Mocks: ' + service.mocksCount"></tui-badge>
+	</div>
+
+	<div *ngIf="service.url" class="url">{{ service.url }}</div>
+</div>

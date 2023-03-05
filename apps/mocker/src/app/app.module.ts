@@ -1,6 +1,9 @@
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TuiRootModule} from '@taiga-ui/core';
+import {RestShellModule} from '@mocker/rest/shell';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -12,10 +15,13 @@ import {CoreModule} from './core';
 	declarations: [AppComponent],
 	imports: [
 		CoreModule,
+		RouterModule,
 		BrowserModule,
-		AppRoutingModule,
+		BrowserAnimationsModule,
 		TuiRootModule,
 		HeaderModule,
+		RestShellModule,
+		AppRoutingModule,
 	],
 })
 export class AppModule {}

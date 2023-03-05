@@ -1,0 +1,10 @@
+<div class="container">
+	<div class="search">
+		<mocker-service-search></mocker-service-search>
+	</div>
+	<mocker-service-card
+		*ngFor="let service of services; let id = index"
+		class="service"
+		[class.selected]="id === selectedId"
+		[service]="service"></mocker-service-card>
+</div>
