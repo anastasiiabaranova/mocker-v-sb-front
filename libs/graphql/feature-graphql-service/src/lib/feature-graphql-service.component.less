@@ -1,0 +1,32 @@
+:host {
+	display: block;
+	padding: 48px;
+	width: 100%;
+}
+
+.header {
+	display: flex;
+	gap: 8px;
+	padding: 8px 0 24px 0;
+	border-bottom: 1px solid var(--tui-base-03);
+
+	.title {
+		flex-grow: 1;
+	}
+}
+
+.info {
+	margin-top: 24px;
+
+	tr > td {
+		padding: 8px 0 8px 0;
+	}
+
+	tr:first-child > td {
+		padding: 0 0 8px 0;
+	}
+
+	tr:last-child > td {
+		padding: 8px 0 0 0;
+	}
+}

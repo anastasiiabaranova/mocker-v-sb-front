@@ -1,0 +1,23 @@
+<ng-container *ngIf="service$ | async as service">
+	<div class="header">
+		<span class="title tui-text_body-xl">{{ service.name }}</span>
+		<button tuiButton type="button" appearance="secondary" size="s">
+			Редактировать
+		</button>
+		<button tuiButton type="button" appearance="secondary" size="s">
+			Удалить
+		</button>
+	</div>
+
+	<table class="info tui-table">
+		<tr class="tui-table__tr tui-table__tr_hover_disabled">
+			<td>Мокируемый URL:</td>
+			<td>{{ service.location }}</td>
+		</tr>
+		<tr
+			class="tui-table__tr tui-table__tr_border_none tui-table__tr_hover_disabled">
+			<td>TTL:</td>
+			<td>{{ service | tuiMapper : getDisplayTtl }}</td>
+		</tr>
+	</table>
+</ng-container>

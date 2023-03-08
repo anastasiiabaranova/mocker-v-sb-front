@@ -21,6 +21,14 @@
 		"lib": ["ES2022", "dom"],
 		"esModuleInterop": true,
 		"paths": {
+			"@mocker/graphql/domain": ["libs/graphql/domain/src/index.ts"],
+			"@mocker/graphql/feature-graphql": [
+				"libs/graphql/feature-graphql/src/index.ts"
+			],
+			"@mocker/graphql/feature-graphql-service": [
+				"libs/graphql/feature-graphql-service/src/index.ts"
+			],
+			"@mocker/graphql/shell": ["libs/graphql/shell/src/index.ts"],
 			"@mocker/rest/domain": ["libs/rest/domain/src/index.ts"],
 			"@mocker/rest/feature-rest": [
 				"libs/rest/feature-rest/src/index.ts"

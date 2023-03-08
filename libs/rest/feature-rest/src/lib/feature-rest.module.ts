@@ -6,6 +6,6 @@ import {FeatureRestComponent} from './feature-rest.component';
 
 @NgModule({
 	declarations: [FeatureRestComponent],
-	imports: [RouterModule, FeatureRestRoutingModule, ServiceListModule],
+	imports: [FeatureRestRoutingModule, RouterModule, ServiceListModule],
 })
 export class FeatureRestModule {}

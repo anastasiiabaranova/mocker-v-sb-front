@@ -2,8 +2,9 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TuiRootModule} from '@taiga-ui/core';
+import {TuiModeModule, TuiRootModule} from '@taiga-ui/core';
 import {RestShellModule} from '@mocker/rest/shell';
+import {GraphqlShellModule} from '@mocker/graphql/shell';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -21,7 +22,9 @@ import {CoreModule} from './core';
 		TuiRootModule,
 		HeaderModule,
 		RestShellModule,
+		GraphqlShellModule,
 		AppRoutingModule,
+		TuiModeModule,
 	],
 })
 export class AppModule {}
