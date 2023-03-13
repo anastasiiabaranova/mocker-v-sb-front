@@ -1,0 +1,70 @@
+:host {
+	display: block;
+}
+
+.header {
+	margin-top: 8px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	& > button:nth-child(3) {
+		margin-left: auto;
+	}
+}
+
+.mock-list {
+	margin-top: 8px;
+	padding: 12px;
+	border: 1px solid var(--tui-base-03);
+	border-radius: var(--tui-radius-m);
+
+	.pagination {
+		width: 100%;
+		margin: 12px 12px 0 12px;
+	}
+
+	.table {
+		width: 100%;
+
+		& td:first-child {
+			width: 30%;
+		}
+
+		& td:nth-child(2) {
+			width: 15%;
+		}
+
+		& td:nth-child(3) {
+			width: 30%;
+		}
+	}
+
+	.mock-actions {
+		display: flex;
+		align-items: center;
+		justify-content: right;
+		gap: 8px;
+	}
+
+	.no-mocks {
+		padding: 12px;
+		color: var(--tui-text-03);
+	}
+
+	&::ng-deep {
+		td,
+		th {
+			border: none;
+			border-bottom: 1px solid var(--tui-base-03);
+		}
+
+		tbody {
+			border: none;
+
+			tr:last-child > td {
+				border-bottom: none;
+			}
+		}
+	}
+}

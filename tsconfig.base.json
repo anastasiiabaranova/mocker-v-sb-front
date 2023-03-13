@@ -39,8 +39,10 @@
 			"@mocker/rest/shell": ["libs/rest/shell/src/index.ts"],
 			"@mocker/shared/ui/service-list": [
 				"libs/shared/ui/service-list/src/index.ts"
-			]
+			],
+			"@mocker/shared/utils": ["libs/shared/utils/src/index.ts"]
 		},
+		"types": ["node"],
 		"rootDir": "."
 	},
 	"angularCompilerOptions": {

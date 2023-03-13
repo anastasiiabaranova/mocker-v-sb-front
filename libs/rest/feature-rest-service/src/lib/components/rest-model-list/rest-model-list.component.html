@@ -1,0 +1,60 @@
+<div class="header">
+	<div class="tui-text_body-l">Модели</div>
+	<button
+		tuiIconButton
+		type="button"
+		icon="tuiIconPlus"
+		appearance="flat"
+		size="s"></button>
+	<button
+		*ngIf="models.length"
+		tuiButton
+		type="button"
+		appearance="flat"
+		size="s">
+		Удалить все
+	</button>
+</div>
+
+<div class="model-list">
+	<table tuiTable class="table" [columns]="columns">
+		<thead>
+			<tr tuiThGroup>
+				<th tuiTh>Имя</th>
+				<th tuiTh></th>
+			</tr>
+		</thead>
+		<tbody tuiTbody [data]="models">
+			<tr *ngFor="let model of displayedModels" tuiTr>
+				<td *tuiCell="'name'" tuiTd>
+					{{ model.name }}
+				</td>
+				<td *tuiCell="'actions'" tuiTd class="model-actions">
+					<button
+						tuiIconButton
+						type="button"
+						icon="tuiIconEdit3"
+						appearance="icon"
+						size="xs"></button>
+					<button
+						tuiIconButton
+						type="button"
+						icon="tuiIconTrash"
+						appearance="icon"
+						size="xs"></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div *ngIf="!models.length" class="no-models tui-text_h6">
+		Здесь пока нет моделей
+	</div>
+	<tui-table-pagination
+		*ngIf="models.length"
+		class="pagination"
+		[total]="models.length"
+		[items]="sizeOptions"
+		[(page)]="page"
+		[(size)]="size"
+		(paginationChange)="onPaginationChange()"></tui-table-pagination>
+</div>

@@ -43,4 +43,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Environment
+apps/mocker/src/environments
+
 .husky
