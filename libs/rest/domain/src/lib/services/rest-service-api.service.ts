@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {RestServiceDto, RestServiceListDto, RestServiceShortDto} from '../dtos';
 
 @Injectable()
@@ -8,9 +8,27 @@ export class RestServiceApiService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	getAllServices(): Observable<ReadonlyArray<RestServiceShortDto>> {
-		return this.httpClient
-			.get<RestServiceListDto>('rest/services')
-			.pipe(map(({services}) => services));
+		return this.httpClient.get<RestServiceListDto>('rest/services').pipe(
+			map(({services}) => services),
+			catchError(() =>
+				of([
+					{
+						name: 'Супер сервис 1',
+						path: 'my-cool-service',
+						totalMocks: 5,
+						totalModels: 2,
+						url: 'https://some.mocking/url',
+					},
+					{
+						name: 'Еще один сервис',
+						path: 'service/path',
+						totalMocks: 5,
+						totalModels: 2,
+						url: 'https://mocking/url',
+					},
+				])
+			)
+		);
 	}
 
 	getService(servicePath: string): Observable<RestServiceDto> {

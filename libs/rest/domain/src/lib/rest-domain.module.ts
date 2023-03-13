@@ -6,14 +6,21 @@ import {
 	RestResponseApiService,
 	RestServiceApiService,
 } from './services';
+import {RestStoreModule} from './store';
+import {RestFacade} from './facades';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [CommonModule, RestStoreModule],
 	providers: [
 		RestMockApiService,
 		RestModelApiService,
 		RestResponseApiService,
 		RestServiceApiService,
+		RestFacade,
 	],
 })
-export class RestDomainModule {}
+export class RestDomainModule {
+	constructor() {
+		console.log('in RestDomainModule');
+	}
+}

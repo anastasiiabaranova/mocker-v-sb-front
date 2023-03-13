@@ -1,0 +1,18 @@
+<div class="container">
+	<div>{{ service.name }}</div>
+
+	<div>
+		<tui-badge
+			*ngIf="service.totalMocks"
+			status="info"
+			size="m"
+			[value]="'Mocks: ' + service.totalMocks"></tui-badge>
+		<tui-badge
+			*ngIf="service.totalModels"
+			status="info"
+			size="m"
+			[value]="'Models: ' + service.totalModels"></tui-badge>
+	</div>
+
+	<div *ngIf="service.url" class="url">{{ service.url }}</div>
+</div>

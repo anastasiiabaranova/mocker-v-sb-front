@@ -1,0 +1,27 @@
+<div class="container">
+	<div class="search">
+		<div class="header">
+			<span class="title tui-text_body-l">Сервисы</span>
+			<button
+				tuiIconButton
+				type="button"
+				appearance="icon"
+				icon="tuiIconPlus"
+				size="xs"
+				(click)="addService()"></button>
+		</div>
+		<mocker-service-search></mocker-service-search>
+	</div>
+
+	<tui-scrollbar
+		*ngIf="services$ | async as services"
+		class="services"
+		[hidden]="true">
+		<mocker-service-card
+			*ngFor="let service of services"
+			class="service"
+			[class.selected]="service.path === (selectedServicePath$ | async)"
+			[service]="service"
+			(click)="openService(service.path)"></mocker-service-card>
+	</tui-scrollbar>
+</div>

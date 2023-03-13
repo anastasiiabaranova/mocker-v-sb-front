@@ -1,11 +1,20 @@
+import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {ServiceListModule} from '@mocker/shared/ui/service-list';
+import {RestDomainModule} from '@mocker/rest/domain';
+import {FeatureRestServiceListModule} from '@mocker/rest/feature-rest-service-list';
+
 import {FeatureRestRoutingModule} from './feature-rest-routing.module';
 import {FeatureRestComponent} from './feature-rest.component';
 
 @NgModule({
 	declarations: [FeatureRestComponent],
-	imports: [FeatureRestRoutingModule, RouterModule, ServiceListModule],
+	imports: [
+		CommonModule,
+		FeatureRestRoutingModule,
+		RouterModule,
+		RestDomainModule,
+		FeatureRestServiceListModule,
+	],
 })
 export class FeatureRestModule {}

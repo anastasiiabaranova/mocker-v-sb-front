@@ -1,0 +1,67 @@
+<form [formGroup]="form">
+	<h3 class="tui-form__header tui-form__header_margin-top_none">
+		Новый REST сервис
+	</h3>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input
+			class="tui-form__multi-field"
+			formControlName="name"
+			tuiTextfieldSize="m">
+			Имя
+		</tui-input>
+		<tui-input
+			class="tui-form__multi-field"
+			formControlName="path"
+			tuiTextfieldSize="m"
+			[tuiHintContent]="path">
+			Путь
+		</tui-input>
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input
+			class="tui-form__multi-field"
+			formControlName="url"
+			tuiTextfieldSize="m"
+			[tuiHintContent]="url">
+			URL мокируемого сервиса
+		</tui-input>
+		<tui-input-date-time
+			class="tui-form__multi-field"
+			formControlName="expirationTime"
+			tuiTextfieldSize="m"
+			[min]="minDateTime"
+			[tuiHintContent]="expirationTime">
+			Срок действия
+		</tui-input-date-time>
+	</div>
+	<div class="tui-form__row">
+		<tui-text-area formControlName="description">Описание</tui-text-area>
+	</div>
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button">
+			Отменить
+		</button>
+		<button tuiButton size="m" type="submit" class="tui-form__button">
+			Создать
+		</button>
+	</div>
+</form>
+
+<ng-template #path>
+	Созданный сервис будет<br />доступен по&nbsp;адресу<br />{{
+		mockServiceUrl
+	}}
+</ng-template>
+
+<ng-template #url>
+	Укажите, если хотите<br />проксировать запросы<br />в&nbsp;реальный сервис
+</ng-template>
+
+<ng-template #expirationTime>
+	Укажите, если хотите,<br />чтобы мок-сервис был<br />автоматически удален
+</ng-template>

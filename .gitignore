@@ -46,4 +46,7 @@ Thumbs.db
 # Environment
 apps/mocker/src/environments
 
+# Proxy
+proxy.conf.json
+
 .husky
