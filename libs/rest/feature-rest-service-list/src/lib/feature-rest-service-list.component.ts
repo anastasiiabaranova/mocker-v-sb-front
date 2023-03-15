@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Injector,
+	OnInit,
+} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RestFacade} from '@mocker/rest/domain';
 import {TuiDialogService} from '@taiga-ui/core';
@@ -17,11 +22,14 @@ export class FeatureRestServiceListComponent implements OnInit {
 
 	readonly selectedServicePath$ = this.route.params.pipe(map(({id}) => id));
 
+	closed = false;
+
 	constructor(
 		private readonly facade: RestFacade,
 		private readonly route: ActivatedRoute,
 		private readonly router: Router,
-		private readonly dialogService: TuiDialogService
+		private readonly dialogService: TuiDialogService,
+		private readonly injector: Injector
 	) {}
 
 	ngOnInit(): void {
@@ -29,18 +37,22 @@ export class FeatureRestServiceListComponent implements OnInit {
 	}
 
 	openService(path: string) {
-		this.router.navigate(['/rest-api', path]);
+		this.router.navigate(['rest-api', path]);
+		this.facade.openServices(path);
 	}
 
 	addService() {
 		this.dialogService
 			.open<number>(
-				new PolymorpheusComponent(CreateServiceDialogComponent),
-				{
-					dismissible: true,
-					// label: 'Новый REST сервис',
-				}
+				new PolymorpheusComponent(
+					CreateServiceDialogComponent,
+					this.injector
+				)
 			)
 			.subscribe();
+	}
+
+	searchServices(search: string | null) {
+		this.facade.loadServices(search || '');
 	}
 }

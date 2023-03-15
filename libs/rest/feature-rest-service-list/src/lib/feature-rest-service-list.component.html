@@ -10,7 +10,8 @@
 				size="xs"
 				(click)="addService()"></button>
 		</div>
-		<mocker-service-search></mocker-service-search>
+		<mocker-service-search
+			(searchChange)="searchServices($event)"></mocker-service-search>
 	</div>
 
 	<tui-scrollbar

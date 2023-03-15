@@ -12,7 +12,11 @@ const restReducer = createReducer(
 	})),
 	on(restActions.setCurrentService, (state, {service}) => ({
 		...state,
-		service,
+		currentService: service,
+	})),
+	on(restActions.serviceCreated, (state, {service}) => ({
+		...state,
+		services: [service, ...(state.services || [])],
 	}))
 );
 

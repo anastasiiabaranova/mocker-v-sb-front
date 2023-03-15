@@ -19,8 +19,4 @@ import {RestFacade} from './facades';
 		RestFacade,
 	],
 })
-export class RestDomainModule {
-	constructor() {
-		console.log('in RestDomainModule');
-	}
-}
+export class RestDomainModule {}

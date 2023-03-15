@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
+import {RestServiceDto} from '../dtos';
 import {fromRest, restActions} from '../store';
 
 @Injectable()
@@ -9,8 +10,15 @@ export class RestFacade {
 
 	constructor(private readonly store$: Store) {}
 
-	loadServices() {
-		console.log('here');
-		this.store$.dispatch(restActions.loadServices());
+	loadServices(search?: string) {
+		this.store$.dispatch(restActions.loadServices({search}));
+	}
+
+	openServices(path: string) {
+		this.store$.dispatch(restActions.openService({path}));
+	}
+
+	createService(service: RestServiceDto) {
+		this.store$.dispatch(restActions.createService({service}));
 	}
 }

@@ -12,8 +12,4 @@ import {REST_FEATURE} from './rest-store.feature';
 		EffectsModule.forFeature([RestEffects]),
 	],
 })
-export class RestStoreModule {
-	constructor() {
-		console.log('in RestStoreModule');
-	}
-}
+export class RestStoreModule {}

@@ -1,21 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {map, catchError, switchMap, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
+import {TuiNotification} from '@taiga-ui/core';
 
 import {RestServiceApiService} from '../services';
 import {restActions} from './rest.actions';
-import {TuiNotification} from '@taiga-ui/core';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class RestEffects {
 	loadServices$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.loadServices),
-			tap(console.log),
-			switchMap(() =>
-				this.serviceApiService.getAllServices().pipe(
+			switchMap(({search}) =>
+				this.serviceApiService.getAllServices(search).pipe(
 					map(services => restActions.setServices({services})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
@@ -42,9 +42,28 @@ export class RestEffects {
 							content: 'Попробуйте еще раз позже',
 							status: TuiNotification.Error,
 						});
-						return of(
-							restActions.setCurrentService({service: null})
-						);
+						return EMPTY;
+					})
+				)
+			)
+		)
+	);
+
+	createService$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.createService),
+			tap(console.log),
+			switchMap(({service}) =>
+				this.serviceApiService.createService(service).pipe(
+					tap(() => this.router.navigate(['rest-api', service.path])),
+					map(() => restActions.serviceCreated({service})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось создать сервис',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return EMPTY;
 					})
 				)
 			)
@@ -54,6 +73,7 @@ export class RestEffects {
 	constructor(
 		private readonly actions$: Actions,
 		private readonly serviceApiService: RestServiceApiService,
-		private readonly notificationsFacade: NotificationsFacade
+		private readonly notificationsFacade: NotificationsFacade,
+		private readonly router: Router
 	) {}
 }

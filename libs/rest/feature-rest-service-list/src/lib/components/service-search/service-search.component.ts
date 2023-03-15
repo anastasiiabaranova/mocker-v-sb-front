@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {debounceTime} from 'rxjs';
 
 @Component({
 	selector: 'mocker-service-search',
@@ -8,7 +9,9 @@ import {FormControl} from '@angular/forms';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServiceSearchComponent {
-	readonly search = new FormControl(null);
+	readonly search = new FormControl<string | null>(null);
 
-	@Output() readonly searchChange = this.search.valueChanges;
+	@Output() readonly searchChange = this.search.valueChanges.pipe(
+		debounceTime(300)
+	);
 }

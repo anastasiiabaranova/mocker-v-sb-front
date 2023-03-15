@@ -2,29 +2,28 @@
 	<h3 class="tui-form__header tui-form__header_margin-top_none">
 		Новый REST сервис
 	</h3>
-	<div class="tui-form__row tui-form__row_multi-fields">
-		<tui-input
-			class="tui-form__multi-field"
-			formControlName="name"
-			tuiTextfieldSize="m">
-			Имя
-		</tui-input>
-		<tui-input
-			class="tui-form__multi-field"
-			formControlName="path"
-			tuiTextfieldSize="m"
-			[tuiHintContent]="path">
-			Путь
-		</tui-input>
+	<div class="tui-form__row tui-form__row_half-width">
+		<div>
+			<tui-input formControlName="name" tuiTextfieldSize="m">
+				Имя
+			</tui-input>
+			<tui-error
+				formControlName="name"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
 	</div>
 	<div class="tui-form__row tui-form__row_multi-fields">
-		<tui-input
-			class="tui-form__multi-field"
-			formControlName="url"
-			tuiTextfieldSize="m"
-			[tuiHintContent]="url">
-			URL мокируемого сервиса
-		</tui-input>
+		<div class="tui-form__multi-field">
+			<tui-input
+				formControlName="path"
+				tuiTextfieldSize="m"
+				[tuiHintContent]="path">
+				Путь
+			</tui-input>
+			<tui-error
+				formControlName="path"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
 		<tui-input-date-time
 			class="tui-form__multi-field"
 			formControlName="expirationTime"
@@ -43,10 +42,16 @@
 			type="button"
 			appearance="flat"
 			size="m"
-			class="tui-form__button">
+			class="tui-form__button"
+			(click)="closeDialog()">
 			Отменить
 		</button>
-		<button tuiButton size="m" type="submit" class="tui-form__button">
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			(click)="submitService()">
 			Создать
 		</button>
 	</div>
@@ -56,10 +61,6 @@
 	Созданный сервис будет<br />доступен по&nbsp;адресу<br />{{
 		mockServiceUrl
 	}}
-</ng-template>
-
-<ng-template #url>
-	Укажите, если хотите<br />проксировать запросы<br />в&nbsp;реальный сервис
 </ng-template>
 
 <ng-template #expirationTime>
