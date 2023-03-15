@@ -60,7 +60,7 @@ export class CreateServiceDialogComponent implements OnInit {
 
 	readonly mockServiceUrl = `${this.appConfig.serverUrl}/rest/{path}`;
 
-	readonly loading$ = this.facade.serviceInProgress$;
+	readonly loading$ = this.facade.dialogLoading$;
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

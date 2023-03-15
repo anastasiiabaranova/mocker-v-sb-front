@@ -8,7 +8,7 @@ import {RestMockShortDto} from '@mocker/rest/domain';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RestMockListComponent {
-	@Input() readonly mocks: ReadonlyArray<RestMockShortDto> = [
+	@Input() mocks: ReadonlyArray<RestMockShortDto> = [
 		// {
 		// 	mockId: '0',
 		// 	name: 'Мой клевый мок',

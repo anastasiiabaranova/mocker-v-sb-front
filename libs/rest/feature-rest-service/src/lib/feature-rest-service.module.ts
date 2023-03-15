@@ -7,7 +7,11 @@ import {CreateServiceDialogModule} from '@mocker/shared/ui/rest';
 
 import {FeatureRestServiceRoutingModule} from './feature-rest-service-routing.module';
 import {FeatureRestServiceComponent} from './feature-rest-service.component';
-import {RestMockListModule, RestModelListModule} from './components';
+import {
+	RestMockListModule,
+	RestModelListModule,
+	CreateModelDialogModule,
+} from './components';
 
 @NgModule({
 	imports: [
@@ -20,6 +24,7 @@ import {RestMockListModule, RestModelListModule} from './components';
 		RestMockListModule,
 		RestModelListModule,
 		CreateServiceDialogModule,
+		CreateModelDialogModule,
 	],
 	declarations: [FeatureRestServiceComponent],
 })

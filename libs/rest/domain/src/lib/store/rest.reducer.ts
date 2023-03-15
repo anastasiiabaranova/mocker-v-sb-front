@@ -3,7 +3,7 @@ import {RestState} from './rest.state';
 import {restActions} from './rest.actions';
 
 const initialState: RestState = {
-	serviceInProgress: false,
+	dialogLoading: false,
 };
 
 const restReducer = createReducer(
@@ -16,25 +16,33 @@ const restReducer = createReducer(
 		...state,
 		currentService: service,
 	})),
+	on(restActions.setMocks, (state, {mocks}) => ({
+		...state,
+		mocks,
+	})),
+	on(restActions.setModels, (state, {models}) => ({
+		...state,
+		models,
+	})),
 	on(restActions.createService, state => ({
 		...state,
-		serviceInProgress: true,
+		dialogLoading: true,
 	})),
 	on(restActions.serviceCreated, (state, {service}) => ({
 		...state,
 		services: [service, ...(state.services || [])],
-		serviceInProgress: false,
+		dialogLoading: false,
 	})),
 	on(restActions.editService, state => ({
 		...state,
-		serviceInProgress: true,
+		dialogLoading: true,
 	})),
 	on(restActions.serviceEdited, (state, {path, service}) => ({
 		...state,
 		services: state.services?.map(item =>
 			item.path === path ? service : item
 		),
-		serviceInProgress: false,
+		dialogLoading: false,
 	})),
 	on(restActions.serviceDeleted, (state, {path}) => ({
 		...state,
@@ -42,9 +50,29 @@ const restReducer = createReducer(
 			({path: servicePath}) => servicePath !== path
 		),
 	})),
-	on(restActions.serviceRequestFailure, state => ({
+	on(restActions.createMock, state => ({
 		...state,
-		serviceInProgress: false,
+		dialogLoading: true,
+	})),
+	on(restActions.mockCreated, state => ({
+		...state,
+		dialogLoading: false,
+	})),
+	on(restActions.createModel, state => ({
+		...state,
+		dialogLoading: true,
+	})),
+	on(restActions.modelCreated, state => ({
+		...state,
+		dialogLoading: false,
+	})),
+	on(restActions.dialogRequestFailure, state => ({
+		...state,
+		dialogLoading: false,
+	})),
+	on(restActions.modelDeleted, (state, {modelId}) => ({
+		...state,
+		models: state.models?.filter(({modelId: id}) => id !== modelId),
 	}))
 );
 

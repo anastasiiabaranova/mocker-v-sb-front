@@ -1,5 +1,5 @@
 export type RestModelDto = Readonly<{
-	modelId: string;
+	modelId?: string;
 	name: string;
 	schema: string;
 	description?: string;

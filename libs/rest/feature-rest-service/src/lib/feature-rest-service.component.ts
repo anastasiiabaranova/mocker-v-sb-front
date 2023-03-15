@@ -12,6 +12,7 @@ import {AppConfig, ENVIRONMENT} from '@mocker/shared/utils';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
+import {CreateModelDialogComponent} from './components';
 
 @Component({
 	selector: 'mocker-feature-rest-service',
@@ -21,6 +22,8 @@ import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
 })
 export class FeatureRestServiceComponent {
 	readonly service$ = this.facade.currentService$;
+	readonly mocks$ = this.facade.mocks$;
+	readonly models$ = this.facade.models$;
 
 	readonly getDate = (expirationTime: number) =>
 		format(new Date(expirationTime), 'dd MMMM yyyy, HH:mm', {locale: ru});
@@ -54,5 +57,21 @@ export class FeatureRestServiceComponent {
 
 	deleteService(path: string) {
 		this.facade.deleteService(path);
+	}
+
+	createModel(path: string) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateModelDialogComponent,
+					this.injector
+				),
+				{data: path, size: 'l'}
+			)
+			.subscribe();
+	}
+
+	deleteModel(path: string, modelId: string) {
+		this.facade.deleteModel(path, modelId);
 	}
 }

@@ -60,5 +60,11 @@
 	</table>
 
 	<mocker-rest-mock-list class="mock-list"></mocker-rest-mock-list>
-	<mocker-rest-model-list class="model-list"></mocker-rest-model-list>
+	<mocker-rest-model-list
+		class="model-list"
+		[models]="models$ | async"
+		(createModel)="createModel(service.path)"
+		(deleteModel)="
+			deleteModel(service.path, $event)
+		"></mocker-rest-model-list>
 </ng-container>

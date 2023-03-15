@@ -14,6 +14,7 @@ import {GraphqlShellModule} from '@mocker/graphql/shell';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
+import {CodeEditorModule} from '@ngstack/code-editor';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -29,6 +30,7 @@ import {CoreModule} from './core';
 		}),
 		EffectsModule.forRoot([]),
 		StoreRouterConnectingModule.forRoot(),
+		CodeEditorModule.forRoot(),
 		CoreModule,
 		RouterModule,
 		BrowserModule,

@@ -5,9 +5,10 @@
 		type="button"
 		icon="tuiIconPlus"
 		appearance="flat"
-		size="s"></button>
+		size="s"
+		(click)="createModel.next()"></button>
 	<button
-		*ngIf="models.length"
+		*ngIf="models && models.length"
 		tuiButton
 		type="button"
 		appearance="flat"
@@ -24,37 +25,49 @@
 				<th tuiTh></th>
 			</tr>
 		</thead>
-		<tbody tuiTbody [data]="models">
+		<tbody *ngIf="models" tuiTbody [data]="models">
 			<tr *ngFor="let model of displayedModels" tuiTr>
 				<td *tuiCell="'name'" tuiTd>
-					{{ model.name }}
+					<tui-tooltip
+						*ngIf="model.description"
+						[content]="model.description"
+						direction="bottom-right"></tui-tooltip
+					>&nbsp;{{ model.name }}
 				</td>
 				<td *tuiCell="'actions'" tuiTd class="model-actions">
-					<button
+					<!-- <button
 						tuiIconButton
 						type="button"
 						icon="tuiIconEdit3"
 						appearance="icon"
-						size="xs"></button>
+						size="xs"></button> -->
 					<button
 						tuiIconButton
 						type="button"
 						icon="tuiIconTrash"
 						appearance="icon"
-						size="xs"></button>
+						size="xs"
+						(click)="deleteModel.next(model.modelId)"></button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<div *ngIf="!models.length" class="no-models tui-text_h6">
+	<div *ngIf="models && !models.length" class="no-models tui-text_h6">
 		Здесь пока нет моделей
 	</div>
 	<tui-table-pagination
-		*ngIf="models.length"
+		*ngIf="models && models.length"
 		class="pagination"
 		[total]="models.length"
 		[items]="sizeOptions"
 		[(page)]="page"
 		[(size)]="size"
 		(paginationChange)="onPaginationChange()"></tui-table-pagination>
+
+	<div *ngIf="!models" class="skeleton">
+		<div class="tui-skeleton"></div>
+		<div class="tui-skeleton tui-skeleton_short tui-space_top-1"></div>
+		<div class="tui-skeleton tui-space_top-1"></div>
+		<div class="tui-skeleton tui-space_top-1"></div>
+	</div>
 </div>

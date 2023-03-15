@@ -16,14 +16,18 @@ const getCurrentService = createSelector(
 	restFeature,
 	({currentService}) => currentService
 );
-const getServiceInProgress = createSelector(
+const getMocks = createSelector(restFeature, ({mocks}) => mocks);
+const getModels = createSelector(restFeature, ({models}) => models);
+const getDialogLoading = createSelector(
 	restFeature,
-	({serviceInProgress}) => serviceInProgress
+	({dialogLoading}) => dialogLoading
 );
 
 export const fromRest = {
 	getServices,
 	getCurrentService,
 	getServicePath,
-	getServiceInProgress,
+	getMocks,
+	getModels,
+	getDialogLoading,
 };

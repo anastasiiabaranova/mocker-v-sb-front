@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input,
+	Output,
+} from '@angular/core';
 import {RestModelShortDto} from '@mocker/rest/domain';
 
 @Component({
@@ -8,7 +14,7 @@ import {RestModelShortDto} from '@mocker/rest/domain';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RestModelListComponent {
-	@Input() readonly models: ReadonlyArray<RestModelShortDto> = [
+	@Input() models?: ReadonlyArray<RestModelShortDto> | null = [
 		// {
 		// 	modelId: '0',
 		// 	name: 'Моя клевая моделька',
@@ -37,16 +43,30 @@ export class RestModelListComponent {
 		// 	})),
 	];
 
+	@Output() readonly createModel = new EventEmitter<void>();
+	@Output() readonly deleteModel = new EventEmitter<string>();
+
 	readonly columns = ['name', 'actions'];
 	readonly sizeOptions = [5, 10, 20];
 
 	page = 0;
 	size = 5;
 
-	displayedModels = this.models.slice(0, this.size);
+	private _displayedModels: RestModelShortDto[] | null = null;
+
+	get displayedModels() {
+		if (!this._displayedModels) {
+			this._displayedModels = (this.models || []).slice(
+				this.page * this.size,
+				this.page * this.size + this.size
+			);
+		}
+
+		return this._displayedModels;
+	}
 
 	onPaginationChange() {
-		this.displayedModels = this.models.slice(
+		this._displayedModels = (this.models || []).slice(
 			this.page * this.size,
 			this.page * this.size + this.size
 		);
