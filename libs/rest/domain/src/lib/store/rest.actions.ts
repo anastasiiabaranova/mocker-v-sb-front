@@ -9,10 +9,6 @@ const setServices = createAction(
 	'[REST] Set Services',
 	props<{services: ReadonlyArray<RestServiceShortDto> | null}>()
 );
-const openService = createAction(
-	'[REST] Open Service',
-	props<{path: string}>()
-);
 const setCurrentService = createAction(
 	'[REST] Open Service',
 	props<{service: RestServiceDto | null}>()
@@ -25,12 +21,33 @@ const serviceCreated = createAction(
 	'[REST] Service Created',
 	props<{service: RestServiceDto}>()
 );
+const editService = createAction(
+	'[REST] Edit Service',
+	props<{path: string; service: RestServiceDto}>()
+);
+const serviceEdited = createAction(
+	'[REST] Service Edited',
+	props<{path: string; service: RestServiceDto}>()
+);
+const deleteService = createAction(
+	'[REST] Delete Service',
+	props<{path: string}>()
+);
+const serviceDeleted = createAction(
+	'[REST] Service Deleted',
+	props<{path: string}>()
+);
+const serviceRequestFailure = createAction('[REST] Service Request Failure');
 
 export const restActions = {
 	loadServices,
 	setServices,
-	openService,
 	setCurrentService,
 	createService,
 	serviceCreated,
+	editService,
+	serviceEdited,
+	deleteService,
+	serviceDeleted,
+	serviceRequestFailure,
 };

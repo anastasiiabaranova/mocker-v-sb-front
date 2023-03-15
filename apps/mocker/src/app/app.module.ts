@@ -13,6 +13,7 @@ import {RestShellModule} from '@mocker/rest/shell';
 import {GraphqlShellModule} from '@mocker/graphql/shell';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
+import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -23,8 +24,11 @@ import {CoreModule} from './core';
 	bootstrap: [AppComponent],
 	declarations: [AppComponent],
 	imports: [
-		StoreModule.forRoot({}),
+		StoreModule.forRoot({
+			router: routerReducer,
+		}),
 		EffectsModule.forRoot([]),
+		StoreRouterConnectingModule.forRoot(),
 		CoreModule,
 		RouterModule,
 		BrowserModule,

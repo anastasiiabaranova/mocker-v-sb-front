@@ -6,4 +6,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./feature-rest.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatureRestComponent {}
+export class FeatureRestComponent {
+	showServicePlug = true;
+
+	toggleServicePlug(show: boolean) {
+		this.showServicePlug = show;
+	}
+}

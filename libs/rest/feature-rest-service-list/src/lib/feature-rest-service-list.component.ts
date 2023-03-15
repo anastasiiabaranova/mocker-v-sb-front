@@ -9,7 +9,7 @@ import {RestFacade} from '@mocker/rest/domain';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {map} from 'rxjs';
-import {CreateServiceDialogComponent} from './components';
+import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
 
 @Component({
 	selector: 'mocker-feature-rest-service-list',
@@ -21,8 +21,6 @@ export class FeatureRestServiceListComponent implements OnInit {
 	readonly services$ = this.facade.services$;
 
 	readonly selectedServicePath$ = this.route.params.pipe(map(({id}) => id));
-
-	closed = false;
 
 	constructor(
 		private readonly facade: RestFacade,
@@ -38,12 +36,11 @@ export class FeatureRestServiceListComponent implements OnInit {
 
 	openService(path: string) {
 		this.router.navigate(['rest-api', path]);
-		this.facade.openServices(path);
 	}
 
-	addService() {
+	createService() {
 		this.dialogService
-			.open<number>(
+			.open(
 				new PolymorpheusComponent(
 					CreateServiceDialogComponent,
 					this.injector

@@ -1,10 +1,20 @@
 <ng-container *ngIf="service$ | async as service">
 	<div class="header">
 		<span class="title tui-text_body-xl">{{ service.name }}</span>
-		<button tuiButton type="button" appearance="secondary" size="s">
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="editService(service)">
 			Редактировать
 		</button>
-		<button tuiButton type="button" appearance="secondary" size="s">
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="deleteService(service.path)">
 			Удалить
 		</button>
 	</div>

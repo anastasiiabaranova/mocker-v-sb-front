@@ -1,6 +1,6 @@
 <form [formGroup]="form">
 	<h3 class="tui-form__header tui-form__header_margin-top_none">
-		Новый REST сервис
+		{{ headerText }}
 	</h3>
 	<div class="tui-form__row tui-form__row_half-width">
 		<div>
@@ -51,8 +51,9 @@
 			size="m"
 			type="button"
 			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
 			(click)="submitService()">
-			Создать
+			{{ submitText }}
 		</button>
 	</div>
 </form>

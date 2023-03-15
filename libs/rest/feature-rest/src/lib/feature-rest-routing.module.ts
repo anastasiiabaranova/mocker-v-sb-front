@@ -10,7 +10,7 @@ import {FeatureRestComponent} from './feature-rest.component';
 				component: FeatureRestComponent,
 				children: [
 					{
-						path: ':id',
+						path: ':path',
 						loadChildren: () =>
 							import('@mocker/rest/feature-rest-service').then(
 								m => m.FeatureRestServiceModule

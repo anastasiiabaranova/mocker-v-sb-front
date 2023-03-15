@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {RestDomainModule} from '@mocker/rest/domain';
 import {FeatureRestServiceListModule} from '@mocker/rest/feature-rest-service-list';
+import {TuiSvgModule} from '@taiga-ui/core';
 
 import {FeatureRestRoutingModule} from './feature-rest-routing.module';
 import {FeatureRestComponent} from './feature-rest.component';
@@ -15,6 +16,7 @@ import {FeatureRestComponent} from './feature-rest.component';
 		RouterModule,
 		RestDomainModule,
 		FeatureRestServiceListModule,
+		TuiSvgModule,
 	],
 })
 export class FeatureRestModule {}

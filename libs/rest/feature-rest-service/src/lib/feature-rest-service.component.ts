@@ -1,12 +1,17 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	Injector,
+} from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
-import {Observable} from 'rxjs';
-import {map, mapTo} from 'rxjs/operators';
-import {RestServiceDto} from '@mocker/rest/domain';
+import {RestFacade, RestServiceDto} from '@mocker/rest/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
 import {AppConfig, ENVIRONMENT} from '@mocker/shared/utils';
+import {TuiDialogService} from '@taiga-ui/core';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
+import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
 
 @Component({
 	selector: 'mocker-feature-rest-service',
@@ -15,19 +20,7 @@ import {AppConfig, ENVIRONMENT} from '@mocker/shared/utils';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureRestServiceComponent {
-	readonly service$: Observable<RestServiceDto> = this.route.params.pipe(
-		map(({id}) => id),
-		mapTo({
-			name: 'Супер сервис 1',
-			path: 'super-service',
-			// mocks?: ReadonlyArray<RestMockShortDto>;
-			// models?: ReadonlyArray<RestModelShortDto>;
-			description:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-			url: 'super-service.com',
-			expirationTime: 1691844886000,
-		})
-	);
+	readonly service$ = this.facade.currentService$;
 
 	readonly getDate = (expirationTime: number) =>
 		format(new Date(expirationTime), 'dd MMMM yyyy, HH:mm', {locale: ru});
@@ -38,10 +31,28 @@ export class FeatureRestServiceComponent {
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
 		private readonly clipboard: Clipboard,
-		private readonly route: ActivatedRoute
+		private readonly facade: RestFacade,
+		private readonly dialogService: TuiDialogService,
+		private readonly injector: Injector
 	) {}
 
 	copyTextToClipboard(text: string) {
 		this.clipboard.copy(text);
+	}
+
+	editService(service: RestServiceDto) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateServiceDialogComponent,
+					this.injector
+				),
+				{data: service}
+			)
+			.subscribe();
+	}
+
+	deleteService(path: string) {
+		this.facade.deleteService(path);
 	}
 }

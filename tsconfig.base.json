@@ -40,7 +40,8 @@
 				"libs/rest/feature-rest-service-list/src/index.ts"
 			],
 			"@mocker/rest/shell": ["libs/rest/shell/src/index.ts"],
-			"@mocker/shared/utils": ["libs/shared/utils/src/index.ts"]
+			"@mocker/shared/utils": ["libs/shared/utils/src/index.ts"],
+			"@mocker/shared/ui/rest": ["libs/shared/ui/rest/src/index.ts"]
 		},
 		"types": ["node"],
 		"rootDir": "."
