@@ -1,0 +1,66 @@
+<ng-container *tuiLet="servicePath$ | async as servicePath">
+	<tui-loader [showLoader]="!servicePath">
+		<div *ngIf="servicePath$ | async as servicePath" class="header">
+			<h5 class="title tui-text_h5">Статические ответы метода</h5>
+			<button
+				tuiButton
+				type="button"
+				icon="tuiIconPlus"
+				appearance="flat"
+				size="s"
+				(click)="createResponse(servicePath)">
+				Добавить
+			</button>
+		</div>
+	</tui-loader>
+
+	<ng-container *ngIf="responses$ | async as responses">
+		<ng-container *ngIf="responses.length; else noResponces">
+			<ng-container *ngFor="let response of responses">
+				<div class="response">
+					<div class="title">{{ response.name }}</div>
+					<div class="actions">
+						<tui-tooltip
+							*ngIf="response.description"
+							direction="left"
+							[content]="response.description"></tui-tooltip>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconCopy"
+							appearance="icon"
+							size="xs"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconTrash"
+							appearance="icon"
+							size="xs"
+							(click)="
+								deleteResponse(
+									servicePath!,
+									response.responseId
+								)
+							"></button>
+					</div>
+				</div>
+			</ng-container>
+		</ng-container>
+	</ng-container>
+</ng-container>
+
+<div class="footer">
+	<button
+		tuiButton
+		type="button"
+		appearance="primary"
+		size="m"
+		class="tui-form__button"
+		(click)="closeDialog()">
+		Закрыть
+	</button>
+</div>
+
+<ng-template #noResponces>
+	<span class="no-responces tui-text_body-l">Нет статических ответов</span>
+</ng-template>

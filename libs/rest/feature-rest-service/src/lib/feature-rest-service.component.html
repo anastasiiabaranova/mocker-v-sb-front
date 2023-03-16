@@ -62,6 +62,7 @@
 	<mocker-rest-mock-list
 		class="mock-list"
 		[mocks]="mocks$ | async"
+		[path]="service.path"
 		(createMock)="createMock(service.path)"
 		(deleteMock)="deleteMock(service.path, $event)"></mocker-rest-mock-list>
 	<mocker-rest-model-list

@@ -1,7 +1,7 @@
 import {RequestParamDto} from './request-param.dto';
 
 export type RestResponseDto = Readonly<{
-	responseId: string;
+	responseId?: string;
 	name: string;
 	requestHeaders: ReadonlyArray<string>;
 	statusCode: ReadonlyArray<string>;

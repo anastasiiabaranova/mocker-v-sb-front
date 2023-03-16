@@ -6,6 +6,8 @@ import {TuiTagModule} from '@taiga-ui/kit';
 import {TuiMapperPipeModule} from '@taiga-ui/cdk';
 
 import {RestMockListComponent} from './rest-mock-list.component';
+import {ResponsesDialogModule} from '../responses-dialog/responses-dialog.module';
+
 @NgModule({
 	declarations: [RestMockListComponent],
 	imports: [
@@ -17,6 +19,7 @@ import {RestMockListComponent} from './rest-mock-list.component';
 		TuiHintModule,
 		TuiTagModule,
 		TuiMapperPipeModule,
+		ResponsesDialogModule,
 	],
 	exports: [RestMockListComponent],
 })

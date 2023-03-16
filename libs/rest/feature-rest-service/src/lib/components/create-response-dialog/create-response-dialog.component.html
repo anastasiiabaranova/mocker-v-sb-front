@@ -1,0 +1,152 @@
+<form [formGroup]="form!">
+	<div class="tui-form__header tui-form__header_margin-top_none">
+		Новый статический ответ
+	</div>
+	<div class="form-container">
+		<div class="form">
+			<ng-container *ngIf="step === 0">
+				<div class="tui-form__row tui-form__row_multi-fields">
+					<div class="tui-form__multi-field">
+						<tui-input formControlName="name" tuiTextfieldSize="m">
+							Название
+						</tui-input>
+						<tui-error
+							formControlName="name"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+					<div class="tui-form__multi-field">
+						<tui-input-number
+							formControlName="statusCode"
+							tuiTextfieldSize="m"
+							[min]="100"
+							[max]="599">
+							Status Code
+						</tui-input-number>
+						<tui-error
+							formControlName="statusCode"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+				</div>
+				<div class="tui-form__row">
+					<div class="label tui-space_bottom-2">Тело ответа</div>
+					<div class="editor">
+						<ngs-code-editor
+							[codeModel]="codeModel"></ngs-code-editor>
+						<tui-error [error]="schemaError$ | async"></tui-error>
+					</div>
+				</div>
+			</ng-container>
+
+			<div
+				*ngIf="step === 1"
+				class="tui-form__row tui-form__row_multi-fields">
+				<div class="tui-form__multi-field">
+					<div class="label tui-space_bottom-2">
+						Заголовки запроса
+					</div>
+					<div
+						*ngFor="
+							let requestHeader of requestHeaders;
+							let i = index
+						"
+						class="tui-space_bottom-3">
+						<tui-input
+							[formControl]="requestHeader"
+							tuiTextfieldSize="m">
+							{{ mock!.requestHeaders[i] }}
+						</tui-input>
+						<tui-error
+							[formControl]="requestHeader"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+				</div>
+				<div class="tui-form__multi-field">
+					<div class="label tui-space_bottom-2">Заголовки ответа</div>
+					<div
+						*ngFor="
+							let responseHeader of responseHeaders;
+							let i = index
+						"
+						class="tui-space_bottom-3">
+						<tui-input
+							[formControl]="responseHeader"
+							tuiTextfieldSize="m">
+							{{ mock!.responseHeaders[i] }}
+						</tui-input>
+						<tui-error
+							[formControl]="responseHeader"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+				</div>
+			</div>
+
+			<div
+				*ngIf="step === 2"
+				class="tui-form__row tui-form__row_multi-fields">
+				<div class="tui-form__multi-field">
+					<div class="label tui-space_bottom-2">
+						Параметры запроса
+					</div>
+					<div
+						*ngFor="let queryParam of queryParams; let i = index"
+						class="tui-space_bottom-3">
+						<tui-input
+							[formControl]="queryParam"
+							tuiTextfieldSize="m">
+							{{ mock!.queryParams[i] }}
+						</tui-input>
+						<tui-error
+							[formControl]="queryParam"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+				</div>
+				<div class="tui-form__multi-field">
+					<div class="label tui-space_bottom-2">Параметры пути</div>
+					<div
+						*ngFor="let pathParam of pathParams; let i = index"
+						class="tui-space_bottom-3">
+						<tui-input
+							[formControl]="pathParam"
+							tuiTextfieldSize="m">
+							{{ mock!.pathParams[i] }}
+						</tui-input>
+						<tui-error
+							[formControl]="pathParam"
+							[error]="[] | tuiFieldError | async"></tui-error>
+					</div>
+				</div>
+			</div>
+		</div>
+		<tui-stepper orientation="vertical" [activeItemIndex]="step">
+			<button tuiStep [stepState]="firstStepState" (click)="goToStep(0)">
+				Ответ
+			</button>
+			<button tuiStep [stepState]="secondStepState" (click)="goToStep(1)">
+				Заголовки
+			</button>
+			<button tuiStep [stepState]="thirdStepState" (click)="goToStep(2)">
+				Параметры
+			</button>
+		</tui-stepper>
+	</div>
+	<div class="buttons tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="submitForm()">
+			{{ step | tuiMapper : getSubmitText }}
+		</button>
+	</div>
+</form>

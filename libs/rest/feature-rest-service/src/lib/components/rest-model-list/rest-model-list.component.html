@@ -62,7 +62,7 @@
 		[items]="sizeOptions"
 		[(page)]="page"
 		[(size)]="size"
-		(paginationChange)="onPaginationChange()"></tui-table-pagination>
+		(paginationChange)="updateDisplayedMocks()"></tui-table-pagination>
 
 	<div *ngIf="!models" class="skeleton">
 		<div class="tui-skeleton"></div>

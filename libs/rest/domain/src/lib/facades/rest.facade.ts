@@ -6,6 +6,8 @@ import {fromRest, restActions} from '../store';
 
 @Injectable()
 export class RestFacade {
+	readonly servicePath$ = this.store$.select(fromRest.getServicePath);
+
 	readonly services$ = this.store$.select(fromRest.getServices);
 
 	readonly currentService$ = this.store$.select(fromRest.getCurrentService);

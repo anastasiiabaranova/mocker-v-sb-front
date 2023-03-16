@@ -1,0 +1,153 @@
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	Injector,
+} from '@angular/core';
+import {
+	RestFacade,
+	RestMockApiService,
+	RestResponseApiService,
+} from '@mocker/rest/domain';
+import {NotificationsFacade} from '@mocker/shared/utils';
+import {TuiDestroyService, tuiIsPresent} from '@taiga-ui/cdk';
+import {
+	TuiDialogContext,
+	TuiDialogService,
+	TuiNotification,
+} from '@taiga-ui/core';
+import {
+	POLYMORPHEUS_CONTEXT,
+	PolymorpheusComponent,
+} from '@tinkoff/ng-polymorpheus';
+import {
+	BehaviorSubject,
+	catchError,
+	EMPTY,
+	filter,
+	of,
+	switchMap,
+	takeUntil,
+} from 'rxjs';
+import {CreateResponseDialogComponent} from '../create-response-dialog/create-response-dialog.component';
+
+@Component({
+	selector: 'mocker-responses-dialog',
+	templateUrl: './responses-dialog.component.html',
+	styleUrls: ['./responses-dialog.component.less'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [TuiDestroyService],
+})
+export class ResponsesDialogComponent {
+	readonly servicePath$ = this.facade.servicePath$.pipe(filter(tuiIsPresent));
+
+	readonly loadResponses$ = new BehaviorSubject<void>(void 0);
+
+	readonly responses$ = this.loadResponses$.pipe(
+		switchMap(() => this.servicePath$),
+		switchMap(path =>
+			this.responseApiService.getAllResponses(path, this.mockId).pipe(
+				catchError(() => {
+					this.notificationsFacade.showNotification({
+						label: 'Не удалось загрузить статические ответы',
+						content: 'Попробуйте еще раз позже',
+						status: TuiNotification.Error,
+					});
+
+					return of([]);
+				})
+			)
+		)
+	);
+
+	readonly mock$ = this.servicePath$.pipe(
+		switchMap(path =>
+			this.mockApiService.getMock(path, this.mockId).pipe(
+				catchError(() => {
+					this.notificationsFacade.showNotification({
+						label: 'Не удалось загрузить шаблон мока',
+						content: 'Попробуйте еще раз позже',
+						status: TuiNotification.Error,
+					});
+
+					return EMPTY;
+				})
+			)
+		)
+	);
+
+	dialogShown = false;
+
+	constructor(
+		@Inject(POLYMORPHEUS_CONTEXT)
+		private readonly context: TuiDialogContext<void, string>,
+		private readonly facade: RestFacade,
+		private readonly destroy$: TuiDestroyService,
+		private readonly notificationsFacade: NotificationsFacade,
+		private readonly dialogService: TuiDialogService,
+		private readonly responseApiService: RestResponseApiService,
+		private readonly mockApiService: RestMockApiService,
+		private readonly injector: Injector
+	) {}
+
+	get mockId(): string {
+		return this.context.data;
+	}
+
+	closeDialog() {
+		this.context.completeWith();
+	}
+
+	createResponse(servicePath: string) {
+		if (this.dialogShown) {
+			return;
+		}
+		this.dialogShown = true;
+
+		this.mock$
+			.pipe(
+				switchMap(mock =>
+					this.dialogService.open<boolean>(
+						new PolymorpheusComponent(
+							CreateResponseDialogComponent,
+							this.injector
+						),
+						{
+							data: {
+								mock,
+								servicePath,
+							},
+							size: 'l',
+							closeable: false,
+							dismissible: false,
+						}
+					)
+				),
+				takeUntil(this.destroy$)
+			)
+			.subscribe({
+				next: update => {
+					this.dialogShown = false;
+					if (update) {
+						this.loadResponses$.next();
+					}
+				},
+			});
+	}
+
+	deleteResponse(servicePath: string, responseId: string) {
+		this.responseApiService
+			.deleteResponse(servicePath, this.mockId, responseId)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: () => this.loadResponses$.next(),
+				error: () => {
+					this.notificationsFacade.showNotification({
+						label: 'Не удалось удалить статический ответ',
+						content: 'Попробуйте еще раз позже',
+						status: TuiNotification.Error,
+					});
+				},
+			});
+	}
+}

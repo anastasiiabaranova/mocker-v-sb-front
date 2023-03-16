@@ -1,0 +1,43 @@
+:host {
+    display: block;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+        margin-top: 0;
+    }
+}
+
+.response {
+    display: flex;
+    justify-content: space-between;
+
+    &:not(:last-child) {
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--tui-base-03);
+    }
+
+    &:not(:first-child) {
+        padding-top: 8px;
+    }
+
+    .actions {
+        display: flex;
+		justify-content: right;
+		gap: 8px;
+    }
+}
+
+.no-responces {
+    color: var(--tui-text-02);
+}
+
+.footer {
+    margin-top: 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+

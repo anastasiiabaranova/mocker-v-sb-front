@@ -33,20 +33,26 @@
 			</tui-input>
 		</div>
 	</div>
-	<div class="schema tui-form__row">
-		<div class="tui-text_body-m tui-space_bottom-5">Пример body</div>
-		<div class="tui-text_body-m tui-space_bottom-5">Превью схемы</div>
-		<div>
-			<ngs-code-editor
-				[codeModel]="bodyCodeModel"
-				(valueChanged)="updateSchemaBody($event)"></ngs-code-editor>
-			<tui-error [error]="schemaError$ | async"></tui-error>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<div class="tui-text_body-m tui-space_bottom-5">Пример body</div>
+			<div class="editor">
+				<ngs-code-editor
+					[codeModel]="bodyCodeModel"
+					(valueChanged)="updateSchemaBody($event)"></ngs-code-editor>
+				<tui-error [error]="schemaError$ | async"></tui-error>
+			</div>
 		</div>
-		<ngs-code-editor
-			class="preview"
-			[codeModel]="schemaCodeModel"
-			[options]="options"
-			[readOnly]="true"></ngs-code-editor>
+		<div class="tui-form__multi-field">
+			<div class="tui-text_body-m tui-space_bottom-5">Превью схемы</div>
+			<div class="editor">
+				<ngs-code-editor
+					class="preview"
+					[codeModel]="schemaCodeModel"
+					[options]="options"
+					[readOnly]="true"></ngs-code-editor>
+			</div>
+		</div>
 	</div>
 
 	<div class="tui-form__buttons tui-form__buttons_align_end">
