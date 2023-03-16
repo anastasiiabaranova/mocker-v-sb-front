@@ -1,34 +1,24 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
 import {RestServiceDto, RestServiceListDto, RestServiceShortDto} from '../dtos';
 
 @Injectable()
 export class RestServiceApiService {
 	constructor(private readonly httpClient: HttpClient) {}
 
-	getAllServices(): Observable<ReadonlyArray<RestServiceShortDto>> {
-		return this.httpClient.get<RestServiceListDto>('rest/services').pipe(
-			map(({services}) => services),
-			catchError(() =>
-				of([
-					{
-						name: 'Супер сервис 1',
-						path: 'my-cool-service',
-						totalMocks: 5,
-						totalModels: 2,
-						url: 'https://some.mocking/url',
-					},
-					{
-						name: 'Еще один сервис',
-						path: 'service/path',
-						totalMocks: 5,
-						totalModels: 2,
-						url: 'https://mocking/url',
-					},
-				])
-			)
-		);
+	getAllServices(
+		search?: string
+	): Observable<ReadonlyArray<RestServiceShortDto>> {
+		return this.httpClient
+			.get<RestServiceListDto>('rest/services', {
+				...(search && {
+					params: new HttpParams({
+						fromObject: {search},
+					}),
+				}),
+			})
+			.pipe(map(({services}) => services));
 	}
 
 	getService(servicePath: string): Observable<RestServiceDto> {
@@ -41,11 +31,8 @@ export class RestServiceApiService {
 		return this.httpClient.post<void>('rest/service', service);
 	}
 
-	editService(service: RestServiceDto): Observable<void> {
-		return this.httpClient.put<void>(
-			`rest/service/${service.path}`,
-			service
-		);
+	editService(path: string, service: RestServiceDto): Observable<void> {
+		return this.httpClient.put<void>(`rest/service/${path}`, service);
 	}
 
 	deleteService(servicePath: string): Observable<void> {
