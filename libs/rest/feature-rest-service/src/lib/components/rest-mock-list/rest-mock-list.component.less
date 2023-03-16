@@ -27,12 +27,16 @@
 	.table {
 		width: 100%;
 
+		& th:first-child {
+			text-align: center;
+		}
+
 		& td:first-child {
-			width: 30%;
+			width: 100px;
 		}
 
 		& td:nth-child(2) {
-			width: 15%;
+			width: 30%;
 		}
 
 		& td:nth-child(3) {
@@ -66,5 +70,39 @@
 				border-bottom: none;
 			}
 		}
+	}
+}
+
+.tag {
+	width: 76px;
+	display: flex;
+	justify-content: center;
+
+	&.get {
+		background-color: rgba(168, 206, 241, 0.5)
+	}
+
+	&.post {
+		background-color: rgba(141, 218, 113, 0.5);
+	}
+
+	&.put {
+		background-color:  rgba(252, 192, 104, 0.5);
+	}
+
+	&.delete {
+		background-color: rgba(255, 0, 0, 0.5)
+	}
+
+	&.patch {
+		background-color: rgba(255, 138, 0, 0.5)
+	}
+}
+
+.skeleton {
+	padding: 12px;
+
+	.tui-skeleton {
+		height: 20px;
 	}
 }

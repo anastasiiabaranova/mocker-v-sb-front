@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	Output,
+} from '@angular/core';
 import {RestMockShortDto} from '@mocker/rest/domain';
 
 @Component({
@@ -7,54 +14,40 @@ import {RestMockShortDto} from '@mocker/rest/domain';
 	styleUrls: ['./rest-mock-list.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RestMockListComponent {
-	@Input() mocks: ReadonlyArray<RestMockShortDto> = [
-		// {
-		// 	mockId: '0',
-		// 	name: 'Мой клевый мок',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		// 	path: '/my-cool-mock',
-		// 	method: 'GET',
-		// },
-		// {
-		// 	mockId: '1',
-		// 	name: 'Какой-то мок',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		// 	path: '/some-mock',
-		// 	method: 'GET',
-		// },
-		// {
-		// 	mockId: '2',
-		// 	name: 'Еще один мок',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		// 	path: '/another-mock',
-		// 	method: 'POST',
-		// },
-		// ...Array(10)
-		// 	.fill(null)
-		// 	.map(() => ({
-		// 		mockId: '2',
-		// 		name: 'Еще один мок',
-		// 		description:
-		// 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		// 		path: '/another-mock',
-		// 		method: 'POST',
-		// 	})),
-	];
+export class RestMockListComponent implements OnChanges {
+	@Input() mocks?: ReadonlyArray<RestMockShortDto> | null;
 
-	readonly columns = ['name', 'method', 'path', 'actions'];
+	@Output() readonly createMock = new EventEmitter<void>();
+	@Output() readonly deleteMock = new EventEmitter<string>();
+
+	readonly columns = ['method', 'name', 'path', 'actions'];
 	readonly sizeOptions = [5, 10, 20];
 
 	page = 0;
 	size = 5;
 
-	displayedMocks = this.mocks.slice(0, this.size);
+	private _displayedMocks: RestMockShortDto[] | null = null;
 
-	onPaginationChange() {
-		this.displayedMocks = this.mocks.slice(
+	readonly getMethodClass = ({method}: RestMockShortDto) =>
+		method.toLowerCase();
+
+	get displayedMocks() {
+		if (!this._displayedMocks) {
+			this._displayedMocks = (this.mocks || []).slice(
+				this.page * this.size,
+				this.page * this.size + this.size
+			);
+		}
+
+		return this._displayedMocks;
+	}
+
+	ngOnChanges(): void {
+		this.updateDisplayedMocks();
+	}
+
+	updateDisplayedMocks() {
+		this._displayedMocks = (this.mocks || []).slice(
 			this.page * this.size,
 			this.page * this.size + this.size
 		);

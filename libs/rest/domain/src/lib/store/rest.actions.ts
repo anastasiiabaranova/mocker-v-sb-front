@@ -68,6 +68,14 @@ const mockCreated = createAction(
 	'[REST] Mock Created',
 	props<{path: string; mock: RestMockDto}>()
 );
+const deleteMock = createAction(
+	'[REST] Delete Mock',
+	props<{path: string; mockId: string}>()
+);
+const mockDeleted = createAction(
+	'[REST] Mock Deleted',
+	props<{mockId: string}>()
+);
 const createModel = createAction(
 	'[REST] Create Model',
 	props<{path: string; model: RestModelDto}>()
@@ -102,6 +110,8 @@ export const restActions = {
 	serviceDeleted,
 	createMock,
 	mockCreated,
+	deleteMock,
+	mockDeleted,
 	createModel,
 	modelCreated,
 	deleteModel,

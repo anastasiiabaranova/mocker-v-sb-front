@@ -66,13 +66,17 @@ const restReducer = createReducer(
 		...state,
 		dialogLoading: false,
 	})),
-	on(restActions.dialogRequestFailure, state => ({
-		...state,
-		dialogLoading: false,
-	})),
 	on(restActions.modelDeleted, (state, {modelId}) => ({
 		...state,
 		models: state.models?.filter(({modelId: id}) => id !== modelId),
+	})),
+	on(restActions.mockDeleted, (state, {mockId}) => ({
+		...state,
+		mocks: state.mocks?.filter(({mockId: id}) => id !== mockId),
+	})),
+	on(restActions.dialogRequestFailure, state => ({
+		...state,
+		dialogLoading: false,
 	}))
 );
 

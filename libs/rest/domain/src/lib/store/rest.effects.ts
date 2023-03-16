@@ -235,6 +235,25 @@ export class RestEffects {
 		)
 	);
 
+	deleteMock$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.deleteMock),
+			switchMap(({path, mockId}) =>
+				this.mockApiService.deleteMock(path, mockId).pipe(
+					map(() => restActions.mockDeleted({mockId})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось удалить шаблон мока',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return EMPTY;
+					})
+				)
+			)
+		)
+	);
+
 	createModel$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.createModel),

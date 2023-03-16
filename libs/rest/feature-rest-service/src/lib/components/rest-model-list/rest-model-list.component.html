@@ -28,13 +28,13 @@
 		<tbody *ngIf="models" tuiTbody [data]="models">
 			<tr *ngFor="let model of displayedModels" tuiTr>
 				<td *tuiCell="'name'" tuiTd>
+					{{ model.name }}
+				</td>
+				<td *tuiCell="'actions'" tuiTd class="model-actions">
 					<tui-tooltip
 						*ngIf="model.description"
 						[content]="model.description"
-						direction="bottom-right"></tui-tooltip
-					>&nbsp;{{ model.name }}
-				</td>
-				<td *tuiCell="'actions'" tuiTd class="model-actions">
+						direction="bottom-right"></tui-tooltip>
 					<!-- <button
 						tuiIconButton
 						type="button"

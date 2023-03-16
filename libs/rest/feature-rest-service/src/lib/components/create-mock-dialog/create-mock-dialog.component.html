@@ -1,1 +1,142 @@
-<p>create-mock-dialog works!</p>
+<form [formGroup]="form">
+	<div class="tui-form__header tui-form__header_margin-top_none">
+		Новый шаблон мока
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="name" tuiTextfieldSize="m">
+				Имя
+			</tui-input>
+			<tui-error
+				formControlName="name"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="description" tuiTextfieldSize="m">
+				Описание
+			</tui-input>
+		</div>
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input
+				formControlName="path"
+				tuiTextfieldSize="m"
+				[tuiHintContent]="path">
+				Путь
+			</tui-input>
+			<tui-error
+				formControlName="path"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<tui-select
+			class="tui-form__multi-field"
+			tuiTextfieldSize="m"
+			formControlName="method">
+			Метод
+			<tui-data-list-wrapper
+				*tuiDataList
+				[items]="methods"></tui-data-list-wrapper>
+		</tui-select>
+	</div>
+	<div
+		*tuiLet="models$ | async as models"
+		class="tui-form__row tui-form__row_multi-fields">
+		<tui-select
+			class="tui-form__multi-field"
+			tuiTextfieldSize="m"
+			formControlName="requestModel"
+			[valueContent]="selectedModelContent">
+			Модель запроса
+			<tui-data-list-wrapper
+				*tuiDataList
+				[items]="models || []"
+				[itemContent]="modelContent"></tui-data-list-wrapper>
+		</tui-select>
+		<tui-select
+			class="tui-form__multi-field"
+			tuiTextfieldSize="m"
+			formControlName="responseModel"
+			[valueContent]="selectedModelContent">
+			Модель ответа
+			<tui-data-list-wrapper
+				*tuiDataList
+				[items]="models || []"
+				[itemContent]="modelContent"></tui-data-list-wrapper>
+		</tui-select>
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input-tag
+			class="tui-form__multi-field"
+			formControlName="requestHeaders"
+			tuiTextfieldSize="m"
+			[tuiTextfieldLabelOutside]="true">
+			Заголовки запроса
+		</tui-input-tag>
+		<tui-input-tag
+			class="tui-form__multi-field"
+			formControlName="responseHeaders"
+			tuiTextfieldSize="m"
+			[tuiTextfieldLabelOutside]="true">
+			Заголовки ответа
+		</tui-input-tag>
+	</div>
+	<div class="tui-form__field-note">
+		Вводите названия заголовков через запятую
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input-tag
+			class="tui-form__multi-field"
+			formControlName="queryParams"
+			tuiTextfieldSize="m"
+			[tuiTextfieldLabelOutside]="true">
+			Параметры запроса
+		</tui-input-tag>
+		<tui-input-tag
+			class="tui-form__multi-field"
+			formControlName="pathParams"
+			tuiTextfieldSize="m"
+			[tuiTextfieldLabelOutside]="true">
+			Параметры пути
+		</tui-input-tag>
+	</div>
+	<div class="tui-form__field-note">
+		Вводите названия параметров через запятую
+	</div>
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="submitMock()">
+			Создать
+		</button>
+	</div>
+</form>
+
+<ng-template #modelContent let-model>
+	{{ model.name }}
+	<tui-tooltip
+		*ngIf="model.description"
+		direction="right"
+		[content]="model.description"></tui-tooltip>
+</ng-template>
+
+<ng-template #selectedModelContent let-model>
+	{{ model.name }}
+</ng-template>
+
+<ng-template #path>
+	Созданный шаблон мока будет доступен по&nbsp;адресу<br />{{ mockUrl }}
+</ng-template>

@@ -1,5 +1,5 @@
 export type RestMockDto = Readonly<{
-	mockId: string;
+	mockId?: string;
 	name: string;
 	path: string;
 	method: string;

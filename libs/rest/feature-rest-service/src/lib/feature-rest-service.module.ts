@@ -11,6 +11,7 @@ import {
 	RestMockListModule,
 	RestModelListModule,
 	CreateModelDialogModule,
+	CreateMockDialogModule,
 } from './components';
 
 @NgModule({
@@ -25,6 +26,7 @@ import {
 		RestModelListModule,
 		CreateServiceDialogModule,
 		CreateModelDialogModule,
+		CreateMockDialogModule,
 	],
 	declarations: [FeatureRestServiceComponent],
 })

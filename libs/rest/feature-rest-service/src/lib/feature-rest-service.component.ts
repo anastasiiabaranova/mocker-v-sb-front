@@ -12,7 +12,10 @@ import {AppConfig, ENVIRONMENT} from '@mocker/shared/utils';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
-import {CreateModelDialogComponent} from './components';
+import {
+	CreateMockDialogComponent,
+	CreateModelDialogComponent,
+} from './components';
 
 @Component({
 	selector: 'mocker-feature-rest-service',
@@ -57,6 +60,22 @@ export class FeatureRestServiceComponent {
 
 	deleteService(path: string) {
 		this.facade.deleteService(path);
+	}
+
+	createMock(path: string) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateMockDialogComponent,
+					this.injector
+				),
+				{data: path, size: 'l'}
+			)
+			.subscribe();
+	}
+
+	deleteMock(path: string, mockId: string) {
+		this.facade.deleteMock(path, mockId);
 	}
 
 	createModel(path: string) {

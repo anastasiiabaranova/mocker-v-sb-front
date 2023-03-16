@@ -5,9 +5,10 @@
 		type="button"
 		icon="tuiIconPlus"
 		appearance="flat"
-		size="s"></button>
+		size="s"
+		(click)="createMock.next()"></button>
 	<button
-		*ngIf="mocks.length"
+		*ngIf="mocks && mocks.length"
 		tuiButton
 		type="button"
 		appearance="flat"
@@ -20,55 +21,72 @@
 	<table tuiTable class="table" [columns]="columns">
 		<thead>
 			<tr tuiThGroup>
-				<th tuiTh>Имя</th>
 				<th tuiTh>Метод</th>
+				<th tuiTh>Имя</th>
 				<th tuiTh>Путь</th>
 				<th tuiTh></th>
 			</tr>
 		</thead>
-		<tbody tuiTbody [data]="mocks">
+		<tbody *ngIf="mocks" tuiTbody [data]="mocks">
 			<tr *ngFor="let mock of displayedMocks" tuiTr>
+				<td *tuiCell="'method'" tuiTd>
+					<tui-tag
+						size="l"
+						status="custom"
+						class="tag"
+						[ngClass]="mock | tuiMapper : getMethodClass"
+						[value]="mock.method"></tui-tag>
+				</td>
 				<td *tuiCell="'name'" tuiTd>
 					{{ mock.name }}
-				</td>
-				<td *tuiCell="'method'" tuiTd>
-					{{ mock.method }}
 				</td>
 				<td *tuiCell="'path'" tuiTd>
 					{{ mock.path }}
 				</td>
 				<td *tuiCell="'actions'" tuiTd class="mock-actions">
+					<tui-tooltip
+						*ngIf="mock.description"
+						[content]="mock.description"
+						direction="bottom-right"></tui-tooltip>
 					<button
 						tuiIconButton
 						type="button"
 						icon="tuiIconCopy"
 						appearance="icon"
 						size="xs"></button>
-					<button
+					<!-- <button
 						tuiIconButton
 						type="button"
 						icon="tuiIconEdit3"
 						appearance="icon"
-						size="xs"></button>
+						size="xs"></button> -->
 					<button
 						tuiIconButton
 						type="button"
 						icon="tuiIconTrash"
 						appearance="icon"
-						size="xs"></button>
+						size="xs"
+						(click)="deleteMock.next(mock.mockId)"></button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<div *ngIf="!mocks.length" class="no-mocks tui-text_h6">
+	<div *ngIf="mocks && !mocks.length" class="no-mocks tui-text_h6">
 		Здесь пока нет моков
 	</div>
 	<tui-table-pagination
-		*ngIf="mocks.length"
+		*ngIf="mocks && mocks.length"
 		class="pagination"
 		[total]="mocks.length"
 		[items]="sizeOptions"
 		[(page)]="page"
 		[(size)]="size"
-		(paginationChange)="onPaginationChange()"></tui-table-pagination>
+		(paginationChange)="updateDisplayedMocks()"></tui-table-pagination>
+
+	<div *ngIf="!mocks" class="skeleton">
+		<div class="tui-skeleton"></div>
+		<div class="tui-skeleton tui-skeleton_short tui-space_top-1"></div>
+		<div class="tui-skeleton tui-space_top-1"></div>
+		<div class="tui-skeleton tui-space_top-1"></div>
+	</div>
 </div>

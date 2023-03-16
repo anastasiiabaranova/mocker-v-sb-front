@@ -3,6 +3,7 @@ import {
 	Component,
 	EventEmitter,
 	Input,
+	OnChanges,
 	Output,
 } from '@angular/core';
 import {RestModelShortDto} from '@mocker/rest/domain';
@@ -13,35 +14,8 @@ import {RestModelShortDto} from '@mocker/rest/domain';
 	styleUrls: ['./rest-model-list.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RestModelListComponent {
-	@Input() models?: ReadonlyArray<RestModelShortDto> | null = [
-		// {
-		// 	modelId: '0',
-		// 	name: 'Моя клевая моделька',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-		// },
-		// {
-		// 	modelId: '1',
-		// 	name: 'Какая-то моделька',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-		// },
-		// {
-		// 	modelId: '2',
-		// 	name: 'Еще одна моделька',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-		// },
-		// ...Array(10)
-		// 	.fill(null)
-		// 	.map(() => ({
-		// 		modelId: '2',
-		// 		name: 'Моя моделька',
-		// 		description:
-		// 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-		// 	})),
-	];
+export class RestModelListComponent implements OnChanges {
+	@Input() models?: ReadonlyArray<RestModelShortDto> | null;
 
 	@Output() readonly createModel = new EventEmitter<void>();
 	@Output() readonly deleteModel = new EventEmitter<string>();
@@ -65,7 +39,11 @@ export class RestModelListComponent {
 		return this._displayedModels;
 	}
 
-	onPaginationChange() {
+	ngOnChanges(): void {
+		this.updateDisplayedMocks();
+	}
+
+	updateDisplayedMocks() {
 		this._displayedModels = (this.models || []).slice(
 			this.page * this.size,
 			this.page * this.size + this.size

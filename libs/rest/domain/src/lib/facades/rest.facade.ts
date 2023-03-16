@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
-import {RestModelDto, RestServiceDto} from '../dtos';
+import {RestMockDto, RestModelDto, RestServiceDto} from '../dtos';
 import {fromRest, restActions} from '../store';
 
 @Injectable()
@@ -26,6 +26,8 @@ export class RestFacade {
 		ofType(restActions.modelCreated)
 	);
 
+	readonly mockCreated$ = this.actions$.pipe(ofType(restActions.mockCreated));
+
 	readonly dialogLoading$ = this.store$.select(fromRest.getDialogLoading);
 
 	constructor(
@@ -47,6 +49,14 @@ export class RestFacade {
 
 	deleteService(path: string) {
 		this.store$.dispatch(restActions.deleteService({path}));
+	}
+
+	createMock(path: string, mock: RestMockDto) {
+		this.store$.dispatch(restActions.createMock({path, mock}));
+	}
+
+	deleteMock(path: string, mockId: string) {
+		this.store$.dispatch(restActions.deleteMock({path, mockId}));
 	}
 
 	createModel(path: string, model: RestModelDto) {
