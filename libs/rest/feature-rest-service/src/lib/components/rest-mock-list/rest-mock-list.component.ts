@@ -2,16 +2,23 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	EventEmitter,
+	Inject,
 	Injector,
 	Input,
 	OnChanges,
 	Output,
 } from '@angular/core';
+import {Clipboard} from '@angular/cdk/clipboard';
 import {RestMockShortDto} from '@mocker/rest/domain';
 import {TuiDestroyService} from '@taiga-ui/cdk';
-import {TuiDialogService} from '@taiga-ui/core';
+import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {ResponsesDialogComponent} from '../responses-dialog/responses-dialog.component';
+import {
+	AppConfig,
+	ENVIRONMENT,
+	NotificationsFacade,
+} from '@mocker/shared/utils';
 
 @Component({
 	selector: 'mocker-rest-mock-list',
@@ -22,7 +29,7 @@ import {ResponsesDialogComponent} from '../responses-dialog/responses-dialog.com
 })
 export class RestMockListComponent implements OnChanges {
 	@Input() mocks?: ReadonlyArray<RestMockShortDto> | null;
-	@Input() path!: string;
+	@Input() servicePath!: string;
 
 	@Output() readonly createMock = new EventEmitter<void>();
 	@Output() readonly deleteMock = new EventEmitter<string>();
@@ -39,8 +46,11 @@ export class RestMockListComponent implements OnChanges {
 		method.toLowerCase();
 
 	constructor(
+		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
 		private readonly dialogService: TuiDialogService,
-		private readonly injector: Injector
+		private readonly injector: Injector,
+		private readonly clipboard: Clipboard,
+		private readonly notificationsFacade: NotificationsFacade
 	) {}
 
 	get displayedMocks() {
@@ -56,6 +66,17 @@ export class RestMockListComponent implements OnChanges {
 
 	ngOnChanges(): void {
 		this.updateDisplayedMocks();
+	}
+
+	copyMockUrlToClipboard(mockPath: string) {
+		const url = `${this.appConfig.serverUrl}/${this.servicePath}/${mockPath}`;
+
+		if (this.clipboard.copy(url)) {
+			this.notificationsFacade.showNotification({
+				content: 'URL шаблона мока скопирован в буфер обмена',
+				status: TuiNotification.Success,
+			});
+		}
 	}
 
 	updateDisplayedMocks() {

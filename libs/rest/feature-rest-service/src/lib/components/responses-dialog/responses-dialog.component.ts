@@ -4,12 +4,17 @@ import {
 	Inject,
 	Injector,
 } from '@angular/core';
+import {Clipboard} from '@angular/cdk/clipboard';
 import {
 	RestFacade,
 	RestMockApiService,
 	RestResponseApiService,
 } from '@mocker/rest/domain';
-import {NotificationsFacade} from '@mocker/shared/utils';
+import {
+	AppConfig,
+	ENVIRONMENT,
+	NotificationsFacade,
+} from '@mocker/shared/utils';
 import {TuiDestroyService, tuiIsPresent} from '@taiga-ui/cdk';
 import {
 	TuiDialogContext,
@@ -79,6 +84,7 @@ export class ResponsesDialogComponent {
 	dialogShown = false;
 
 	constructor(
+		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
 		@Inject(POLYMORPHEUS_CONTEXT)
 		private readonly context: TuiDialogContext<void, string>,
 		private readonly facade: RestFacade,
@@ -87,11 +93,23 @@ export class ResponsesDialogComponent {
 		private readonly dialogService: TuiDialogService,
 		private readonly responseApiService: RestResponseApiService,
 		private readonly mockApiService: RestMockApiService,
-		private readonly injector: Injector
+		private readonly injector: Injector,
+		private readonly clipboard: Clipboard
 	) {}
 
 	get mockId(): string {
 		return this.context.data;
+	}
+
+	copyResponseUrlToClipboard(servicePath: string, responsePath: string) {
+		const url = `${this.appConfig.serverUrl}/${servicePath}/${responsePath}`;
+
+		if (this.clipboard.copy(url)) {
+			this.notificationsFacade.showNotification({
+				content: 'URL статического ответа скопирован в буфер обмена',
+				status: TuiNotification.Success,
+			});
+		}
 	}
 
 	closeDialog() {

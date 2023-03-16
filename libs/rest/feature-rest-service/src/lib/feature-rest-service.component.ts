@@ -8,8 +8,12 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {RestFacade, RestServiceDto} from '@mocker/rest/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
-import {AppConfig, ENVIRONMENT} from '@mocker/shared/utils';
-import {TuiDialogService} from '@taiga-ui/core';
+import {
+	AppConfig,
+	ENVIRONMENT,
+	NotificationsFacade,
+} from '@mocker/shared/utils';
+import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
 import {
@@ -39,11 +43,17 @@ export class FeatureRestServiceComponent {
 		private readonly clipboard: Clipboard,
 		private readonly facade: RestFacade,
 		private readonly dialogService: TuiDialogService,
-		private readonly injector: Injector
+		private readonly injector: Injector,
+		private readonly notificationsFacade: NotificationsFacade
 	) {}
 
 	copyTextToClipboard(text: string) {
-		this.clipboard.copy(text);
+		if (this.clipboard.copy(text)) {
+			this.notificationsFacade.showNotification({
+				content: 'URL сервиса скопирован в буфер обмена',
+				status: TuiNotification.Success,
+			});
+		}
 	}
 
 	editService(service: RestServiceDto) {

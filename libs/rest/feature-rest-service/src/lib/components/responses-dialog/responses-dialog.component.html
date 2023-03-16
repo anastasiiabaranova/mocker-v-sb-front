@@ -29,7 +29,13 @@
 							type="button"
 							icon="tuiIconCopy"
 							appearance="icon"
-							size="xs"></button>
+							size="xs"
+							(click)="
+								copyResponseUrlToClipboard(
+									servicePath!,
+									response.fullPath
+								)
+							"></button>
 						<button
 							tuiIconButton
 							type="button"
