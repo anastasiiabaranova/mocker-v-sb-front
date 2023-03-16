@@ -30,7 +30,10 @@ import {CoreModule} from './core';
 		}),
 		EffectsModule.forRoot([]),
 		StoreRouterConnectingModule.forRoot(),
-		CodeEditorModule.forRoot(),
+		CodeEditorModule.forRoot({
+			baseUrl: 'assets/monaco',
+			typingsWorkerUrl: 'assets/workers/typings-worker.js',
+		}),
 		CoreModule,
 		RouterModule,
 		BrowserModule,

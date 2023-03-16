@@ -15,29 +15,24 @@ import {
 import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
 import {Subject, takeUntil} from 'rxjs';
+import toJsonSchema from 'to-json-schema';
+
+type Schema = {
+	title: string;
+	description: string;
+	body: any;
+};
 
 const DEFAULT_SCHEMA = {
 	title: '',
 	description: '',
-	body: {
-		type: 'object',
-		schemaType: 'object',
-		properties: [
-			{
-				id: {
-					type: 'string',
-				},
-			},
-		],
-		required: ['id'],
-	},
+	body: {},
 };
 
 const NAME_ERROR = 'Укажите имя модели';
-const SCHEMA_SYNTAX_ERROR = 'Проверьте синтаксис';
-const SCHEMA_REQUIRED_ERROR = 'Укажите схему модели';
-const SCHEMA_TITLE_ERROR = 'Укажите title схемы';
-const SCHEMA_BODY_ERROR = 'Укажите body схемы';
+const SCHEMA_TITLE_ERROR = 'Укажите имя схемы';
+const BODY_SYNTAX_ERROR = 'Проверьте синтаксис';
+const BODY_REQUIRED_ERROR = 'Укажите пример body';
 
 @Component({
 	selector: 'mocker-create-model-dialog',
@@ -50,12 +45,26 @@ export class CreateModelDialogComponent implements OnInit {
 	readonly form = this.formBuilder.group({
 		name: [null, requiredValidatorFactory(NAME_ERROR)],
 		description: [null],
+		schemaTitle: [null, requiredValidatorFactory(SCHEMA_TITLE_ERROR)],
+		schemaDescription: [null],
 	});
 
-	readonly codeModel = {
+	readonly bodyCodeModel = {
 		language: 'json',
-		uri: 'main.json',
-		value: JSON.stringify(DEFAULT_SCHEMA, null, '\t'),
+		uri: 'body.json',
+		value: '',
+	};
+
+	readonly schema: Schema = DEFAULT_SCHEMA;
+
+	schemaCodeModel = {
+		language: 'json',
+		uri: 'schema.json',
+		value: this.strigifySchema(this.schema),
+	};
+
+	readonly options = {
+		lineNumbers: false,
 	};
 
 	readonly loading$ = this.facade.dialogLoading$;
@@ -74,6 +83,16 @@ export class CreateModelDialogComponent implements OnInit {
 		this.facade.modelCreated$
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
+
+		this.form.controls.schemaTitle.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(title => this.updateSchema({title: title || ''}));
+
+		this.form.controls.schemaDescription.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(description =>
+				this.updateSchema({description: description || ''})
+			);
 	}
 
 	closeDialog() {
@@ -81,14 +100,10 @@ export class CreateModelDialogComponent implements OnInit {
 	}
 
 	submitModel() {
-		if (this.form.invalid) {
+		const schemaInvalid = !this.verifySchema();
+
+		if (this.form.invalid || schemaInvalid) {
 			tuiMarkControlAsTouchedAndValidate(this.form);
-			return;
-		}
-
-		const schema = this.validateSchema();
-
-		if (!schema) {
 			return;
 		}
 
@@ -97,43 +112,54 @@ export class CreateModelDialogComponent implements OnInit {
 		const model = {
 			name,
 			description,
-			schema,
+			schema: JSON.stringify(this.schema),
 		};
 
 		this.facade.createModel(this.context.data, model);
 	}
 
-	private validateSchema(): string | null {
-		const {value} = this.codeModel;
+	updateSchema(data: Partial<Schema>) {
+		const {title, description, body} = this.schema;
 
-		if (!value) {
-			this.schemaError$.next(
-				new TuiValidationError(SCHEMA_REQUIRED_ERROR)
-			);
+		this.schema.title = data.title || title;
+		this.schema.description = data.description || description;
+		this.schema.body = data.body || body;
+
+		this.schemaCodeModel = {
+			...this.schemaCodeModel,
+			value: this.strigifySchema(this.schema),
+		};
+	}
+
+	updateSchemaBody(body: string) {
+		const json = this.toSchema(body);
+
+		this.updateSchema({body: json});
+	}
+
+	private toSchema(body: string): any | null {
+		if (!body) {
+			this.schemaError$.next(new TuiValidationError(BODY_REQUIRED_ERROR));
 			return null;
 		}
-
-		let schema;
 
 		try {
-			schema = JSON.parse(this.codeModel.value);
+			const json = JSON.parse(body);
+
+			this.schemaError$.next(null);
+
+			return toJsonSchema(json, {required: true});
 		} catch {
-			this.schemaError$.next(new TuiValidationError(SCHEMA_SYNTAX_ERROR));
+			this.schemaError$.next(new TuiValidationError(BODY_SYNTAX_ERROR));
 			return null;
 		}
+	}
 
-		if (!schema.title) {
-			this.schemaError$.next(new TuiValidationError(SCHEMA_TITLE_ERROR));
-			return null;
-		}
+	private verifySchema(): boolean {
+		return !!this.toSchema(this.bodyCodeModel.value);
+	}
 
-		if (!schema.body) {
-			this.schemaError$.next(new TuiValidationError(SCHEMA_BODY_ERROR));
-			return null;
-		}
-
-		this.schemaError$.next(null);
-
-		return schema;
+	private strigifySchema(schema: any): string {
+		return JSON.stringify(schema, null, 4);
 	}
 }

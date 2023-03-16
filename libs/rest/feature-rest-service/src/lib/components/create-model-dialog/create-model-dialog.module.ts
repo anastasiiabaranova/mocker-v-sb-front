@@ -10,6 +10,7 @@ import {
 	TuiErrorModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import {TuiMapperPipeModule} from '@taiga-ui/cdk';
 
 @NgModule({
 	declarations: [CreateModelDialogComponent],
@@ -22,6 +23,7 @@ import {
 		TuiButtonModule,
 		TuiErrorModule,
 		TuiFieldErrorPipeModule,
+		TuiMapperPipeModule,
 	],
 	exports: [CreateModelDialogComponent],
 })

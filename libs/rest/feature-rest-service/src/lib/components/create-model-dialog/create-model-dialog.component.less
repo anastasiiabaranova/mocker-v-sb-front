@@ -3,9 +3,11 @@
 }
 
 .schema {
-	display: block;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 
-	&::ng-deep {
-		height: 350px;
+	.preview {
+		filter: grayscale(50%);
+		opacity: 0.8;
 	}
 }

@@ -20,7 +20,8 @@
 						"prefix": "mocker",
 						"style": "kebab-case"
 					}
-				]
+				],
+				"@typescript-eslint/no-explicit-any": "off"
 			},
 			"extends": [
 				"plugin:@nrwl/nx/angular",

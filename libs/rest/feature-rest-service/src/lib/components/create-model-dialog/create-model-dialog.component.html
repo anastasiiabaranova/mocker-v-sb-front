@@ -2,23 +2,51 @@
 	<div class="tui-form__header tui-form__header_margin-top_none">
 		Новая модель
 	</div>
-	<div class="tui-form__row">
-		<tui-input formControlName="name" size="m"> Имя модели </tui-input>
-		<tui-error
-			formControlName="name"
-			[error]="[] | tuiFieldError | async"></tui-error>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="name" tuiTextfieldSize="m">
+				Имя модели
+			</tui-input>
+			<tui-error
+				formControlName="name"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="description" tuiTextfieldSize="m">
+				Описание модели
+			</tui-input>
+		</div>
 	</div>
-	<div class="tui-form__row">
-		<tui-input formControlName="description" size="m">
-			Описание модели
-		</tui-input>
+	<div class="tui-form__header">Схема</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="schemaTitle" tuiTextfieldSize="m">
+				Имя схемы
+			</tui-input>
+			<tui-error
+				formControlName="schemaTitle"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="schemaDescription" tuiTextfieldSize="m">
+				Описание схемы
+			</tui-input>
+		</div>
 	</div>
-	<div class="tui-text_h6 tui-space_top-5 tui-space_bottom-5">Схема</div>
-	<div>
+	<div class="schema tui-form__row">
+		<div class="tui-text_body-m tui-space_bottom-5">Пример body</div>
+		<div class="tui-text_body-m tui-space_bottom-5">Превью схемы</div>
+		<div>
+			<ngs-code-editor
+				[codeModel]="bodyCodeModel"
+				(valueChanged)="updateSchemaBody($event)"></ngs-code-editor>
+			<tui-error [error]="schemaError$ | async"></tui-error>
+		</div>
 		<ngs-code-editor
-			class="schema tui-form__row"
-			[codeModel]="codeModel"></ngs-code-editor>
-		<tui-error [error]="schemaError$ | async"></tui-error>
+			class="preview"
+			[codeModel]="schemaCodeModel"
+			[options]="options"
+			[readOnly]="true"></ngs-code-editor>
 	</div>
 
 	<div class="tui-form__buttons tui-form__buttons_align_end">
