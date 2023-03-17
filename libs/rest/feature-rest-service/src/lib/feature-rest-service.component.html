@@ -22,7 +22,7 @@
 	<table class="info tui-table">
 		<tr
 			*tuiLet="service.path | tuiMapper : getServiceUrl as serviceUrl"
-			class="tui-table__tr tui-table__tr_hover_disabled">
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">URL mock-сервиса:</td>
 			<td class="row-data">
 				{{ serviceUrl }}
@@ -37,14 +37,14 @@
 		</tr>
 		<tr
 			*ngIf="service.url"
-			class="tui-table__tr tui-table__tr_hover_disabled">
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Мокируемый URL:</td>
 			<td class="row-data">{{ service.url }}</td>
 		</tr>
 
 		<tr
 			*ngIf="service.expirationTime"
-			class="tui-table__tr tui-table__tr_hover_disabled">
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Активен до:</td>
 			<td class="row-data">
 				{{ service.expirationTime | tuiMapper : getDate }}

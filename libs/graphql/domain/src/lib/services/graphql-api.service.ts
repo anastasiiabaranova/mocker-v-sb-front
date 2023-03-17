@@ -12,44 +12,46 @@ export class GraphQLApiService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	getAllServices(
-		search?: string
+		search: string = '' // TODO: убрать
 	): Observable<ReadonlyArray<GraphQLServiceShortDto>> {
 		return this.httpClient.get<ReadonlyArray<GraphQLServiceShortDto>>(
-			'graphql/services',
+			'api/graphql/services/',
 			{
-				...(search && {
-					params: new HttpParams({
-						fromObject: {search},
-					}),
+				// ...(search && {
+				params: new HttpParams({
+					fromObject: {search},
 				}),
+				// }),
 			}
 		);
 	}
 
 	getService(id: string): Observable<GraphQLServiceDto> {
-		return this.httpClient.get<GraphQLServiceDto>(`graphql/services/${id}`);
+		return this.httpClient.get<GraphQLServiceDto>(
+			`api/graphql/services/${id}`
+		);
 	}
 
 	createService(service: GraphQLServiceDto): Observable<string> {
 		return this.httpClient
-			.post<{id: string}>('graphql/services', service)
+			.post<{id: string}>('api/graphql/services/', service)
 			.pipe(map(({id}) => id));
 	}
 
 	editService(service: GraphQLServiceDto): Observable<void> {
 		return this.httpClient.put<void>(
-			`graphql/services/${service.id}`,
+			`api/graphql/services/${service.id}`,
 			service
 		);
 	}
 
 	deleteService(id: string): Observable<void> {
-		return this.httpClient.delete<void>(`graphql/services/${id}`);
+		return this.httpClient.delete<void>(`api/graphql/services/${id}`);
 	}
 
 	getAllMocks(id: string): Observable<ReadonlyArray<GraphQLMockDto>> {
 		return this.httpClient.get<ReadonlyArray<GraphQLMockDto>>(
-			`graphql/services/${id}/mocks`
+			`api/graphql/services/${id}/mocks`
 		);
 	}
 

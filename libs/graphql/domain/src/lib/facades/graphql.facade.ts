@@ -5,7 +5,7 @@ import {fromGraphQL, graphQLActions} from '../store';
 import {GraphQLMockDto, GraphQLServiceDto} from '../dtos';
 
 @Injectable()
-export class RestFacade {
+export class GraphQLFacade {
 	readonly servicePath$ = this.store$.select(fromGraphQL.getServiceId);
 
 	readonly services$ = this.store$.select(fromGraphQL.getServices);

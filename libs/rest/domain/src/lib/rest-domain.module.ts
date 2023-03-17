@@ -10,7 +10,7 @@ import {RestStoreModule} from './store';
 import {RestFacade} from './facades';
 
 @NgModule({
-	imports: [CommonModule, RestStoreModule],
+	imports: [RestStoreModule],
 	providers: [
 		RestMockApiService,
 		RestModelApiService,

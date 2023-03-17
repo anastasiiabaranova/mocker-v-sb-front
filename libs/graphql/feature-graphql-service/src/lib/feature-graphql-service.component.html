@@ -1,23 +1,61 @@
 <ng-container *ngIf="service$ | async as service">
 	<div class="header">
 		<span class="title tui-text_body-xl">{{ service.name }}</span>
-		<button tuiButton type="button" appearance="secondary" size="s">
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="editService(service)">
 			Редактировать
 		</button>
-		<button tuiButton type="button" appearance="secondary" size="s">
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="deleteService(service.id!)">
 			Удалить
 		</button>
 	</div>
 
 	<table class="info tui-table">
-		<tr class="tui-table__tr tui-table__tr_hover_disabled">
-			<td>Мокируемый URL:</td>
-			<td>{{ service.location }}</td>
+		<tr
+			*tuiLet="service.name | tuiMapper : getServiceUrl as serviceUrl"
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">URL mock-сервиса:</td>
+			<td class="row-data">
+				{{ serviceUrl }}
+				<button
+					tuiIconButton
+					type="button"
+					icon="tuiIconCopy"
+					appearance="icon"
+					size="xs"
+					(click)="copyTextToClipboard(serviceUrl)"></button>
+			</td>
 		</tr>
 		<tr
-			class="tui-table__tr tui-table__tr_border_none tui-table__tr_hover_disabled">
-			<td>TTL:</td>
-			<td>{{ service | tuiMapper : getDisplayTtl }}</td>
+			*ngIf="service.location"
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Мокируемый URL:</td>
+			<td class="row-data">{{ service.location }}</td>
+		</tr>
+
+		<tr
+			*ngIf="service.expirationDate"
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Активен до:</td>
+			<td class="row-data">
+				{{ service.expirationDate | tuiMapper : getDate }}
+			</td>
+		</tr>
+
+		<tr
+			*ngIf="service.delay"
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Задержка:</td>
+			<td class="row-data">{{ service.delay }} s</td>
 		</tr>
 	</table>
 </ng-container>

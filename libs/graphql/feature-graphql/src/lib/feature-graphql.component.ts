@@ -6,4 +6,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./feature-graphql.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatureGraphQLComponent {}
+export class FeatureGraphQLComponent {
+	showServicePlug = true;
+
+	toggleServicePlug(show: boolean) {
+		this.showServicePlug = show;
+	}
+}

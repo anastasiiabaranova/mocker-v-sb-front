@@ -32,9 +32,9 @@
 						"output": "./assets/monaco"
 					},
 					{
-					  "glob": "**/*.js",
-					  "input": "dist/@ngstack/code-editor/workers",
-					  "output": "./assets/workers"
+						"glob": "**/*.js",
+						"input": "dist/@ngstack/code-editor/workers",
+						"output": "./assets/workers"
 					}
 				],
 				"styles": [

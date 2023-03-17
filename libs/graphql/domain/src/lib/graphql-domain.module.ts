@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {GraphQLApiService} from './services';
+import {GraphQLFacade} from './facades';
+import {GraphQLStoreModule} from './store';
 
 @NgModule({
-	imports: [CommonModule],
-	providers: [GraphQLApiService],
+	imports: [GraphQLStoreModule],
+	providers: [GraphQLApiService, GraphQLFacade],
 })
 export class GraphqlDomainModule {}

@@ -7,7 +7,7 @@ export type GraphQLServiceDto = Readonly<{
 	delay?: number;
 	location: string;
 	makeRealCall: boolean;
-	useDefaultMock: boolean;
+	useDefaultMock?: boolean;
 	schema?: string;
 	mocks?: ReadonlyArray<GraphQLMockDto>;
 }>;

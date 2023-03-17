@@ -1,0 +1,96 @@
+<form [formGroup]="form">
+	<h3 class="tui-form__header tui-form__header_margin-top_none">
+		{{ headerText }}
+	</h3>
+	<div class="tui-form__row tui-form__row_half-width">
+		<div>
+			<tui-input
+				formControlName="name"
+				tuiTextfieldSize="m"
+				[tuiHintContent]="name">
+				Имя
+			</tui-input>
+			<tui-error
+				formControlName="name"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="location" tuiTextfieldSize="m">
+				URL мокируемого сервиса
+			</tui-input>
+			<tui-error
+				formControlName="location"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<tui-checkbox-labeled
+			class="tui-form__multi-field"
+			formControlName="makeRealCall"
+			size="m">
+			Делать редирект
+			<div class="sub-label">
+				Если не найдем подходящий мок, сделаем редирект по указанному
+				адресу
+			</div>
+		</tui-checkbox-labeled>
+	</div>
+
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input-date-time
+			class="tui-form__multi-field"
+			formControlName="expirationDate"
+			tuiTextfieldSize="m"
+			[min]="minDateTime"
+			[tuiHintContent]="expirationDate">
+			Срок действия
+		</tui-input-date-time>
+		<tui-input-number
+			class="tui-form__multi-field"
+			formControlName="delay"
+			tuiTextfieldSize="m"
+			[tuiHintContent]="delay">
+			Задержка
+		</tui-input-number>
+	</div>
+
+	<div class="tui-form__row">
+		<div class="label tui-space_bottom-2">Схема для валидации запросов</div>
+		<div class="editor">
+			<ngs-code-editor [codeModel]="codeModel"></ngs-code-editor>
+		</div>
+	</div>
+
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="submitService()">
+			{{ submitText }}
+		</button>
+	</div>
+</form>
+
+<ng-template #name>
+	Созданный сервис будет<br />доступен по&nbsp;адресу<br />{{
+		mockServiceUrl
+	}}
+</ng-template>
+
+<ng-template #expirationDate>
+	Укажите, если хотите,<br />чтобы мок-сервис был<br />автоматически удален
+</ng-template>
+
+<ng-template #delay> Задержка перед отправкой ответа в секундах </ng-template>

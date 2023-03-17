@@ -1,4 +1,14 @@
 <div class="container">
-	<!-- <mocker-service-list></mocker-service-list> -->
-	<router-outlet name="service"></router-outlet>
+	<mocker-feature-graphql-service-list></mocker-feature-graphql-service-list>
+	<router-outlet
+		name="service"
+		(activate)="toggleServicePlug(false)"
+		(deactivate)="toggleServicePlug(true)"></router-outlet>
+
+	<div *ngIf="showServicePlug" class="service-not-selected">
+		<tui-svg class="icon" src="pig-logo.svg"></tui-svg>
+		<h4 class="tui-text_h4">
+			Выберите сервис слева<br />или создайте новый
+		</h4>
+	</div>
 </div>

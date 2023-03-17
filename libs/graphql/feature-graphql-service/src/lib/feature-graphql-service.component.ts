@@ -1,7 +1,14 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {map, mapTo} from 'rxjs';
-import {GraphQLServiceDto} from '@mocker/graphql/domain';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {GraphQLFacade, GraphQLServiceDto} from '@mocker/graphql/domain';
+import {
+	ENVIRONMENT,
+	AppConfig,
+	NotificationsFacade,
+} from '@mocker/shared/utils';
+import {TuiNotification} from '@taiga-ui/core';
+import {format} from 'date-fns';
+import {ru} from 'date-fns/locale';
 
 @Component({
 	selector: 'mocker-feature-graphql-service',
@@ -10,17 +17,44 @@ import {GraphQLServiceDto} from '@mocker/graphql/domain';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureGraphqlServiceComponent {
-	readonly service$ = this.route.params.pipe(
-		map(({id}) => id),
-		mapTo({
-			name: 'Супер сервис 1',
-			location: 'super-service.ru/umpla/lumpa',
-			ttl: 120,
-		})
-	);
+	readonly service$ = this.facade.currentService$;
 
-	readonly getDisplayTtl = ({ttl}: GraphQLServiceDto) =>
-		ttl ? `${ttl} мин` : 'Постоянный';
+	readonly getDate = (expirationDate: string) =>
+		format(Date.parse(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
 
-	constructor(private readonly route: ActivatedRoute) {}
+	readonly getServiceUrl = (name: string) =>
+		`${this.appConfig.serverUrl}/graphql/${name}`;
+
+	constructor(
+		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
+		private readonly clipboard: Clipboard,
+		private readonly facade: GraphQLFacade,
+		private readonly notificationsFacade: NotificationsFacade
+	) {}
+
+	copyTextToClipboard(text: string) {
+		if (this.clipboard.copy(text)) {
+			this.notificationsFacade.showNotification({
+				content: 'URL сервиса скопирован в буфер обмена',
+				status: TuiNotification.Success,
+			});
+		}
+	}
+
+	editService(service: GraphQLServiceDto) {
+		console.log(service);
+		// this.dialogService
+		// 	.open(
+		// 		new PolymorpheusComponent(
+		// 			CreateServiceDialogComponent,
+		// 			this.injector
+		// 		),
+		// 		{data: service}
+		// 	)
+		// 	.subscribe();
+	}
+
+	deleteService(id: string) {
+		this.facade.deleteService(id);
+	}
 }
