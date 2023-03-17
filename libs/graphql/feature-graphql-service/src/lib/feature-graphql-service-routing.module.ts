@@ -12,4 +12,4 @@ import {FeatureGraphqlServiceComponent} from './feature-graphql-service.componen
 		]),
 	],
 })
-export class FeatureRestServiceRoutingModule {}
+export class FeatureGraphQLServiceRoutingModule {}

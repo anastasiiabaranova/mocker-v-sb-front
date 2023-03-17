@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {
 	GraphQLMockDto,
 	GraphQLServiceDto,
@@ -30,8 +30,10 @@ export class GraphQLApiService {
 		return this.httpClient.get<GraphQLServiceDto>(`graphql/services/${id}`);
 	}
 
-	createService(service: GraphQLServiceDto): Observable<void> {
-		return this.httpClient.post<void>('graphql/services', service);
+	createService(service: GraphQLServiceDto): Observable<string> {
+		return this.httpClient
+			.post<{id: string}>('graphql/services', service)
+			.pipe(map(({id}) => id));
 	}
 
 	editService(service: GraphQLServiceDto): Observable<void> {
