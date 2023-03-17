@@ -141,8 +141,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		const schema = this.codeModel.value;
 		const service = Object.assign(
 			{...initialValue},
-			this.form.value,
-			schema
+			{...this.form.value, schema}
 		) as any;
 
 		if (this.form.value.expirationDate) {

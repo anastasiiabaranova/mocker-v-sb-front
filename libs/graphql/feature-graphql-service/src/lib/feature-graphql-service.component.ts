@@ -1,12 +1,19 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	Injector,
+} from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {GraphQLFacade, GraphQLServiceDto} from '@mocker/graphql/domain';
 import {
 	ENVIRONMENT,
 	AppConfig,
 	NotificationsFacade,
 } from '@mocker/shared/utils';
-import {TuiNotification} from '@taiga-ui/core';
+import {CreateServiceDialogComponent} from '@mocker/shared/ui/graphql';
+import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
 
@@ -29,7 +36,9 @@ export class FeatureGraphqlServiceComponent {
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
 		private readonly clipboard: Clipboard,
 		private readonly facade: GraphQLFacade,
-		private readonly notificationsFacade: NotificationsFacade
+		private readonly notificationsFacade: NotificationsFacade,
+		private readonly dialogService: TuiDialogService,
+		private readonly injector: Injector
 	) {}
 
 	copyTextToClipboard(text: string) {
@@ -42,16 +51,15 @@ export class FeatureGraphqlServiceComponent {
 	}
 
 	editService(service: GraphQLServiceDto) {
-		console.log(service);
-		// this.dialogService
-		// 	.open(
-		// 		new PolymorpheusComponent(
-		// 			CreateServiceDialogComponent,
-		// 			this.injector
-		// 		),
-		// 		{data: service}
-		// 	)
-		// 	.subscribe();
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateServiceDialogComponent,
+					this.injector
+				),
+				{data: service, size: 'l'}
+			)
+			.subscribe();
 	}
 
 	deleteService(id: string) {

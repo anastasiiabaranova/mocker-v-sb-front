@@ -68,6 +68,12 @@ export class GraphQLEffects {
 			ofType(graphQLActions.createService),
 			switchMap(({service}) =>
 				this.apiService.createService(service).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис успешно создан',
+							status: TuiNotification.Success,
+						})
+					),
 					tap(id => this.router.navigate(['graphql', id])),
 					map(id =>
 						graphQLActions.serviceCreated({
@@ -95,6 +101,12 @@ export class GraphQLEffects {
 			ofType(graphQLActions.editService),
 			switchMap(({service}) =>
 				this.apiService.editService(service).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис успешно отредактирован',
+							status: TuiNotification.Success,
+						})
+					),
 					map(() => graphQLActions.serviceEdited({service})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
@@ -114,6 +126,12 @@ export class GraphQLEffects {
 			ofType(graphQLActions.deleteService),
 			switchMap(({id}) =>
 				this.apiService.deleteService(id).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис удален',
+							status: TuiNotification.Success,
+						})
+					),
 					tap(() => this.router.navigate(['graphql'])),
 					map(() => graphQLActions.serviceDeleted({id})),
 					catchError(() => {

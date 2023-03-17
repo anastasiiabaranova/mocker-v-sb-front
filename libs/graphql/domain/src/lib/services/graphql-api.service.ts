@@ -12,16 +12,16 @@ export class GraphQLApiService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	getAllServices(
-		search: string = '' // TODO: убрать
+		search?: string
 	): Observable<ReadonlyArray<GraphQLServiceShortDto>> {
 		return this.httpClient.get<ReadonlyArray<GraphQLServiceShortDto>>(
-			'api/graphql/services/',
+			'api/graphql/services',
 			{
-				// ...(search && {
-				params: new HttpParams({
-					fromObject: {search},
+				...(search && {
+					params: new HttpParams({
+						fromObject: {search},
+					}),
 				}),
-				// }),
 			}
 		);
 	}
@@ -34,7 +34,7 @@ export class GraphQLApiService {
 
 	createService(service: GraphQLServiceDto): Observable<string> {
 		return this.httpClient
-			.post<{id: string}>('api/graphql/services/', service)
+			.post<{id: string}>('api/graphql/services', service)
 			.pipe(map(({id}) => id));
 	}
 

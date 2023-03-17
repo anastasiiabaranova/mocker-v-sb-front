@@ -154,6 +154,12 @@ export class RestEffects {
 			ofType(restActions.createService),
 			switchMap(({service}) =>
 				this.serviceApiService.createService(service).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис успешно создан',
+							status: TuiNotification.Success,
+						})
+					),
 					tap(() => this.router.navigate(['rest-api', service.path])),
 					map(() => restActions.serviceCreated({service})),
 					catchError(() => {
@@ -174,6 +180,12 @@ export class RestEffects {
 			ofType(restActions.editService),
 			switchMap(({path, service}) =>
 				this.serviceApiService.editService(path, service).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис успешно отредактирован',
+							status: TuiNotification.Success,
+						})
+					),
 					tap(() => this.router.navigate(['rest-api', service.path])),
 					map(() => restActions.serviceEdited({path, service})),
 					catchError(() => {
@@ -194,6 +206,12 @@ export class RestEffects {
 			ofType(restActions.deleteService),
 			switchMap(({path}) =>
 				this.serviceApiService.deleteService(path).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Сервис удален',
+							status: TuiNotification.Success,
+						})
+					),
 					tap(() => this.router.navigate(['rest-api'])),
 					map(() => restActions.serviceDeleted({path})),
 					catchError(() => {
