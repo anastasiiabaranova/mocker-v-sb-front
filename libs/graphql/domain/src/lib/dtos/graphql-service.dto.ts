@@ -1,9 +1,13 @@
+import {GraphQLMockDto} from './graphql-mock.dto';
+
 export type GraphQLServiceDto = Readonly<{
-	id?: number;
+	id?: string;
 	name: string;
-	location: string;
-	ttl?: number;
+	expirationDate?: string;
 	delay?: number;
-	makeRealCall?: boolean;
-	useDefaultMock?: boolean;
+	location: string;
+	makeRealCall: boolean;
+	useDefaultMock: boolean;
+	schema?: string;
+	mocks?: ReadonlyArray<GraphQLMockDto>;
 }>;
