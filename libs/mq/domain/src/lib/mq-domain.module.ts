@@ -1,7 +1,9 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {MQStoreModule} from './store/mq-store.module';
+import {MQApiService} from './services';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [MQStoreModule],
+	providers: [MQApiService],
 })
 export class MQDomainModule {}

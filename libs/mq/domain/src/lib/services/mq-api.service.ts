@@ -16,19 +16,22 @@ export class MQApiService {
 	constructor(private readonly httpClient: HttpClient) {}
 
 	getAllTopics(
-		brokerType: BrokerType,
+		brokerType?: BrokerType,
 		search?: string
 	): Observable<ReadonlyArray<TopicShort>> {
 		return this.httpClient
 			.get<TopicList>('api/mq/topics', {
 				params: new HttpParams({
-					fromObject: {brokerType, ...(search && {search})},
+					fromObject: {
+						...(brokerType && {brokerType}),
+						...(search && {search}),
+					},
 				}),
 			})
 			.pipe(map(({queues}) => queues));
 	}
 
-	getTopic(brokerType: BrokerType, topicName: string): Observable<Topic> {
+	getTopic(brokerType: string, topicName: string): Observable<Topic> {
 		return this.httpClient.get<Topic>('api/mq/topic', {
 			params: new HttpParams({
 				fromObject: {brokerType, topicName},
