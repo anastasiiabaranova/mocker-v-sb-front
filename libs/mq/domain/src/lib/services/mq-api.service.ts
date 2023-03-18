@@ -31,7 +31,7 @@ export class MQApiService {
 			.pipe(map(({queues}) => queues));
 	}
 
-	getTopic(brokerType: string, topicName: string): Observable<Topic> {
+	getTopic(brokerType: BrokerType, topicName: string): Observable<Topic> {
 		return this.httpClient.get<Topic>('api/mq/topic', {
 			params: new HttpParams({
 				fromObject: {brokerType, topicName},

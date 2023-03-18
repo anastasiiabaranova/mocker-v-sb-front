@@ -18,6 +18,7 @@ import {Router} from '@angular/router';
 import {fromMQ} from './mq.selectors';
 import {mqActions} from './mq.actions';
 import {MQApiService} from '../services';
+import {BrokerType} from '../enums';
 
 @Injectable()
 export class MQEffects {
@@ -49,17 +50,19 @@ export class MQEffects {
 			),
 			filter(([, brokerType, topicName]) => !!brokerType && !!topicName),
 			switchMap(([, brokerType, topicName]) =>
-				this.apiService.getTopic(brokerType!, topicName!).pipe(
-					map(topic => mqActions.setCurrentTopic({topic})),
-					catchError(() => {
-						this.notificationsFacade.showNotification({
-							label: 'Не удалось открыть топик',
-							content: 'Попробуйте еще раз позже',
-							status: TuiNotification.Error,
-						});
-						return EMPTY;
-					})
-				)
+				this.apiService
+					.getTopic(brokerType! as BrokerType, topicName!)
+					.pipe(
+						map(topic => mqActions.setCurrentTopic({topic})),
+						catchError(() => {
+							this.notificationsFacade.showNotification({
+								label: 'Не удалось открыть топик',
+								content: 'Попробуйте еще раз позже',
+								status: TuiNotification.Error,
+							});
+							return EMPTY;
+						})
+					)
 			)
 		)
 	);

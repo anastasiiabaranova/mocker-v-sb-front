@@ -7,7 +7,7 @@ const loadTopics = createAction(
 	props<{brokerType?: BrokerType; search?: string}>()
 );
 const setTopics = createAction(
-	'[MQ] Set Services',
+	'[MQ] Set Topics',
 	props<{topics: ReadonlyArray<TopicShort> | null}>()
 );
 const setCurrentTopic = createAction(
