@@ -6,4 +6,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./feature-mq.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatureMQComponent {}
+export class FeatureMQComponent {
+	showTopicPlug = true;
+
+	toggleTopicPlug(show: boolean) {
+		this.showTopicPlug = show;
+	}
+}

@@ -19,6 +19,7 @@ import {fromMQ} from './mq.selectors';
 import {mqActions} from './mq.actions';
 import {MQApiService} from '../services';
 import {BrokerType} from '../enums';
+import {tuiIsPresent} from '@taiga-ui/cdk';
 
 @Injectable()
 export class MQEffects {
@@ -45,13 +46,16 @@ export class MQEffects {
 		this.actions$.pipe(
 			ofType(ROUTER_NAVIGATED),
 			withLatestFrom(
-				this.store$.select(fromMQ.getBrokerType),
-				this.store$.select(fromMQ.getTopicName)
+				this.store$
+					.select(fromMQ.getBrokerType)
+					.pipe(filter(tuiIsPresent)),
+				this.store$
+					.select(fromMQ.getTopicName)
+					.pipe(filter(tuiIsPresent))
 			),
-			filter(([, brokerType, topicName]) => !!brokerType && !!topicName),
 			switchMap(([, brokerType, topicName]) =>
 				this.apiService
-					.getTopic(brokerType! as BrokerType, topicName!)
+					.getTopic(brokerType as BrokerType, topicName)
 					.pipe(
 						map(topic => mqActions.setCurrentTopic({topic})),
 						catchError(() => {
@@ -79,7 +83,7 @@ export class MQEffects {
 						})
 					),
 					tap(() =>
-						this.router.navigate(['mq', {queryParams: {topic}}])
+						this.router.navigate(['mq', {queryParams: topic}])
 					),
 					map(() => mqActions.topicCreated({topic})),
 					catchError(() => {

@@ -1,1 +1,14 @@
-<p>feature-mq works!</p>
+<div class="container">
+	<mocker-feature-mq-topic-list></mocker-feature-mq-topic-list>
+	<router-outlet
+		name="topic"
+		(activate)="toggleTopicPlug(false)"
+		(deactivate)="toggleTopicPlug(true)"></router-outlet>
+
+	<div *ngIf="showTopicPlug" class="topic-not-selected">
+		<tui-svg class="icon" src="pig-logo.svg"></tui-svg>
+		<h4 class="tui-text_h4">
+			Выберите топик слева<br />или создайте новый
+		</h4>
+	</div>
+</div>

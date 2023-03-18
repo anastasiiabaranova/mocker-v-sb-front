@@ -1,0 +1,28 @@
+<div *tuiLet="selectedTopic$ | async as selectedTopic" class="container">
+	<div class="search">
+		<div class="header">
+			<span class="title tui-text_body-l">Топики</span>
+			<button
+				tuiIconButton
+				type="button"
+				appearance="icon"
+				icon="tuiIconPlus"
+				size="xs"
+				(click)="createTopic()"></button>
+		</div>
+		<mocker-topic-search
+			(searchChange)="searchTopics($event)"></mocker-topic-search>
+	</div>
+
+	<tui-scrollbar
+		*ngIf="topics$ | async as topics"
+		class="topics"
+		[hidden]="true">
+		<mocker-topic-card
+			*ngFor="let topic of topics"
+			class="topic"
+			[class.selected]="topic | tuiMapper : isSameTopic : selectedTopic"
+			[topic]="topic"
+			(click)="openTopic(topic)"></mocker-topic-card>
+	</tui-scrollbar>
+</div>

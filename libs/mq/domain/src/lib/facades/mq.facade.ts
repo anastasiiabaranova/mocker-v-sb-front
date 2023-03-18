@@ -5,11 +5,17 @@ import {fromMQ, mqActions} from '../store';
 import {BrokerType} from '../enums';
 import {Message, TopicMessage, TopicShort} from '../dtos';
 import {MQApiService} from '../services';
-import {Observable} from 'rxjs';
+import {combineLatest, filter, map, Observable} from 'rxjs';
+import {tuiIsPresent} from '@taiga-ui/cdk';
 
 @Injectable()
 export class MQFacade {
 	readonly topics$ = this.store$.select(fromMQ.getTopics);
+
+	readonly selectedTopic$ = combineLatest([
+		this.store$.select(fromMQ.getBrokerType).pipe(filter(tuiIsPresent)),
+		this.store$.select(fromMQ.getTopicName).pipe(filter(tuiIsPresent)),
+	]).pipe(map(([brokerType, topicName]) => ({brokerType, topicName})));
 
 	readonly currentTopic$ = this.store$.select(fromMQ.getCurrentTopic);
 
@@ -25,7 +31,7 @@ export class MQFacade {
 		private readonly apiService: MQApiService
 	) {}
 
-	loadTopics(brokerType: BrokerType, search?: string) {
+	loadTopics(brokerType?: BrokerType, search?: string) {
 		this.store$.dispatch(mqActions.loadTopics({brokerType, search}));
 	}
 
