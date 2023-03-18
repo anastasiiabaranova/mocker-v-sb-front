@@ -6,7 +6,11 @@ import {
 } from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {GraphQLFacade, GraphQLServiceDto} from '@mocker/graphql/domain';
+import {
+	GraphQLFacade,
+	GraphQLMockDto,
+	GraphQLServiceDto,
+} from '@mocker/graphql/domain';
 import {
 	ENVIRONMENT,
 	AppConfig,
@@ -16,6 +20,7 @@ import {CreateServiceDialogComponent} from '@mocker/shared/ui/graphql';
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
+import {CreateMockDialogComponent} from './components';
 
 @Component({
 	selector: 'mocker-feature-graphql-service',
@@ -25,9 +30,10 @@ import {ru} from 'date-fns/locale';
 })
 export class FeatureGraphqlServiceComponent {
 	readonly service$ = this.facade.currentService$;
+	readonly mocks$ = this.facade.mocks$;
 
-	readonly getDate = (expirationDate: string) =>
-		format(Date.parse(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
+	readonly getDateTime = (expirationDate: string) =>
+		format(new Date(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
 
 	readonly getServiceUrl = (name: string) =>
 		`${this.appConfig.serverUrl}/graphql/${name}`;
@@ -64,5 +70,21 @@ export class FeatureGraphqlServiceComponent {
 
 	deleteService(id: string) {
 		this.facade.deleteService(id);
+	}
+
+	createMock(serviceId: string) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateMockDialogComponent,
+					this.injector
+				),
+				{data: serviceId, size: 'l'}
+			)
+			.subscribe();
+	}
+
+	deleteMock(mock: GraphQLMockDto) {
+		this.facade.deleteMock(mock);
 	}
 }

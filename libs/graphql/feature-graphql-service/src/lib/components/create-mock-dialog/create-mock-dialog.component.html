@@ -1,0 +1,92 @@
+<form [formGroup]="form">
+	<div class="tui-form__header tui-form__header_margin-top_none">
+		Новый GraphQL мок
+	</div>
+	<div class="tui-form__row">
+		<tui-toggle formControlName="enable"></tui-toggle
+		><span class="label tui-text_body-s tui-space_left-2">
+			Мок {{ form.value.enable | tuiMapper : getEnablement }}
+		</span>
+	</div>
+	<div class="tui-form__row tui-form__row_half-width">
+		<div>
+			<tui-input formControlName="name" tuiTextfieldSize="m">
+				Имя
+			</tui-input>
+			<tui-error
+				formControlName="name"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<tui-input-date-time
+			class="tui-form__multi-field"
+			formControlName="expirationDate"
+			tuiTextfieldSize="m"
+			[min]="minDateTime"
+			[tuiHintContent]="expirationDate">
+			Срок действия
+		</tui-input-date-time>
+		<tui-input-number
+			class="tui-form__multi-field"
+			formControlName="delay"
+			tuiTextfieldSize="m"
+			[tuiHintContent]="delay"
+			[min]="0">
+			Задержка
+		</tui-input-number>
+	</div>
+
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<div class="label tui-text_body-s tui-space_bottom-2">
+				GrpahQL запрос
+			</div>
+			<div class="editor">
+				<ngs-code-editor
+					[codeModel]="requestCodeModel"></ngs-code-editor>
+			</div>
+			<tui-error [error]="requestError$ | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<div class="label tui-text_body-s tui-space_bottom-2">
+				JSON ответ
+			</div>
+			<div class="editor">
+				<ngs-code-editor
+					[codeModel]="responseCodeModel"></ngs-code-editor>
+			</div>
+			<tui-error [error]="responseError$ | async"></tui-error>
+		</div>
+	</div>
+
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="submitMock()">
+			Создать
+		</button>
+	</div>
+</form>
+
+<ng-template #expirationDate>
+	Укажите, если&nbsp;хотите, чтобы&nbsp;мок был автоматически удален
+</ng-template>
+
+<ng-template #delay>
+	Задержка перед отправкой ответа в секундах. Имеет приоритет
+	над&nbsp;задержкой сервиса.
+</ng-template>

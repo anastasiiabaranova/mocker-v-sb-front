@@ -53,10 +53,13 @@ const mockCreated = createAction(
 	'[GRAPHQL] Mock Created',
 	props<{mock: GraphQLMockDto}>()
 );
-const deleteMock = createAction('[GRAPHQL] Delete Mock', props<{id: string}>());
+const deleteMock = createAction(
+	'[GRAPHQL] Delete Mock',
+	props<{mock: GraphQLMockDto}>()
+);
 const mockDeleted = createAction(
 	'[GRAPHQL] Mock Deleted',
-	props<{id: string}>()
+	props<{mock: GraphQLMockDto}>()
 );
 const dialogRequestFailure = createAction('[GRAPHQL] Dialog Request Failure');
 

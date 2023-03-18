@@ -47,7 +47,7 @@
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Активен до:</td>
 			<td class="row-data">
-				{{ service.expirationDate | tuiMapper : getDate }}
+				{{ service.expirationDate | tuiMapper : getDateTime }}
 			</td>
 		</tr>
 
@@ -55,7 +55,13 @@
 			*ngIf="service.delay"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Задержка:</td>
-			<td class="row-data">{{ service.delay }} s</td>
+			<td class="row-data">{{ service.delay }} сек</td>
 		</tr>
 	</table>
+
+	<mocker-graphql-mock-list
+		class="mock-list"
+		[mocks]="mocks$ | async"
+		(createMock)="createMock(service.id!)"
+		(deleteMock)="deleteMock($event)"></mocker-graphql-mock-list>
 </ng-container>

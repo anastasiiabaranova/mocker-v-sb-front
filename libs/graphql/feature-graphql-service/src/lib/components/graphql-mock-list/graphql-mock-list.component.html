@@ -21,60 +21,42 @@
 	<table tuiTable class="table" [columns]="columns">
 		<thead>
 			<tr tuiThGroup>
-				<th tuiTh>Метод</th>
 				<th tuiTh>Имя</th>
-				<th tuiTh>Путь</th>
+				<th tuiTh>Время удаления</th>
+				<th tuiTh>Состояние</th>
 				<th tuiTh></th>
 			</tr>
 		</thead>
 		<tbody *ngIf="mocks" tuiTbody [data]="mocks">
 			<tr *ngFor="let mock of displayedMocks" tuiTr>
-				<td *tuiCell="'method'" tuiTd>
-					<tui-tag
-						size="l"
-						status="custom"
-						class="tag"
-						[ngClass]="mock | tuiMapper : getMethodClass"
-						[value]="mock.method"></tui-tag>
-				</td>
 				<td *tuiCell="'name'" tuiTd>
 					{{ mock.name }}
 				</td>
-				<td *tuiCell="'path'" tuiTd>
-					{{ mock.path }}
+				<td *tuiCell="'expirationDate'" tuiTd>
+					{{ mock.expirationDate | tuiMapper : getDateTime }}
 				</td>
-				<td *tuiCell="'actions'" tuiTd class="mock-actions">
-					<tui-tooltip
-						*ngIf="mock.description"
-						[content]="mock.description"
-						direction="bottom-right"></tui-tooltip>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconCopy"
-						appearance="icon"
-						size="xs"
-						(click)="copyMockUrlToClipboard(mock.path)"></button>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconList"
-						appearance="icon"
-						size="xs"
-						(click)="showResponses(mock.mockId)"></button>
-					<!-- <button
+				<td *tuiCell="'enable'" tuiTd>
+					<div class="enablement">
+						<tui-toggle [ngModel]="mock.enable"></tui-toggle>
+						<span>{{ mock.enable | tuiMapper : getEnabled }}</span>
+					</div>
+				</td>
+				<td *tuiCell="'actions'" tuiTd>
+					<div class="mock-actions">
+						<!-- <button
 						tuiIconButton
 						type="button"
 						icon="tuiIconEdit3"
 						appearance="icon"
 						size="xs"></button> -->
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconTrash"
-						appearance="icon"
-						size="xs"
-						(click)="deleteMock.next(mock.mockId)"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconTrash"
+							appearance="icon"
+							size="xs"
+							(click)="deleteMock.next(mock)"></button>
+					</div>
 				</td>
 			</tr>
 		</tbody>

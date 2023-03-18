@@ -56,18 +56,20 @@ export class GraphQLApiService {
 	}
 
 	getMock(id: string): Observable<GraphQLMockDto> {
-		return this.httpClient.get<GraphQLMockDto>(`graphql/mocks/${id}`);
+		return this.httpClient.get<GraphQLMockDto>(`api/graphql/mocks/${id}`);
 	}
 
-	createMock(mock: GraphQLMockDto): Observable<void> {
-		return this.httpClient.post<void>('graphql/mocks', mock);
+	createMock(mock: GraphQLMockDto): Observable<string> {
+		return this.httpClient
+			.post<{id: string}>('api/graphql/mocks', mock)
+			.pipe(map(({id}) => id));
 	}
 
 	editMock(mock: GraphQLMockDto): Observable<void> {
-		return this.httpClient.put<void>(`graphql/mocks/${mock.id}`, mock);
+		return this.httpClient.put<void>(`api/graphql/mocks/${mock.id}`, mock);
 	}
 
 	deleteMock(id: string): Observable<void> {
-		return this.httpClient.delete<void>(`graphql/mocks/${id}`);
+		return this.httpClient.delete<void>(`api/graphql/mocks/${id}`);
 	}
 }

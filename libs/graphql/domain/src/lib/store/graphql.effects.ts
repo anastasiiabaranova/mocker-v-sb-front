@@ -152,7 +152,14 @@ export class GraphQLEffects {
 			ofType(graphQLActions.createMock),
 			switchMap(({mock}) =>
 				this.apiService.createMock(mock).pipe(
-					map(() => graphQLActions.mockCreated({mock})),
+					map(id =>
+						graphQLActions.mockCreated({
+							mock: {
+								...mock,
+								id,
+							},
+						})
+					),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось создать мок',
@@ -169,9 +176,9 @@ export class GraphQLEffects {
 	deleteMock$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(graphQLActions.deleteMock),
-			switchMap(({id}) =>
-				this.apiService.deleteMock(id).pipe(
-					map(() => graphQLActions.mockDeleted({id})),
+			switchMap(({mock}) =>
+				this.apiService.deleteMock(mock.id!).pipe(
+					map(() => graphQLActions.mockDeleted({mock})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось удалить шаблон мока',

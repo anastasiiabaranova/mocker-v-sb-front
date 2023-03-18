@@ -4,12 +4,11 @@ import {
 	Injector,
 	OnInit,
 } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {GraphQLFacade} from '@mocker/graphql/domain';
 import {CreateServiceDialogComponent} from '@mocker/shared/ui/graphql';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {map} from 'rxjs';
 
 @Component({
 	selector: 'mocker-feature-graphql-service-list',
@@ -19,12 +18,10 @@ import {map} from 'rxjs';
 })
 export class FeatureGraphQLServiceListComponent implements OnInit {
 	readonly services$ = this.facade.services$;
-
-	readonly selectedServicePath$ = this.route.params.pipe(map(({id}) => id));
+	readonly selectedServiceId$ = this.facade.serviceId$;
 
 	constructor(
 		private readonly facade: GraphQLFacade,
-		private readonly route: ActivatedRoute,
 		private readonly router: Router,
 		private readonly dialogService: TuiDialogService,
 		private readonly injector: Injector

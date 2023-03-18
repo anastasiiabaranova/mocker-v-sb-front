@@ -21,7 +21,7 @@
 		<mocker-service-card
 			*ngFor="let service of services"
 			class="service"
-			[class.selected]="service.id === (selectedServicePath$ | async)"
+			[class.selected]="service.id === (selectedServiceId$ | async)"
 			[service]="service"
 			(click)="openService(service.id)"></mocker-service-card>
 	</tui-scrollbar>

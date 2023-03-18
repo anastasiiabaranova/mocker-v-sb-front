@@ -6,7 +6,7 @@ import {GraphQLMockDto, GraphQLServiceDto} from '../dtos';
 
 @Injectable()
 export class GraphQLFacade {
-	readonly servicePath$ = this.store$.select(fromGraphQL.getServiceId);
+	readonly serviceId$ = this.store$.select(fromGraphQL.getServiceId);
 
 	readonly services$ = this.store$.select(fromGraphQL.getServices);
 
@@ -55,7 +55,7 @@ export class GraphQLFacade {
 		this.store$.dispatch(graphQLActions.createMock({mock}));
 	}
 
-	deleteMock(id: string) {
-		this.store$.dispatch(graphQLActions.deleteMock({id}));
+	deleteMock(mock: GraphQLMockDto) {
+		this.store$.dispatch(graphQLActions.deleteMock({mock}));
 	}
 }

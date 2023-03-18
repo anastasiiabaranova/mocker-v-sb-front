@@ -54,8 +54,8 @@ export class CreateServiceDialogComponent implements OnInit {
 	});
 
 	readonly minDateTime = [
-		TuiDay.currentLocal(),
-		TuiTime.currentLocal().shift({hours: 1}),
+		TuiDay.currentLocal().append({day: 1}),
+		new TuiTime(0, 0),
 	] as [TuiDay, TuiTime];
 
 	readonly mockServiceUrl = `${this.appConfig.serverUrl}/rest/{path}`;
@@ -130,14 +130,15 @@ export class CreateServiceDialogComponent implements OnInit {
 			this.form.value
 		) as any;
 
-		if (this.form.value.expirationTime) {
-			const date = this.form.value.expirationTime[0] as TuiDay;
-			const time = this.form.value.expirationTime[1] as TuiTime;
+		const [date, time] = this.form.value.expirationTime || [];
 
+		if (date) {
 			const expirationTime = date.toLocalNativeDate();
 
-			expirationTime.setHours(time.hours);
-			expirationTime.setMinutes(time.minutes);
+			if (time) {
+				expirationTime.setHours(time.hours);
+				expirationTime.setMinutes(time.minutes);
+			}
 
 			service.expirationTime = expirationTime.getTime();
 		}

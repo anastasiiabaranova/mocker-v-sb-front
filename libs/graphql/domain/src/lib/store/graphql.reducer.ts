@@ -3,6 +3,20 @@ import {GraphQLState} from './graphql.state';
 import {graphQLActions} from './graphql.actions';
 import {GraphQLServiceShortDto} from '../dtos';
 
+function addMock(service: GraphQLServiceShortDto): GraphQLServiceShortDto {
+	return {
+		...service,
+		mocksCount: (service.mocksCount || 0) + 1,
+	};
+}
+
+function deleteMock(service: GraphQLServiceShortDto): GraphQLServiceShortDto {
+	return {
+		...service,
+		mocksCount: service.mocksCount! - 1,
+	};
+}
+
 const initialState: GraphQLState = {
 	dialogLoading: false,
 };
@@ -56,12 +70,18 @@ const graphQLReducer = createReducer(
 	})),
 	on(graphQLActions.mockCreated, (state, {mock}) => ({
 		...state,
+		services: state.services?.map(service =>
+			service.id === mock.serviceId ? addMock(service) : service
+		),
 		mocks: [mock, ...(state.mocks || [])],
 		dialogLoading: false,
 	})),
-	on(graphQLActions.mockDeleted, (state, {id}) => ({
+	on(graphQLActions.mockDeleted, (state, {mock}) => ({
 		...state,
-		mocks: state.mocks?.filter(({id: mockId}) => mockId !== id),
+		services: state.services?.map(service =>
+			service.id === mock.serviceId ? deleteMock(service) : service
+		),
+		mocks: state.mocks?.filter(({id}) => id !== mock.id),
 	})),
 	on(graphQLActions.dialogRequestFailure, state => ({
 		...state,

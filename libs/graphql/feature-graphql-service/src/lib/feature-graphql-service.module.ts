@@ -6,6 +6,7 @@ import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 
 import {FeatureGraphqlServiceComponent} from './feature-graphql-service.component';
 import {FeatureGraphQLServiceRoutingModule} from './feature-graphql-service-routing.module';
+import {GraphQLMockListModule} from './components';
 
 @NgModule({
 	imports: [
@@ -15,6 +16,7 @@ import {FeatureGraphQLServiceRoutingModule} from './feature-graphql-service-rout
 		TuiTableModule,
 		TuiMapperPipeModule,
 		TuiLetModule,
+		GraphQLMockListModule,
 	],
 	declarations: [FeatureGraphqlServiceComponent],
 })

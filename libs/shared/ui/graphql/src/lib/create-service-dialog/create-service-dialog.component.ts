@@ -67,8 +67,8 @@ export class CreateServiceDialogComponent implements OnInit {
 	};
 
 	readonly minDateTime = [
-		TuiDay.currentLocal(),
-		TuiTime.currentLocal().shift({hours: 1}),
+		TuiDay.currentLocal().append({day: 1}),
+		new TuiTime(0, 0),
 	] as [TuiDay, TuiTime];
 
 	readonly mockServiceUrl = `${this.appConfig.serverUrl}/graphql/{name}`;
@@ -144,13 +144,15 @@ export class CreateServiceDialogComponent implements OnInit {
 			{...this.form.value, schema}
 		) as any;
 
-		if (this.form.value.expirationDate) {
-			const date = this.form.value.expirationDate[0] as TuiDay;
-			const time = this.form.value.expirationDate[1] as TuiTime;
+		const [date, time] = this.form.value.expirationDate || [];
+
+		if (date) {
 			const expirationDate = date.toLocalNativeDate();
 
-			expirationDate.setHours(time.hours);
-			expirationDate.setMinutes(time.minutes);
+			if (time) {
+				expirationDate.setHours(time.hours);
+				expirationDate.setMinutes(time.minutes);
+			}
 
 			service.expirationDate = expirationDate.toISOString();
 		}
