@@ -5,13 +5,13 @@ import {RouterModule} from '@angular/router';
 	imports: [
 		RouterModule.forChild([
 			{
-				path: 'graphql',
+				path: 'mq',
 				loadChildren: () =>
-					import('@mocker/graphql/feature-graphql').then(
-						m => m.FeatureGraphQLModule
+					import('@mocker/mq/feature-mq').then(
+						m => m.FeatureMQModule
 					),
 			},
 		]),
 	],
 })
-export class GraphQLShellRoutingModule {}
+export class MQShellRoutingModule {}

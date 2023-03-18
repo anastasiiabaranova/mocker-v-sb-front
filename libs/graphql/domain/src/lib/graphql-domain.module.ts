@@ -7,4 +7,4 @@ import {GraphQLStoreModule} from './store';
 	imports: [GraphQLStoreModule],
 	providers: [GraphQLApiService, GraphQLFacade],
 })
-export class GraphqlDomainModule {}
+export class GraphQLDomainModule {}

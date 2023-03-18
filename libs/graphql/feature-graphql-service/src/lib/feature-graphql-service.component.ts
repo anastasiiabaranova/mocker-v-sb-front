@@ -28,7 +28,7 @@ import {CreateMockDialogComponent} from './components';
 	styleUrls: ['./feature-graphql-service.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatureGraphqlServiceComponent {
+export class FeatureGraphQLServiceComponent {
 	readonly service$ = this.facade.currentService$;
 	readonly mocks$ = this.facade.mocks$;
 

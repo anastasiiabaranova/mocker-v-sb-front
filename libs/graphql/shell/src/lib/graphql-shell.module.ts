@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {GraphqlShellRoutingModule} from './graphql-shell-routing.module';
+import {GraphQLShellRoutingModule} from './graphql-shell-routing.module';
 
 @NgModule({
-	imports: [GraphqlShellRoutingModule],
+	imports: [GraphQLShellRoutingModule],
 })
-export class GraphqlShellModule {}
+export class GraphQLShellModule {}

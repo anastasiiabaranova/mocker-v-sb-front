@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {GraphqlDomainModule} from '@mocker/graphql/domain';
+import {GraphQLDomainModule} from '@mocker/graphql/domain';
 import {CommonModule} from '@angular/common';
 import {TuiSvgModule} from '@taiga-ui/core';
 import {FeatureGraphQLServiceListModule} from '@mocker/graphql/feature-graphql-service-list';
@@ -13,7 +13,7 @@ import {FeatureGraphQLRoutingModule} from './feature-graphql-routing.module';
 		CommonModule,
 		FeatureGraphQLRoutingModule,
 		RouterModule,
-		GraphqlDomainModule,
+		GraphQLDomainModule,
 		FeatureGraphQLServiceListModule,
 		TuiSvgModule,
 	],

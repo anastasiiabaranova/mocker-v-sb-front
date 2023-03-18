@@ -10,7 +10,7 @@ import {
 	TuiRootModule,
 } from '@taiga-ui/core';
 import {RestShellModule} from '@mocker/rest/shell';
-import {GraphqlShellModule} from '@mocker/graphql/shell';
+import {GraphQLShellModule} from '@mocker/graphql/shell';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
@@ -20,6 +20,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderModule} from './components';
 import {CoreModule} from './core';
+import {MQShellModule} from '@mocker/mq/shell';
 
 @NgModule({
 	bootstrap: [AppComponent],
@@ -44,7 +45,8 @@ import {CoreModule} from './core';
 		TuiDialogModule,
 		HeaderModule,
 		RestShellModule,
-		GraphqlShellModule,
+		GraphQLShellModule,
+		MQShellModule,
 		AppRoutingModule,
 		TuiModeModule,
 	],

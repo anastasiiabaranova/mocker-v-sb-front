@@ -4,7 +4,7 @@ import {TuiButtonModule} from '@taiga-ui/core';
 import {TuiTableModule} from '@taiga-ui/addon-table';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 
-import {FeatureGraphqlServiceComponent} from './feature-graphql-service.component';
+import {FeatureGraphQLServiceComponent} from './feature-graphql-service.component';
 import {FeatureGraphQLServiceRoutingModule} from './feature-graphql-service-routing.module';
 import {GraphQLMockListModule} from './components';
 
@@ -18,6 +18,6 @@ import {GraphQLMockListModule} from './components';
 		TuiLetModule,
 		GraphQLMockListModule,
 	],
-	declarations: [FeatureGraphqlServiceComponent],
+	declarations: [FeatureGraphQLServiceComponent],
 })
 export class FeatureGraphQLServiceModule {}
