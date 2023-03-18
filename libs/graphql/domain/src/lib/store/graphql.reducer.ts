@@ -56,7 +56,12 @@ const graphQLReducer = createReducer(
 		...state,
 		currentService: service,
 		services: state.services?.map(item =>
-			item.id === service.id ? (service as GraphQLServiceShortDto) : item
+			item.id === service.id
+				? ({
+						...service,
+						mocksCount: service.mocks?.length,
+				  } as GraphQLServiceShortDto)
+				: item
 		),
 		dialogLoading: false,
 	})),
