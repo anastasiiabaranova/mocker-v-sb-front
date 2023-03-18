@@ -76,6 +76,15 @@ const graphQLReducer = createReducer(
 		mocks: [mock, ...(state.mocks || [])],
 		dialogLoading: false,
 	})),
+	on(graphQLActions.editMock, state => ({
+		...state,
+		dialogLoading: true,
+	})),
+	on(graphQLActions.mockEdited, (state, {mock}) => ({
+		...state,
+		mocks: state.mocks!.map(item => (item.id === mock.id ? mock : item)),
+		dialogLoading: false,
+	})),
 	on(graphQLActions.mockDeleted, (state, {mock}) => ({
 		...state,
 		services: state.services?.map(service =>

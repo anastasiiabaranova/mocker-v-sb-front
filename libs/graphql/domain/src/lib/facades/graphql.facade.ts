@@ -28,6 +28,10 @@ export class GraphQLFacade {
 		ofType(graphQLActions.mockCreated)
 	);
 
+	readonly mockEdited$ = this.actions$.pipe(
+		ofType(graphQLActions.mockEdited)
+	);
+
 	readonly dialogLoading$ = this.store$.select(fromGraphQL.getDialogLoading);
 
 	constructor(
@@ -53,6 +57,10 @@ export class GraphQLFacade {
 
 	createMock(mock: GraphQLMockDto) {
 		this.store$.dispatch(graphQLActions.createMock({mock}));
+	}
+
+	editMock(mock: GraphQLMockDto) {
+		this.store$.dispatch(graphQLActions.editMock({mock}));
 	}
 
 	deleteMock(mock: GraphQLMockDto) {

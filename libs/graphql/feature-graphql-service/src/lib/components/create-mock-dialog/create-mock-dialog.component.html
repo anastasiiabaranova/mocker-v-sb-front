@@ -1,6 +1,6 @@
 <form [formGroup]="form">
 	<div class="tui-form__header tui-form__header_margin-top_none">
-		Новый GraphQL мок
+		{{ headerText }}
 	</div>
 	<div class="tui-form__row">
 		<tui-toggle formControlName="enable"></tui-toggle
@@ -77,7 +77,7 @@
 			class="tui-form__button"
 			[showLoader]="!!(loading$ | async)"
 			(click)="submitMock()">
-			Создать
+			{{ submitText }}
 		</button>
 	</div>
 </form>

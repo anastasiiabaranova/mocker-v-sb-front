@@ -84,6 +84,18 @@ export class FeatureGraphqlServiceComponent {
 			.subscribe();
 	}
 
+	editMock(mock: GraphQLMockDto) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateMockDialogComponent,
+					this.injector
+				),
+				{data: mock, size: 'l'}
+			)
+			.subscribe();
+	}
+
 	deleteMock(mock: GraphQLMockDto) {
 		this.facade.deleteMock(mock);
 	}

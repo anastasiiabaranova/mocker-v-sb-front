@@ -152,6 +152,12 @@ export class GraphQLEffects {
 			ofType(graphQLActions.createMock),
 			switchMap(({mock}) =>
 				this.apiService.createMock(mock).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Мок успешно создан',
+							status: TuiNotification.Success,
+						})
+					),
 					map(id =>
 						graphQLActions.mockCreated({
 							mock: {
@@ -173,11 +179,42 @@ export class GraphQLEffects {
 		)
 	);
 
+	editMock$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(graphQLActions.editMock),
+			switchMap(({mock}) =>
+				this.apiService.editMock(mock).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Мок успешно отредактирован',
+							status: TuiNotification.Success,
+						})
+					),
+					map(() => graphQLActions.mockEdited({mock})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось отредактировать мок',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return of(graphQLActions.dialogRequestFailure());
+					})
+				)
+			)
+		)
+	);
+
 	deleteMock$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(graphQLActions.deleteMock),
 			switchMap(({mock}) =>
 				this.apiService.deleteMock(mock.id!).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Мок удален',
+							status: TuiNotification.Success,
+						})
+					),
 					map(() => graphQLActions.mockDeleted({mock})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({

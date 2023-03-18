@@ -9,6 +9,7 @@ import {
 	TuiDay,
 	TuiDestroyService,
 	tuiMarkControlAsTouchedAndValidate,
+	tuiPure,
 	TuiTime,
 	TuiValidationError,
 } from '@taiga-ui/cdk';
@@ -21,6 +22,11 @@ import {
 } from '@mocker/shared/utils';
 import {GraphQLFacade, GraphQLMockDto} from '@mocker/graphql/domain';
 import {BehaviorSubject} from 'rxjs';
+
+type Context = TuiDialogContext<void, GraphQLMockDto | string>;
+
+const isMock = (data: GraphQLMockDto | string): data is GraphQLMockDto =>
+	!!(data as GraphQLMockDto).name;
 
 const NAME_REQUIRED_ERROR = 'Укажите имя мока';
 const NAME_FORMAT_ERROR = 'Некорректный формат имени';
@@ -39,15 +45,15 @@ const NAME_PATTERN = /^[a-zA-Z0-9_-]{3,255}$/;
 export class CreateMockDialogComponent implements OnInit {
 	readonly form = this.formBuilder.group({
 		name: [
-			null,
+			this.mock?.name || null,
 			[
 				requiredValidatorFactory(NAME_REQUIRED_ERROR),
 				patternValidatorFactory(NAME_FORMAT_ERROR, NAME_PATTERN),
 			],
 		],
-		expirationDate: [null],
-		delay: [null],
-		enable: [true],
+		expirationDate: [this.expirationDate || null],
+		delay: [this.mock?.delay || null],
+		enable: [this.mock?.enable || true],
 	});
 
 	readonly loading$ = this.facade.dialogLoading$;
@@ -63,13 +69,13 @@ export class CreateMockDialogComponent implements OnInit {
 	readonly requestCodeModel = {
 		language: 'graphql',
 		uri: 'request.graphql',
-		value: '',
+		value: this.mock?.request || '',
 	};
 
 	readonly responseCodeModel = {
 		language: 'json',
 		uri: 'response.json',
-		value: '',
+		value: this.mock?.response || '',
 	};
 
 	readonly minDateTime = [
@@ -82,14 +88,46 @@ export class CreateMockDialogComponent implements OnInit {
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
-		private readonly context: TuiDialogContext<void, string>,
+		private readonly context: Context,
 		private readonly formBuilder: FormBuilder,
 		private readonly facade: GraphQLFacade,
 		private readonly destroy$: TuiDestroyService
 	) {}
 
+	@tuiPure
 	get serviceId(): string {
-		return this.context.data;
+		return isMock(this.context.data)
+			? this.context.data.serviceId
+			: this.context.data;
+	}
+
+	@tuiPure
+	get mock(): GraphQLMockDto | null {
+		return isMock(this.context.data) ? this.context.data : null;
+	}
+
+	@tuiPure
+	get expirationDate(): [TuiDay, TuiTime] | null {
+		if (!this.mock || !this.mock.expirationDate) {
+			return null;
+		}
+
+		const date = new Date(this.mock.expirationDate);
+
+		return [
+			TuiDay.fromLocalNativeDate(date),
+			TuiTime.fromLocalNativeDate(date),
+		];
+	}
+
+	@tuiPure
+	get headerText() {
+		return this.mock ? 'Редактирование GraphQL мока' : 'Новый GraphQL мок';
+	}
+
+	@tuiPure
+	get submitText() {
+		return this.mock ? 'Редактировать' : 'Создать';
 	}
 
 	private get validateSchemas(): [string, string] | null {
@@ -120,6 +158,14 @@ export class CreateMockDialogComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		if (this.mock) {
+			this.facade.mockEdited$
+				.pipe(takeUntil(this.destroy$))
+				.subscribe(() => this.closeDialog());
+
+			return;
+		}
+
 		this.facade.mockCreated$
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
@@ -160,16 +206,24 @@ export class CreateMockDialogComponent implements OnInit {
 			expirationDate = expirationDate.toISOString();
 		}
 
-		const mock: GraphQLMockDto = {
-			name,
-			expirationDate,
-			delay,
-			enable,
-			request,
-			response,
-			serviceId: this.serviceId,
-		};
+		const initialValue = this.mock || {};
+		const mock: GraphQLMockDto = Object.assign(
+			{...initialValue},
+			{
+				name,
+				expirationDate,
+				delay,
+				enable,
+				request,
+				response,
+				serviceId: this.serviceId,
+			}
+		);
 
-		this.facade.createMock(mock);
+		if (this.mock) {
+			this.facade.editMock(mock);
+		} else {
+			this.facade.createMock(mock);
+		}
 	}
 }
