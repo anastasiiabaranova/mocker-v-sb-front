@@ -1,18 +1,12 @@
-<div class="container">
-	<div class="search">
-		<div class="header">
-			<span class="title tui-text_body-l">Сервисы</span>
-			<button
-				tuiIconButton
-				type="button"
-				appearance="icon"
-				icon="tuiIconPlus"
-				size="xs"
-				(click)="createService()"></button>
-		</div>
-		<mocker-service-search
-			(searchChange)="searchServices($event)"></mocker-service-search>
-	</div>
+<div
+	*tuiLet="selectedServiceId$ | async as selectedServiceId"
+	class="container">
+	<mocker-list-header
+		class="search"
+		(create)="createService()"
+		(searchChange)="searchServices($event)">
+		Сервисы
+	</mocker-list-header>
 
 	<tui-scrollbar
 		*ngIf="services$ | async as services"
@@ -21,7 +15,7 @@
 		<mocker-service-card
 			*ngFor="let service of services"
 			class="service"
-			[class.selected]="service.id === (selectedServiceId$ | async)"
+			[class.selected]="service.id === selectedServiceId"
 			[service]="service"
 			(click)="openService(service.id)"></mocker-service-card>
 	</tui-scrollbar>

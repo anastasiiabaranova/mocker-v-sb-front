@@ -1,18 +1,10 @@
 <div *tuiLet="selectedTopic$ | async as selectedTopic" class="container">
-	<div class="search">
-		<div class="header">
-			<span class="title tui-text_body-l">Топики</span>
-			<button
-				tuiIconButton
-				type="button"
-				appearance="icon"
-				icon="tuiIconPlus"
-				size="xs"
-				(click)="createTopic()"></button>
-		</div>
-		<mocker-topic-search
-			(searchChange)="searchTopics($event)"></mocker-topic-search>
-	</div>
+	<mocker-list-header
+		class="search"
+		(create)="createTopic()"
+		(searchChange)="searchTopics($event)">
+		Топики
+	</mocker-list-header>
 
 	<tui-scrollbar
 		*ngIf="topics$ | async as topics"

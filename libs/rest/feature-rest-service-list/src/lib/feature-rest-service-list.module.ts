@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TuiButtonModule, TuiScrollbarModule} from '@taiga-ui/core';
-import {CreateServiceDialogModule} from '@mocker/shared/ui/rest';
+import {TuiScrollbarModule} from '@taiga-ui/core';
+import {ListHeaderModule} from '@mocker/shared/ui';
+import {TuiLetModule} from '@taiga-ui/cdk';
 
-import {ServiceCardModule, ServiceSearchModule} from './components';
+import {ServiceCardModule} from './components';
 import {FeatureRestServiceListComponent} from './feature-rest-service-list.component';
 
 @NgModule({
@@ -11,10 +12,9 @@ import {FeatureRestServiceListComponent} from './feature-rest-service-list.compo
 	imports: [
 		CommonModule,
 		ServiceCardModule,
-		ServiceSearchModule,
 		TuiScrollbarModule,
-		TuiButtonModule,
-		CreateServiceDialogModule,
+		TuiLetModule,
+		ListHeaderModule,
 	],
 	exports: [FeatureRestServiceListComponent],
 })

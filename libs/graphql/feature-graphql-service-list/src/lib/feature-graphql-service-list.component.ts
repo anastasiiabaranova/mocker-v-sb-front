@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import {Router} from '@angular/router';
 import {GraphQLFacade} from '@mocker/graphql/domain';
-import {CreateServiceDialogComponent} from '@mocker/shared/ui/graphql';
+import {CreateGraphQLServiceDialogComponent} from '@mocker/shared/ui';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 
@@ -39,7 +39,7 @@ export class FeatureGraphQLServiceListComponent implements OnInit {
 		this.dialogService
 			.open(
 				new PolymorpheusComponent(
-					CreateServiceDialogComponent,
+					CreateGraphQLServiceDialogComponent,
 					this.injector
 				),
 				{size: 'l'}

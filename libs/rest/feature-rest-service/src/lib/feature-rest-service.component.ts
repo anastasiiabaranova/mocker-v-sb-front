@@ -15,7 +15,7 @@ import {
 } from '@mocker/shared/utils';
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
+import {CreateRestServiceDialogComponent} from '@mocker/shared/ui';
 import {
 	CreateMockDialogComponent,
 	CreateModelDialogComponent,
@@ -60,7 +60,7 @@ export class FeatureRestServiceComponent {
 		this.dialogService
 			.open(
 				new PolymorpheusComponent(
-					CreateServiceDialogComponent,
+					CreateRestServiceDialogComponent,
 					this.injector
 				),
 				{data: service}

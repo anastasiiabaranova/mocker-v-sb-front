@@ -16,7 +16,7 @@ import {
 	AppConfig,
 	NotificationsFacade,
 } from '@mocker/shared/utils';
-import {CreateServiceDialogComponent} from '@mocker/shared/ui/graphql';
+import {CreateGraphQLServiceDialogComponent} from '@mocker/shared/ui';
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
@@ -60,7 +60,7 @@ export class FeatureGraphQLServiceComponent {
 		this.dialogService
 			.open(
 				new PolymorpheusComponent(
-					CreateServiceDialogComponent,
+					CreateGraphQLServiceDialogComponent,
 					this.injector
 				),
 				{data: service, size: 'l'}

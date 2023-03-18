@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {RestFacade} from '@mocker/rest/domain';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {CreateServiceDialogComponent} from '@mocker/shared/ui/rest';
+import {CreateRestServiceDialogComponent} from '@mocker/shared/ui';
 
 @Component({
 	selector: 'mocker-feature-rest-service-list',
@@ -39,7 +39,7 @@ export class FeatureRestServiceListComponent implements OnInit {
 		this.dialogService
 			.open(
 				new PolymorpheusComponent(
-					CreateServiceDialogComponent,
+					CreateRestServiceDialogComponent,
 					this.injector
 				)
 			)

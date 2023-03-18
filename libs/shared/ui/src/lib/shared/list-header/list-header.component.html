@@ -1,0 +1,13 @@
+<div class="container">
+	<div class="header">
+		<span class="title tui-text_body-l"><ng-content></ng-content></span>
+		<button
+			tuiIconButton
+			type="button"
+			appearance="icon"
+			icon="tuiIconPlus"
+			size="xs"
+			(click)="create.next()"></button>
+	</div>
+	<mocker-search (searchChange)="searchChange.next($event)"></mocker-search>
+</div>

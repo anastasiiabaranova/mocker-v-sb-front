@@ -3,17 +3,16 @@ import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TuiTextfieldControllerModule} from '@taiga-ui/core';
 import {TuiInputModule} from '@taiga-ui/kit';
-
-import {ServiceSearchComponent} from './service-search.component';
+import {SearchComponent} from './search.component';
 
 @NgModule({
-	declarations: [ServiceSearchComponent],
+	declarations: [SearchComponent],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
 		TuiInputModule,
 		TuiTextfieldControllerModule,
 	],
-	exports: [ServiceSearchComponent],
+	exports: [SearchComponent],
 })
-export class ServiceSearchModule {}
+export class SearchModule {}

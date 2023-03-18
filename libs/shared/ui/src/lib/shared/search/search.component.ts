@@ -3,12 +3,12 @@ import {FormControl} from '@angular/forms';
 import {debounceTime} from 'rxjs';
 
 @Component({
-	selector: 'mocker-service-search',
-	templateUrl: './service-search.component.html',
-	styleUrls: ['./service-search.component.less'],
+	selector: 'mocker-search',
+	templateUrl: './search.component.html',
+	styleUrls: ['./search.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServiceSearchComponent {
+export class SearchComponent {
 	readonly search = new FormControl<string | null>(null);
 
 	@Output() readonly searchChange = this.search.valueChanges.pipe(
