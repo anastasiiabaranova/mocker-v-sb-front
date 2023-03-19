@@ -8,6 +8,7 @@ import {
 import {
 	NotificationsFacade,
 	requiredValidatorFactory,
+	statusCodeValidatorFactory,
 } from '@mocker/shared/utils';
 import {
 	TuiDestroyService,
@@ -25,6 +26,7 @@ type Context = {
 
 const NAME_REQUIRED_ERROR = 'Укажите название ответа';
 const STATUS_REQUIRED_ERROR = 'Укажите Status Code ответа';
+const STATUS_INVALID_ERROR = 'Некорректный Status Code';
 const HEADER_VALUE_REQUIRED_ERROR = 'Укажите значение заголовка';
 const PARAM_VALUE_REQUIRED_ERROR = 'Укажите значение параметра';
 const BODY_SYNTAX_ERROR = 'Проверьте синтаксис';
@@ -39,7 +41,13 @@ const BODY_REQUIRED_ERROR = 'Укажите тело ответа';
 export class CreateResponseDialogComponent {
 	readonly form = this.formBuilder.group({
 		name: [null, requiredValidatorFactory(NAME_REQUIRED_ERROR)],
-		statusCode: [null, requiredValidatorFactory(STATUS_REQUIRED_ERROR)],
+		statusCode: [
+			null,
+			[
+				requiredValidatorFactory(STATUS_REQUIRED_ERROR),
+				statusCodeValidatorFactory(STATUS_INVALID_ERROR),
+			],
+		],
 		requestHeaders: this.requestHeadersControls,
 		responseHeaders: this.responseHeadersControls,
 		queryParams: this.queryParamsControls,
