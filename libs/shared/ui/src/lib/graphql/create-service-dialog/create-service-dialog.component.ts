@@ -84,6 +84,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		private readonly destroy$: TuiDestroyService
 	) {}
 
+	@tuiPure
 	get service(): GraphQLServiceDto {
 		return this.context.data;
 	}

@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+	<h3 class="tui-form__header tui-form__header_margin-top_none">
+		Новый топик
+	</h3>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="topicName" tuiTextfieldSize="m">
+				Имя
+			</tui-input>
+			<tui-error
+				formControlName="topicName"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-select
+				formControlName="brokerType"
+				tuiTextfieldSize="m"
+				[readOnly]="true">
+				Брокер
+			</tui-select>
+		</div>
+	</div>
+	<div class="tui-form__row tui-form__row_half-width">
+		<tui-input-number
+			formControlName="messageRetention"
+			tuiTextfieldSize="m"
+			[min]="0">
+			Время жизни сообщений, мс
+		</tui-input-number>
+	</div>
+
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="submitTopic()">
+			Создать
+		</button>
+	</div>
+</form>

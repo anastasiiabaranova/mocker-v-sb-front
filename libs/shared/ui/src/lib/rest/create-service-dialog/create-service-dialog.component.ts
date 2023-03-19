@@ -71,6 +71,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		private readonly destroy$: TuiDestroyService
 	) {}
 
+	@tuiPure
 	get service(): RestServiceDto {
 		return this.context.data;
 	}

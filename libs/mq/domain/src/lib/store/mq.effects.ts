@@ -7,6 +7,7 @@ import {
 	tap,
 	withLatestFrom,
 	filter,
+	mergeMap,
 } from 'rxjs/operators';
 import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
@@ -14,12 +15,13 @@ import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
 import {ROUTER_NAVIGATED} from '@ngrx/router-store';
 import {Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {tuiIsPresent} from '@taiga-ui/cdk';
 
 import {fromMQ} from './mq.selectors';
 import {mqActions} from './mq.actions';
 import {MQApiService} from '../services';
 import {BrokerType} from '../enums';
-import {tuiIsPresent} from '@taiga-ui/cdk';
 
 @Injectable()
 export class MQEffects {
@@ -83,9 +85,15 @@ export class MQEffects {
 						})
 					),
 					tap(() =>
-						this.router.navigate(['mq', {queryParams: topic}])
+						this.location.go(
+							'mq',
+							`topicName=${topic.topicName}&brokerType=${topic.brokerType}`
+						)
 					),
-					map(() => mqActions.topicCreated({topic})),
+					mergeMap(topic => [
+						mqActions.topicCreated({topic}),
+						mqActions.setCurrentTopic({topic}),
+					]),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось создать топик',
@@ -155,6 +163,7 @@ export class MQEffects {
 		private readonly store$: Store,
 		private readonly apiService: MQApiService,
 		private readonly notificationsFacade: NotificationsFacade,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly location: Location
 	) {}
 }

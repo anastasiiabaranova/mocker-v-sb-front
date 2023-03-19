@@ -6,7 +6,9 @@ import {
 } from '@angular/core';
 import {Router} from '@angular/router';
 import {MQFacade, TopicShort} from '@mocker/mq/domain';
+import {CreateTopicDialogComponent} from '@mocker/shared/ui';
 import {TuiDialogService} from '@taiga-ui/core';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 
 @Component({
 	selector: 'mocker-feature-mq-topic-list',
@@ -37,14 +39,14 @@ export class FeatureMqTopicListComponent implements OnInit {
 	}
 
 	createTopic() {
-		// this.dialogService
-		// 	.open(
-		// 		new PolymorpheusComponent(
-		// 			CreateServiceDialogComponent,
-		// 			this.injector
-		// 		)
-		// 	)
-		// 	.subscribe();
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateTopicDialogComponent,
+					this.injector
+				)
+			)
+			.subscribe();
 	}
 
 	searchTopics(search: string | null) {
