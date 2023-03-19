@@ -20,6 +20,8 @@ export class FeatureRestServiceListComponent implements OnInit {
 	readonly services$ = this.facade.services$;
 	readonly selectedServicePath$ = this.facade.servicePath$;
 
+	readonly skeletons = Array(20);
+
 	constructor(
 		private readonly facade: RestFacade,
 		private readonly router: Router,

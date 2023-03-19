@@ -9,14 +9,25 @@
 	</mocker-list-header>
 
 	<tui-scrollbar
-		*ngIf="services$ | async as services"
+		*tuiLet="services$ | async as services"
 		class="services"
 		[hidden]="true">
-		<mocker-service-card
-			*ngFor="let service of services"
-			class="service"
-			[class.selected]="service.id === selectedServiceId"
-			[service]="service"
-			(click)="openService(service.id)"></mocker-service-card>
+		<ng-container *ngIf="services !== undefined; else skeleton">
+			<mocker-service-card
+				*ngFor="let service of services"
+				class="service"
+				[class.selected]="service.id === selectedServiceId"
+				[service]="service"
+				(click)="openService(service.id)"></mocker-service-card>
+		</ng-container>
 	</tui-scrollbar>
 </div>
+
+<ng-template #skeleton>
+	<ng-container>
+		<div *ngFor="let item of skeletons" class="skeleton">
+			<div class="tui-skeleton"></div>
+			<div class="tui-skeleton tui-skeleton_short tui-space_top-1"></div>
+		</div>
+	</ng-container>
+</ng-template>

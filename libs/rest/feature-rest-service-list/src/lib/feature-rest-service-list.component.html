@@ -12,11 +12,20 @@
 		*ngIf="services$ | async as services"
 		class="services"
 		[hidden]="true">
-		<mocker-service-card
-			*ngFor="let service of services"
-			class="service"
-			[class.selected]="service.path === selectedServicePath"
-			[service]="service"
-			(click)="openService(service.path)"></mocker-service-card>
+		<ng-container *ngIf="services; else skeleton">
+			<mocker-service-card
+				*ngFor="let service of services"
+				class="service"
+				[class.selected]="service.path === selectedServicePath"
+				[service]="service"
+				(click)="openService(service.path)"></mocker-service-card>
+		</ng-container>
 	</tui-scrollbar>
 </div>
+
+<ng-template #skeleton>
+	<div *ngFor="let item of skeletons" class="skeleton">
+		<div class="tui-skeleton"></div>
+		<div class="tui-skeleton tui-skeleton_short tui-space_top-1"></div>
+	</div>
+</ng-template>

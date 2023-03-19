@@ -20,6 +20,8 @@ export class FeatureGraphQLServiceListComponent implements OnInit {
 	readonly services$ = this.facade.services$;
 	readonly selectedServiceId$ = this.facade.serviceId$;
 
+	readonly skeletons = Array(20);
+
 	constructor(
 		private readonly facade: GraphQLFacade,
 		private readonly router: Router,

@@ -7,14 +7,25 @@
 	</mocker-list-header>
 
 	<tui-scrollbar
-		*ngIf="topics$ | async as topics"
+		*tuiLet="topics$ | async as topics"
 		class="topics"
 		[hidden]="true">
-		<mocker-topic-card
-			*ngFor="let topic of topics"
-			class="topic"
-			[class.selected]="topic | tuiMapper : isSameTopic : selectedTopic"
-			[topic]="topic"
-			(click)="openTopic(topic)"></mocker-topic-card>
+		<ng-container *ngIf="topics; else skeleton">
+			<mocker-topic-card
+				*ngFor="let topic of topics"
+				class="topic"
+				[class.selected]="
+					topic | tuiMapper : isSameTopic : selectedTopic
+				"
+				[topic]="topic"
+				(click)="openTopic(topic)"></mocker-topic-card>
+		</ng-container>
 	</tui-scrollbar>
 </div>
+
+<ng-template #skeleton>
+	<div *ngFor="let item of skeletons" class="skeleton">
+		<div class="tui-skeleton"></div>
+		<div class="tui-skeleton tui-skeleton_short tui-space_top-1"></div>
+	</div>
+</ng-template>
