@@ -19,7 +19,7 @@ export class FeatureMqTopicListComponent implements OnInit {
 	readonly selectedTopic$ = this.facade.selectedTopic$;
 
 	readonly isSameTopic = (a: TopicShort, b: TopicShort) =>
-		a.brokerType === b.brokerType && a.topicName === b.topicName;
+		a && b && a.brokerType === b.brokerType && a.topicName === b.topicName;
 
 	constructor(
 		private readonly facade: MQFacade,

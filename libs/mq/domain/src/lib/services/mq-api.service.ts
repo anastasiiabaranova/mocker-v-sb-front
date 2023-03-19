@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {
 	Message,
 	MessageList,
@@ -28,7 +28,29 @@ export class MQApiService {
 					},
 				}),
 			})
-			.pipe(map(({queues}) => queues));
+			.pipe(
+				map(({queues}) => queues),
+				catchError(() =>
+					of([
+						{
+							brokerType: BrokerType.Kafka,
+							topicName: 'topic 1',
+						},
+						{
+							brokerType: BrokerType.Kafka,
+							topicName: 'topic 2',
+						},
+						{
+							brokerType: BrokerType.Kafka,
+							topicName: 'topic 3',
+						},
+						{
+							brokerType: BrokerType.Kafka,
+							topicName: 'topic 4',
+						},
+					])
+				)
+			);
 	}
 
 	getTopic(brokerType: BrokerType, topicName: string): Observable<Topic> {

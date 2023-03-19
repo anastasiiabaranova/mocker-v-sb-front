@@ -5,4 +5,5 @@ export type Topic = Readonly<{
 	address: string;
 	port: number;
 	topicName: string;
+	messageRetention?: number;
 }>;
