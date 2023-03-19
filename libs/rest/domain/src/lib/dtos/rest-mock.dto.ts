@@ -3,7 +3,7 @@ export type RestMockDto = Readonly<{
 	name: string;
 	path: string;
 	method: string;
-	requestModelId?: string;
+	// requestModelId?: string;
 	responseModelId: string;
 	requestHeaders: ReadonlyArray<string>;
 	responseHeaders: ReadonlyArray<string>;

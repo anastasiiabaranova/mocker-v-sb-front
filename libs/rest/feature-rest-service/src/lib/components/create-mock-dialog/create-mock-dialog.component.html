@@ -41,8 +41,8 @@
 	</div>
 	<div
 		*tuiLet="models$ | async as models"
-		class="tui-form__row tui-form__row_multi-fields">
-		<tui-select
+		class="tui-form__row tui-form__row_half-width">
+		<!-- <tui-select
 			class="tui-form__multi-field"
 			tuiTextfieldSize="m"
 			formControlName="requestModel"
@@ -52,7 +52,7 @@
 				*tuiDataList
 				[items]="models || []"
 				[itemContent]="modelContent"></tui-data-list-wrapper>
-		</tui-select>
+		</tui-select> -->
 		<tui-select
 			class="tui-form__multi-field"
 			tuiTextfieldSize="m"
