@@ -26,22 +26,39 @@
 			<thead>
 				<tr tuiThGroup>
 					<th tuiTh>key</th>
-					<th tuiTh>value</th>
+					<th tuiTh>content</th>
 				</tr>
 			</thead>
-			<tbody *ngIf="messages" tuiTbody [data]="messages">
-				<tr *ngFor="let message of messages" tuiTr>
+			<tbody
+				*ngIf="!messagesLoading && messages"
+				tuiTbody
+				[data]="messages">
+				<tr *ngFor="let message of displayedMessages" tuiTr>
 					<td *tuiCell="'key'" tuiTd>
 						{{ message.key }}
 					</td>
-					<td *tuiCell="'value'" tuiTd>
-						{{ message.value }}
+					<td *tuiCell="'content'" tuiTd>
+						{{ message.content }}
 					</td>
 				</tr>
 			</tbody>
 		</table>
 
-		<tui-loader *ngIf="messagesLoading" class="loader" [showLoader]="true"></tui-loader>
+		<tui-loader
+			*ngIf="messagesLoading"
+			class="loader"
+			[showLoader]="true"></tui-loader>
+
+		<tui-table-pagination
+			*ngIf="!messagesLoading && messages && messages.length"
+			class="pagination"
+			[total]="messages.length"
+			[items]="sizeOptions"
+			[(page)]="page"
+			[(size)]="size"
+			(paginationChange)="
+				updateDisplayedMessages(messages)
+			"></tui-table-pagination>
 
 		<div
 			*ngIf="!messagesLoading && messages && !messages.length"

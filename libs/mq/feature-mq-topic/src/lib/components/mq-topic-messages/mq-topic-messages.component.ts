@@ -4,7 +4,7 @@ import {
 	Injector,
 	Input,
 } from '@angular/core';
-import {MQFacade, Topic} from '@mocker/mq/domain';
+import {Message, MQFacade, Topic} from '@mocker/mq/domain';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {Subject, switchMap, tap} from 'rxjs';
@@ -29,18 +29,32 @@ export class MQTopicMessagesComponent {
 				this.topic.topicName
 			)
 		),
-		tap(() => (this.messagesLoading = false))
+		tap(messages => {
+			this.updateDisplayedMessages(messages);
+			this.messagesLoading = false;
+		})
 	);
 
-	readonly columns = ['key', 'value'];
+	readonly columns = ['key', 'content'];
+
+	readonly sizeOptions = [5, 10, 15];
 
 	messagesLoading = false;
+
+	page = 0;
+	size = 5;
+
+	private _displayedMessages: Message[] | null = null;
 
 	constructor(
 		private readonly facade: MQFacade,
 		private readonly dialogService: TuiDialogService,
 		private readonly injector: Injector
 	) {}
+
+	get displayedMessages(): Message[] {
+		return this._displayedMessages || [];
+	}
 
 	sendMessages() {
 		this.dialogService
@@ -56,5 +70,12 @@ export class MQTopicMessagesComponent {
 
 	readMessages() {
 		this.read$.next();
+	}
+
+	updateDisplayedMessages(messages: ReadonlyArray<Message>) {
+		this._displayedMessages = (messages || []).slice(
+			this.page * this.size,
+			this.page * this.size + this.size
+		);
 	}
 }
