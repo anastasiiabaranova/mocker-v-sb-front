@@ -37,7 +37,7 @@ export class FeatureMqTopicListComponent implements OnInit {
 	}
 
 	openTopic(topic: TopicShort) {
-		this.router.navigate(['mq'], {queryParams: topic});
+		this.router.navigate(['mq/topic'], {queryParams: topic});
 	}
 
 	createTopic() {

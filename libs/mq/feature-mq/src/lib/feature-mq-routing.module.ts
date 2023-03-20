@@ -8,6 +8,15 @@ import {FeatureMQComponent} from './feature-mq.component';
 			{
 				path: '',
 				component: FeatureMQComponent,
+				children: [
+					{
+						path: 'topic',
+						loadChildren: () =>
+							import(
+								'@mocker/mq/feature-mq-topic'
+							).then(m => m.FeatureMqTopicModule),
+					},
+				],
 			},
 		]),
 	],

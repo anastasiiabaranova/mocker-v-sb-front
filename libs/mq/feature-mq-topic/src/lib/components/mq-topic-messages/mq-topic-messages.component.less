@@ -1,0 +1,56 @@
+:host {
+	display: block;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+
+	.actions {
+		display: flex;
+		gap: 8px;
+	}
+}
+
+.message-list {
+	margin-top: 8px;
+	padding: 12px;
+	border: 1px solid var(--tui-base-03);
+	border-radius: var(--tui-radius-m);
+    min-height: 92px;
+
+	.table {
+		width: 100%;
+
+		& th {
+			width: 50%;
+		}
+	}
+
+	&::ng-deep {
+		td,
+		th {
+			border: none;
+			border-bottom: 1px solid var(--tui-base-03);
+		}
+
+		tbody {
+			border: none;
+
+			tr:last-child > td {
+				border-bottom: none;
+			}
+		}
+	}
+
+    .loader {
+        padding: 8px 12px 8px 12px;
+    }
+
+	.no-messages {
+		padding: 12px;
+		color: var(--tui-text-03);
+	}
+}

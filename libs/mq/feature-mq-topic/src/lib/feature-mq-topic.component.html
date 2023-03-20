@@ -1,0 +1,55 @@
+<ng-container *ngIf="topic$ | async as topic">
+	<div class="header">
+		<span class="title tui-text_body-xl">{{ topic.topicName }}</span>
+		<!-- <button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="editService(service)">
+			Редактировать
+		</button> -->
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="deleteTopic(topic)">
+			Удалить
+		</button>
+	</div>
+
+	<table class="info tui-table">
+		<tr
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Брокер:</td>
+			<td class="row-data">{{ topic.brokerType }}</td>
+		</tr>
+		<tr
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Время жизни сообщений:</td>
+			<td class="row-data">
+				{{ topic.messageRetention | tuiMapper : getMessageRetention }}
+			</td>
+		</tr>
+		<tr
+			*tuiLet="topic | tuiMapper : getAddress as address"
+			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+			<td class="row-title">Адрес:</td>
+			<td class="row-data">
+				{{ address }}
+				<button
+					tuiIconButton
+					type="button"
+					icon="tuiIconCopy"
+					appearance="icon"
+					size="xs"
+					(click)="copyTextToClipboard(address)"></button>
+			</td>
+		</tr>
+	</table>
+
+	<mocker-mq-topic-messages
+		class="tui-space_top-8"
+		[topic]="topic"></mocker-mq-topic-messages>
+</ng-container>

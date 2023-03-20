@@ -86,7 +86,7 @@ export class MQEffects {
 					),
 					tap(() =>
 						this.location.go(
-							'mq',
+							'mq/topic',
 							`topicName=${topic.topicName}&brokerType=${topic.brokerType}`
 						)
 					),

@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+	<h3 class="tui-form__header tui-form__header_margin-top_none">
+		Новое сообщение в топик<br />{{ topic.topicName }}
+	</h3>
+	<div class="tui-form__row">
+		<div>
+			<tui-input formControlName="key" tuiTextfieldSize="m">
+				key
+			</tui-input>
+			<tui-error
+				formControlName="key"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<div class="tui-form__row">
+		<div>
+			<tui-text-area
+				formControlName="content"
+				tuiTextfieldSize="m"
+				[expandable]="true">
+				Значение
+			</tui-text-area>
+			<tui-error
+				formControlName="content"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<div class="tui-form__row tui-form__row_half-width">
+		<tui-input-number
+			formControlName="repeat"
+			tuiTextfieldSize="m"
+			[min]="1">
+			Количество
+		</tui-input-number>
+	</div>
+
+	<div class="tui-form__buttons tui-form__buttons_align_end">
+		<button
+			tuiButton
+			type="button"
+			appearance="flat"
+			size="m"
+			class="tui-form__button"
+			(click)="closeDialog()">
+			Отменить
+		</button>
+		<button
+			tuiButton
+			size="m"
+			type="button"
+			class="tui-form__button"
+			[showLoader]="!!(loading$ | async)"
+			(click)="sendMessages()">
+			Отправить
+		</button>
+	</div>
+</form>

@@ -1,0 +1,52 @@
+<div class="header">
+	<div class="tui-text_body-l">Сообщения</div>
+	<div class="actions">
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="sendMessages()">
+			Отправить
+		</button>
+		<button
+			tuiButton
+			type="button"
+			appearance="secondary"
+			size="s"
+			(click)="read$.next()">
+			Прочитать
+		</button>
+	</div>
+</div>
+
+<ng-container *tuiLet="messages$ | async as messages">
+	<div *ngIf="messages || messagesLoading" class="message-list">
+		<table tuiTable class="table" [columns]="columns">
+			<thead>
+				<tr tuiThGroup>
+					<th tuiTh>key</th>
+					<th tuiTh>value</th>
+				</tr>
+			</thead>
+			<tbody *ngIf="messages" tuiTbody [data]="messages">
+				<tr *ngFor="let message of messages" tuiTr>
+					<td *tuiCell="'key'" tuiTd>
+						{{ message.key }}
+					</td>
+					<td *tuiCell="'value'" tuiTd>
+						{{ message.value }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<tui-loader *ngIf="messagesLoading" class="loader" [showLoader]="true"></tui-loader>
+
+		<div
+			*ngIf="!messagesLoading && messages && !messages.length"
+			class="no-messages tui-text_h6">
+			Сообщений нет
+		</div>
+	</div>
+</ng-container>

@@ -10,7 +10,7 @@
 		*tuiLet="topics$ | async as topics"
 		class="topics"
 		[hidden]="true">
-		<ng-container *ngIf="topics; else skeleton">
+		<ng-container *ngIf="topics !== undefined; else skeleton">
 			<mocker-topic-card
 				*ngFor="let topic of topics"
 				class="topic"

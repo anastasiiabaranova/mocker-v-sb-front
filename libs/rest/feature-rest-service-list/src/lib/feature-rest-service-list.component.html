@@ -12,7 +12,7 @@
 		*ngIf="services$ | async as services"
 		class="services"
 		[hidden]="true">
-		<ng-container *ngIf="services; else skeleton">
+		<ng-container *ngIf="services !== undefined; else skeleton">
 			<mocker-service-card
 				*ngFor="let service of services"
 				class="service"
