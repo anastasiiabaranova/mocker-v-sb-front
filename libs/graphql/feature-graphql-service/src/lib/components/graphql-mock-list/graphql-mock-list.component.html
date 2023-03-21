@@ -36,10 +36,13 @@
 					{{ mock.expirationDate | tuiMapper : getDateTime }}
 				</td>
 				<td *tuiCell="'enable'" tuiTd>
-					<div class="enablement">
-						<tui-toggle [ngModel]="mock.enable"></tui-toggle>
-						<span>{{ mock.enable | tuiMapper : getEnabled }}</span>
-					</div>
+					{{ mock.enable | tuiMapper : getEnabled }}
+					<!-- <div class="enablement">
+						<tui-toggle
+							[ngModel]="mock.enable"
+							(ngModelChange)="toggleEnablement(mock)">
+						</tui-toggle>
+					</div> -->
 				</td>
 				<td *tuiCell="'actions'" tuiTd>
 					<div class="mock-actions">

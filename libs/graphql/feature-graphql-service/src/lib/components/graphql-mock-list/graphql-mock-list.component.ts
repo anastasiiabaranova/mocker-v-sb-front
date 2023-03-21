@@ -2,20 +2,11 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	EventEmitter,
-	Inject,
-	Injector,
 	Input,
 	OnChanges,
 	Output,
 } from '@angular/core';
-import {Clipboard} from '@angular/cdk/clipboard';
 import {TuiDestroyService} from '@taiga-ui/cdk';
-import {TuiDialogService} from '@taiga-ui/core';
-import {
-	AppConfig,
-	ENVIRONMENT,
-	NotificationsFacade,
-} from '@mocker/shared/utils';
 import {GraphQLMockDto} from '@mocker/graphql/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
@@ -50,14 +41,6 @@ export class GraphQLMockListComponent implements OnChanges {
 			: '';
 
 	readonly getEnabled = (enabled: boolean) => (enabled ? 'Вкл.' : 'Выкл.');
-
-	constructor(
-		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,
-		private readonly dialogService: TuiDialogService,
-		private readonly injector: Injector,
-		private readonly clipboard: Clipboard,
-		private readonly notificationsFacade: NotificationsFacade
-	) {}
 
 	get displayedMocks() {
 		if (!this._displayedMocks) {
