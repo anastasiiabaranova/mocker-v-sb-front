@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
 import {RestMockDto, RestModelDto, RestServiceDto} from '../dtos';
 import {fromRest, restActions} from '../store';
-import {RestModelApiService} from '../services';
+import {RestMockApiService, RestModelApiService} from '../services';
 
 @Injectable()
 export class RestFacade {
@@ -33,12 +33,15 @@ export class RestFacade {
 
 	readonly mockCreated$ = this.actions$.pipe(ofType(restActions.mockCreated));
 
+	readonly mockEdited$ = this.actions$.pipe(ofType(restActions.mockEdited));
+
 	readonly dialogLoading$ = this.store$.select(fromRest.getDialogLoading);
 
 	constructor(
 		private readonly store$: Store,
 		private readonly actions$: Actions,
-		private readonly modelApiService: RestModelApiService
+		private readonly modelApiService: RestModelApiService,
+		private readonly mockApiService: RestMockApiService
 	) {}
 
 	loadServices(search?: string) {
@@ -61,6 +64,10 @@ export class RestFacade {
 		this.store$.dispatch(restActions.createMock({path, mock}));
 	}
 
+	editMock(path: string, mock: Partial<RestMockDto>) {
+		this.store$.dispatch(restActions.editMock({path, mock}));
+	}
+
 	deleteMock(path: string, mockId: string) {
 		this.store$.dispatch(restActions.deleteMock({path, mockId}));
 	}
@@ -75,6 +82,10 @@ export class RestFacade {
 
 	deleteModel(path: string, modelId: string) {
 		this.store$.dispatch(restActions.deleteModel({path, modelId}));
+	}
+
+	getMock(path: string, mockId: string) {
+		return this.mockApiService.getMock(path, mockId);
 	}
 
 	getModel(path: string, modelId: string) {

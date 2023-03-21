@@ -28,8 +28,11 @@ export class RestMockApiService {
 		);
 	}
 
-	editMock(servicePath: string, mock: RestMockDto): Observable<void> {
-		return this.httpClient.put<void>(
+	editMock(
+		servicePath: string,
+		mock: Partial<RestMockDto>
+	): Observable<void> {
+		return this.httpClient.patch<void>(
 			`api/rest/service/${servicePath}/mock/${mock.mockId}`,
 			mock
 		);

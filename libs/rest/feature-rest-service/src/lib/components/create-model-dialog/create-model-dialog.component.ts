@@ -9,15 +9,13 @@ import {RestFacade} from '@mocker/rest/domain';
 import {requiredValidatorFactory} from '@mocker/shared/utils';
 import {
 	TuiDestroyService,
-	tuiIsPresent,
 	tuiMarkControlAsTouchedAndValidate,
 	tuiPure,
 	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
-import {filter, iif, of, Subject, takeUntil, tap} from 'rxjs';
-import toJsonSchema from 'to-json-schema';
+import {iif, Subject, takeUntil, tap} from 'rxjs';
 
 type Context = {
 	path: string;
@@ -46,11 +44,14 @@ export class CreateModelDialogComponent implements OnInit {
 		.pipe(
 			tap(model => {
 				this.form.patchValue(model as any);
-				this.bodyCodeModel.value = model.sample;
+				this.bodyCodeModel = {
+					...this.bodyCodeModel,
+					value: model.sample,
+				};
 			})
 		);
 
-	readonly bodyCodeModel = {
+	bodyCodeModel = {
 		language: 'json',
 		uri: 'body.json',
 		value: '',
@@ -75,7 +76,18 @@ export class CreateModelDialogComponent implements OnInit {
 
 	@tuiPure
 	get modelId(): string | null {
-		return this.context.data.modelId || null;
+		const {modelId} = this.context.data;
+		return modelId !== undefined ? modelId : null;
+	}
+
+	@tuiPure
+	get headerText() {
+		return this.modelId !== null ? 'Редактирование модели' : 'Новая модель';
+	}
+
+	@tuiPure
+	get submitText() {
+		return this.modelId !== null ? 'Редактировать' : 'Создать';
 	}
 
 	ngOnInit(): void {

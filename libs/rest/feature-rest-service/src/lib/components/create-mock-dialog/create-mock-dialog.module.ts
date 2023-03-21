@@ -13,6 +13,7 @@ import {
 	TuiButtonModule,
 	TuiErrorModule,
 	TuiHintModule,
+	TuiLoaderModule,
 	TuiTextfieldControllerModule,
 	TuiTooltipModule,
 } from '@taiga-ui/core';
@@ -34,6 +35,7 @@ import {TuiLetModule} from '@taiga-ui/cdk';
 		TuiHintModule,
 		TuiInputTagModule,
 		TuiButtonModule,
+		TuiLoaderModule,
 	],
 	exports: [CreateMockDialogComponent],
 })

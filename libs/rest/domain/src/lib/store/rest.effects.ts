@@ -250,6 +250,28 @@ export class RestEffects {
 		)
 	);
 
+	editMock$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.editMock),
+			switchMap(({path, mock}) =>
+				this.mockApiService.editMock(path, mock).pipe(
+					mergeMap(() => [
+						restActions.mockEdited({path, mock}),
+						restActions.updateMocks({path}),
+					]),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось обновить шаблон мока',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return of(restActions.dialogRequestFailure());
+					})
+				)
+			)
+		)
+	);
+
 	deleteMock$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.deleteMock),

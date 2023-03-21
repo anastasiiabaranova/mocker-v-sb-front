@@ -1,7 +1,7 @@
-<tui-loader size="l" [showLoader]="!!modelId && !(model$ | async)">
+<tui-loader size="l" [showLoader]="modelId !== null && !(model$ | async)">
 	<form [formGroup]="form">
 		<div class="tui-form__header tui-form__header_margin-top_none">
-			Новая модель
+			{{ headerText }}
 		</div>
 		<div class="tui-form__row tui-form__row_multi-fields">
 			<div class="tui-form__multi-field">
@@ -43,7 +43,7 @@
 				class="tui-form__button"
 				[showLoader]="!!(loading$ | async)"
 				(click)="submitModel()">
-				Создать
+				{{ submitText }}
 			</button>
 		</div>
 	</form>

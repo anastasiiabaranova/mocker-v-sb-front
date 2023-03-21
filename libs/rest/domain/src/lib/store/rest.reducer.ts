@@ -58,6 +58,14 @@ const restReducer = createReducer(
 		...state,
 		dialogLoading: false,
 	})),
+	on(restActions.editMock, state => ({
+		...state,
+		dialogLoading: true,
+	})),
+	on(restActions.mockEdited, state => ({
+		...state,
+		dialogLoading: false,
+	})),
 	on(restActions.createModel, state => ({
 		...state,
 		dialogLoading: true,

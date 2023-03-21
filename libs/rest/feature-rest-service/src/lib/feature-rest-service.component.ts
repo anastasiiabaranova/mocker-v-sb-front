@@ -79,7 +79,19 @@ export class FeatureRestServiceComponent {
 					CreateMockDialogComponent,
 					this.injector
 				),
-				{data: path, size: 'l'}
+				{data: {path}, size: 'l'}
+			)
+			.subscribe();
+	}
+
+	editMock(path: string, mockId: string) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateMockDialogComponent,
+					this.injector
+				),
+				{data: {path, mockId}, size: 'l'}
 			)
 			.subscribe();
 	}
@@ -95,7 +107,7 @@ export class FeatureRestServiceComponent {
 					CreateModelDialogComponent,
 					this.injector
 				),
-				{data: path}
+				{data: {path}}
 			)
 			.subscribe();
 	}
