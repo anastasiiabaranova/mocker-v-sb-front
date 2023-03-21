@@ -9,6 +9,7 @@ import {RestFacade, RestServiceDto} from '@mocker/rest/domain';
 import {
 	AppConfig,
 	ENVIRONMENT,
+	forbiddenValueValidatorFactory,
 	patternValidatorFactory,
 	requiredValidatorFactory,
 } from '@mocker/shared/utils';
@@ -27,8 +28,10 @@ import {takeUntil} from 'rxjs/operators';
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const PATH_REQUIRED_ERROR = 'Укажите путь сервиса';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
+const PATH_FORBIDDEN_ERROR = 'Запрещенный путь';
 
 const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$/;
+const FORBIDDEN_PATH = 'service';
 
 @Component({
 	selector: 'mocker-create-service-dialog',
@@ -48,6 +51,10 @@ export class CreateServiceDialogComponent implements OnInit {
 			[
 				requiredValidatorFactory(PATH_REQUIRED_ERROR),
 				patternValidatorFactory(PATH_FORMAT_ERROR, PATH_PATTERN),
+				forbiddenValueValidatorFactory(
+					PATH_FORBIDDEN_ERROR,
+					FORBIDDEN_PATH
+				),
 			],
 		],
 		expirationTime: [this.expirationTime || null],
