@@ -11,7 +11,7 @@ export class RestServiceApiService {
 		search?: string
 	): Observable<ReadonlyArray<RestServiceShortDto>> {
 		return this.httpClient
-			.get<RestServiceListDto>('rest/services', {
+			.get<RestServiceListDto>('api/rest/services', {
 				...(search && {
 					params: new HttpParams({
 						fromObject: {search},
@@ -23,19 +23,19 @@ export class RestServiceApiService {
 
 	getService(servicePath: string): Observable<RestServiceDto> {
 		return this.httpClient.get<RestServiceDto>(
-			`rest/service/${servicePath}`
+			`api/rest/service/${servicePath}`
 		);
 	}
 
 	createService(service: RestServiceDto): Observable<void> {
-		return this.httpClient.post<void>('rest/service', service);
+		return this.httpClient.post<void>('api/rest/service', service);
 	}
 
 	editService(path: string, service: RestServiceDto): Observable<void> {
-		return this.httpClient.put<void>(`rest/service/${path}`, service);
+		return this.httpClient.put<void>(`api/rest/service/${path}`, service);
 	}
 
 	deleteService(servicePath: string): Observable<void> {
-		return this.httpClient.delete<void>(`rest/service/${servicePath}`);
+		return this.httpClient.delete<void>(`api/rest/service/${servicePath}`);
 	}
 }

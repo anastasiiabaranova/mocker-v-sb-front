@@ -7,6 +7,7 @@ import {
 	tap,
 	withLatestFrom,
 	filter,
+	mergeMap,
 } from 'rxjs/operators';
 import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
@@ -232,7 +233,10 @@ export class RestEffects {
 			ofType(restActions.createMock),
 			switchMap(({path, mock}) =>
 				this.mockApiService.createMock(path, mock).pipe(
-					map(() => restActions.mockCreated({path, mock})),
+					mergeMap(() => [
+						restActions.mockCreated({path, mock}),
+						restActions.updateMocks({path}),
+					]),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось создать шаблон мока',
@@ -243,13 +247,6 @@ export class RestEffects {
 					})
 				)
 			)
-		)
-	);
-
-	mockCreated$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(restActions.mockCreated),
-			map(path => restActions.updateMocks(path))
 		)
 	);
 
@@ -277,7 +274,10 @@ export class RestEffects {
 			ofType(restActions.createModel),
 			switchMap(({path, model}) =>
 				this.modelApiService.createModel(path, model).pipe(
-					map(() => restActions.modelCreated({path, model})),
+					mergeMap(() => [
+						restActions.modelCreated({path, model}),
+						restActions.updateModels({path}),
+					]),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось создать модель',
@@ -291,10 +291,25 @@ export class RestEffects {
 		)
 	);
 
-	modelCreated$ = createEffect(() =>
+	editModel$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(restActions.modelCreated),
-			map(path => restActions.updateModels(path))
+			ofType(restActions.editModel),
+			switchMap(({path, model}) =>
+				this.modelApiService.editModel(path, model).pipe(
+					mergeMap(() => [
+						restActions.modelEdited({path, model}),
+						restActions.updateModels({path}),
+					]),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось обновить модель',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return of(restActions.dialogRequestFailure());
+					})
+				)
+			)
 		)
 	);
 

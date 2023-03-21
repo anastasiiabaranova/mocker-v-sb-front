@@ -64,12 +64,13 @@
 		[mocks]="mocks$ | async"
 		[servicePath]="service.path"
 		(createMock)="createMock(service.path)"
-		(deleteMock)="deleteMock(service.path, $event)"></mocker-rest-mock-list>
+		(deleteMock)="deleteMock(service.path, $event)">
+	</mocker-rest-mock-list>
 	<mocker-rest-model-list
 		class="model-list"
 		[models]="models$ | async"
 		(createModel)="createModel(service.path)"
-		(deleteModel)="
-			deleteModel(service.path, $event)
-		"></mocker-rest-model-list>
+		(deleteModel)="deleteModel(service.path, $event)"
+		(editModel)="editModel(service.path, $event)">
+	</mocker-rest-model-list>
 </ng-container>

@@ -3,6 +3,7 @@ import {Store} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
 import {RestMockDto, RestModelDto, RestServiceDto} from '../dtos';
 import {fromRest, restActions} from '../store';
+import {RestModelApiService} from '../services';
 
 @Injectable()
 export class RestFacade {
@@ -28,13 +29,16 @@ export class RestFacade {
 		ofType(restActions.modelCreated)
 	);
 
+	readonly modelEdited$ = this.actions$.pipe(ofType(restActions.modelEdited));
+
 	readonly mockCreated$ = this.actions$.pipe(ofType(restActions.mockCreated));
 
 	readonly dialogLoading$ = this.store$.select(fromRest.getDialogLoading);
 
 	constructor(
 		private readonly store$: Store,
-		private readonly actions$: Actions
+		private readonly actions$: Actions,
+		private readonly modelApiService: RestModelApiService
 	) {}
 
 	loadServices(search?: string) {
@@ -65,7 +69,15 @@ export class RestFacade {
 		this.store$.dispatch(restActions.createModel({path, model}));
 	}
 
+	editModel(path: string, model: RestModelDto) {
+		this.store$.dispatch(restActions.editModel({path, model}));
+	}
+
 	deleteModel(path: string, modelId: string) {
 		this.store$.dispatch(restActions.deleteModel({path, modelId}));
+	}
+
+	getModel(path: string, modelId: string) {
+		return this.modelApiService.getModel(path, modelId);
 	}
 }

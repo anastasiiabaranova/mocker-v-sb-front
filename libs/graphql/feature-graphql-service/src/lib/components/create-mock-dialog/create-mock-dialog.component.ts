@@ -21,7 +21,7 @@ import {
 	requiredValidatorFactory,
 } from '@mocker/shared/utils';
 import {GraphQLFacade, GraphQLMockDto} from '@mocker/graphql/domain';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, iif} from 'rxjs';
 
 type Context = TuiDialogContext<void, GraphQLMockDto | string>;
 
@@ -158,15 +158,11 @@ export class CreateMockDialogComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.mock) {
-			this.facade.mockEdited$
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(() => this.closeDialog());
-
-			return;
-		}
-
-		this.facade.mockCreated$
+		iif(
+			() => !!this.mock,
+			this.facade.mockEdited$,
+			this.facade.mockCreated$
+		)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
 	}

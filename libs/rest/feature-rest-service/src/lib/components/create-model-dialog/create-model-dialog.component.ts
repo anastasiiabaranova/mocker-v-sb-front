@@ -9,28 +9,22 @@ import {RestFacade} from '@mocker/rest/domain';
 import {requiredValidatorFactory} from '@mocker/shared/utils';
 import {
 	TuiDestroyService,
+	tuiIsPresent,
 	tuiMarkControlAsTouchedAndValidate,
+	tuiPure,
 	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
-import {Subject, takeUntil} from 'rxjs';
+import {filter, iif, of, Subject, takeUntil, tap} from 'rxjs';
 import toJsonSchema from 'to-json-schema';
 
-type Schema = {
-	title: string;
-	description: string;
-	body: any;
-};
-
-const DEFAULT_SCHEMA = {
-	title: '',
-	description: '',
-	body: {},
+type Context = {
+	path: string;
+	modelId?: string;
 };
 
 const NAME_ERROR = 'Укажите имя модели';
-const SCHEMA_TITLE_ERROR = 'Укажите имя схемы';
 const BODY_SYNTAX_ERROR = 'Проверьте синтаксис';
 const BODY_REQUIRED_ERROR = 'Укажите пример body';
 
@@ -45,26 +39,21 @@ export class CreateModelDialogComponent implements OnInit {
 	readonly form = this.formBuilder.group({
 		name: [null, requiredValidatorFactory(NAME_ERROR)],
 		description: [null],
-		schemaTitle: [null, requiredValidatorFactory(SCHEMA_TITLE_ERROR)],
-		schemaDescription: [null],
 	});
+
+	readonly model$ = this.facade
+		.getModel(this.servicePath, this.modelId!)
+		.pipe(
+			tap(model => {
+				this.form.patchValue(model as any);
+				this.bodyCodeModel.value = model.sample;
+			})
+		);
 
 	readonly bodyCodeModel = {
 		language: 'json',
 		uri: 'body.json',
 		value: '',
-	};
-
-	readonly schema: Schema = DEFAULT_SCHEMA;
-
-	schemaCodeModel = {
-		language: 'json',
-		uri: 'schema.json',
-		value: this.strigifySchema(this.schema),
-	};
-
-	readonly options = {
-		lineNumbers: false,
 	};
 
 	readonly loading$ = this.facade.dialogLoading$;
@@ -73,26 +62,30 @@ export class CreateModelDialogComponent implements OnInit {
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
-		private readonly context: TuiDialogContext<void, string>,
+		private readonly context: TuiDialogContext<void, Context>,
 		private readonly formBuilder: FormBuilder,
 		private readonly facade: RestFacade,
 		private readonly destroy$: TuiDestroyService
 	) {}
 
+	@tuiPure
+	get servicePath(): string {
+		return this.context.data.path;
+	}
+
+	@tuiPure
+	get modelId(): string | null {
+		return this.context.data.modelId || null;
+	}
+
 	ngOnInit(): void {
-		this.facade.modelCreated$
+		iif(
+			() => this.modelId != null,
+			this.facade.modelEdited$,
+			this.facade.modelCreated$
+		)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
-
-		this.form.controls.schemaTitle.valueChanges
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(title => this.updateSchema({title: title || ''}));
-
-		this.form.controls.schemaDescription.valueChanges
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(description =>
-				this.updateSchema({description: description || ''})
-			);
 	}
 
 	closeDialog() {
@@ -100,66 +93,50 @@ export class CreateModelDialogComponent implements OnInit {
 	}
 
 	submitModel() {
-		const schemaInvalid = !this.verifySchema();
+		const sampleInvalid = !this.verifySample();
 
-		if (this.form.invalid || schemaInvalid) {
+		if (this.form.invalid || sampleInvalid) {
 			tuiMarkControlAsTouchedAndValidate(this.form);
 			return;
 		}
 
 		const {name, description} = this.form.value as any;
+		const {modelId} = this;
 
 		const model = {
 			name,
 			description,
-			schema: JSON.stringify(this.schema),
+			sample: this.bodyCodeModel.value,
 		};
 
-		this.facade.createModel(this.context.data, model);
+		if (modelId !== null) {
+			this.facade.editModel(this.servicePath, {
+				...model,
+				modelId,
+			});
+			return;
+		} else {
+			this.facade.createModel(this.servicePath, model);
+		}
 	}
 
-	updateSchema(data: Partial<Schema>) {
-		const {title, description, body} = this.schema;
+	private verifySample(): boolean {
+		const body = this.bodyCodeModel.value;
 
-		this.schema.title = data.title || title;
-		this.schema.description = data.description || description;
-		this.schema.body = data.body || body;
-
-		this.schemaCodeModel = {
-			...this.schemaCodeModel,
-			value: this.strigifySchema(this.schema),
-		};
-	}
-
-	updateSchemaBody(body: string) {
-		const json = this.toSchema(body);
-
-		this.updateSchema({body: json});
-	}
-
-	private toSchema(body: string): any | null {
 		if (!body) {
 			this.schemaError$.next(new TuiValidationError(BODY_REQUIRED_ERROR));
-			return null;
+			return false;
 		}
 
 		try {
-			const json = JSON.parse(body);
-
-			this.schemaError$.next(null);
-
-			return toJsonSchema(json, {required: true});
+			JSON.parse(body);
 		} catch {
 			this.schemaError$.next(new TuiValidationError(BODY_SYNTAX_ERROR));
-			return null;
+			return false;
 		}
-	}
 
-	private verifySchema(): boolean {
-		return !!this.toSchema(this.bodyCodeModel.value);
-	}
+		this.schemaError$.next(null);
 
-	private strigifySchema(schema: any): string {
-		return JSON.stringify(schema, null, 4);
+		return true;
 	}
 }

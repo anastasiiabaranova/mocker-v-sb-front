@@ -66,6 +66,14 @@ const restReducer = createReducer(
 		...state,
 		dialogLoading: false,
 	})),
+	on(restActions.editModel, state => ({
+		...state,
+		dialogLoading: true,
+	})),
+	on(restActions.modelEdited, state => ({
+		...state,
+		dialogLoading: false,
+	})),
 	on(restActions.modelDeleted, (state, {modelId}) => ({
 		...state,
 		models: state.models?.filter(({modelId: id}) => id !== modelId),

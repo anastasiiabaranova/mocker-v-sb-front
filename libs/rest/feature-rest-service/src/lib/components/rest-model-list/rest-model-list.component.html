@@ -35,12 +35,13 @@
 						*ngIf="model.description"
 						[content]="model.description"
 						direction="bottom-right"></tui-tooltip>
-					<!-- <button
+					<button
 						tuiIconButton
 						type="button"
 						icon="tuiIconEdit3"
 						appearance="icon"
-						size="xs"></button> -->
+						size="xs"
+						(click)="editModel.next(model.modelId)"></button>
 					<button
 						tuiIconButton
 						type="button"

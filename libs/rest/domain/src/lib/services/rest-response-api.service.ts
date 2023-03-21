@@ -17,7 +17,7 @@ export class RestResponseApiService {
 	): Observable<ReadonlyArray<RestResponseShortDto>> {
 		return this.httpClient
 			.get<RestResponseListDto>(
-				`rest/service/${servicePath}/mock/${mockId}/responses`
+				`api/rest/service/${servicePath}/mock/${mockId}/responses`
 			)
 			.pipe(map(({responses}) => responses));
 	}
@@ -28,7 +28,7 @@ export class RestResponseApiService {
 		responseId: string
 	): Observable<RestResponseDto> {
 		return this.httpClient.get<RestResponseDto>(
-			`rest/service/${servicePath}/mock/${mockId}/response/${responseId}`
+			`api/rest/service/${servicePath}/mock/${mockId}/response/${responseId}`
 		);
 	}
 
@@ -38,7 +38,7 @@ export class RestResponseApiService {
 		response: RestResponseDto
 	): Observable<void> {
 		return this.httpClient.post<void>(
-			`rest/service/${servicePath}/mock/${mockId}/response`,
+			`api/rest/service/${servicePath}/mock/${mockId}/response`,
 			response
 		);
 	}
@@ -49,7 +49,7 @@ export class RestResponseApiService {
 		response: RestResponseDto
 	): Observable<void> {
 		return this.httpClient.post<void>(
-			`rest/service/${servicePath}/mock/${mockId}/response/${response.responseId}`,
+			`api/rest/service/${servicePath}/mock/${mockId}/response/${response.responseId}`,
 			response
 		);
 	}
@@ -60,7 +60,7 @@ export class RestResponseApiService {
 		responseId: string
 	): Observable<void> {
 		return this.httpClient.delete<void>(
-			`rest/service/${servicePath}/mock/${mockId}/response/${responseId}`
+			`api/rest/service/${servicePath}/mock/${mockId}/response/${responseId}`
 		);
 	}
 }

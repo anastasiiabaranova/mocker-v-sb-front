@@ -22,6 +22,7 @@ import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
 import {GraphQLFacade, GraphQLServiceDto} from '@mocker/graphql/domain';
 import {takeUntil} from 'rxjs/operators';
+import {iif} from 'rxjs';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const NAME_FORMAT_ERROR = 'Некорректный формат имени';
@@ -115,15 +116,11 @@ export class CreateServiceDialogComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.service) {
-			this.facade.serviceEdited$
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(() => this.closeDialog());
-
-			return;
-		}
-
-		this.facade.serviceCreated$
+		iif(
+			() => !!this.service,
+			this.facade.serviceEdited$,
+			this.facade.serviceCreated$
+		)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
 	}

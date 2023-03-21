@@ -95,7 +95,19 @@ export class FeatureRestServiceComponent {
 					CreateModelDialogComponent,
 					this.injector
 				),
-				{data: path, size: 'l'}
+				{data: path}
+			)
+			.subscribe();
+	}
+
+	editModel(path: string, modelId: string) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					CreateModelDialogComponent,
+					this.injector
+				),
+				{data: {path, modelId}}
 			)
 			.subscribe();
 	}

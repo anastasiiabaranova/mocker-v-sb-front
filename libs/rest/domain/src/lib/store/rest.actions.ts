@@ -84,6 +84,14 @@ const modelCreated = createAction(
 	'[REST] Model Created',
 	props<{path: string; model: RestModelDto}>()
 );
+const editModel = createAction(
+	'[REST] Edit Model',
+	props<{path: string; model: RestModelDto}>()
+);
+const modelEdited = createAction(
+	'[REST] Model Edited',
+	props<{path: string; model: RestModelDto}>()
+);
 const deleteModel = createAction(
 	'[REST] Delete Model',
 	props<{path: string; modelId: string}>()
@@ -114,6 +122,8 @@ export const restActions = {
 	mockDeleted,
 	createModel,
 	modelCreated,
+	editModel,
+	modelEdited,
 	deleteModel,
 	modelDeleted,
 	dialogRequestFailure,

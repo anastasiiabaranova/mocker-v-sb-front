@@ -21,6 +21,7 @@ import {
 } from '@taiga-ui/cdk';
 import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
+import {iif} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
@@ -102,15 +103,11 @@ export class CreateServiceDialogComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.service) {
-			this.facade.serviceEdited$
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(() => this.closeDialog());
-
-			return;
-		}
-
-		this.facade.serviceCreated$
+		iif(
+			() => !!this.service,
+			this.facade.serviceEdited$,
+			this.facade.serviceCreated$
+		)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
 	}
