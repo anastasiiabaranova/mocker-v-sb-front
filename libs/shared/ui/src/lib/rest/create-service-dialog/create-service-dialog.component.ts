@@ -66,7 +66,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		new TuiTime(0, 0),
 	] as [TuiDay, TuiTime];
 
-	readonly mockServiceUrl = `${this.appConfig.serverUrl}/rest/{path}`;
+	readonly mockServiceUrl = `${this.appConfig.gatewayUrl}/rest/{path}`;
 
 	readonly loading$ = this.facade.dialogLoading$;
 

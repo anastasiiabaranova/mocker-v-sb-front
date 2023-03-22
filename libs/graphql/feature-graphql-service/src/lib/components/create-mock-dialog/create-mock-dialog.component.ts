@@ -45,15 +45,15 @@ const NAME_PATTERN = /^[a-zA-Z0-9_-]{3,255}$/;
 export class CreateMockDialogComponent implements OnInit {
 	readonly form = this.formBuilder.group({
 		name: [
-			this.mock?.name || null,
+			this.mock ? this.mock.name : null,
 			[
 				requiredValidatorFactory(NAME_REQUIRED_ERROR),
 				patternValidatorFactory(NAME_FORMAT_ERROR, NAME_PATTERN),
 			],
 		],
 		expirationDate: [this.expirationDate || null],
-		delay: [this.mock?.delay || null],
-		enable: [this.mock?.enable || true],
+		delay: [this.mock ? this.mock.delay : null],
+		enable: [this.mock ? this.mock.enable : true],
 	});
 
 	readonly loading$ = this.facade.dialogLoading$;

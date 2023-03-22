@@ -10,6 +10,7 @@ import {
 	TuiDestroyService,
 	tuiMarkControlAsTouchedAndValidate,
 	tuiPure,
+	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {takeUntil, tap, withLatestFrom} from 'rxjs/operators';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
@@ -20,7 +21,7 @@ import {
 	patternValidatorFactory,
 	requiredValidatorFactory,
 } from '@mocker/shared/utils';
-import {iif} from 'rxjs';
+import {iif, Subject} from 'rxjs';
 
 type Context = {
 	path: string;
@@ -30,8 +31,10 @@ type Context = {
 const NAME_REQUIRED_ERROR = 'Укажите имя шаблона мока';
 const PATH_REQUIRED_ERROR = 'Укажите путь шаблона мока';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
+const PATH_PARAMS_ERROR = 'Параметры пути не совпадают';
 
-const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$/;
+const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+(\/.*)?$/;
+const PATH_PARAM_PATTERN = /\{[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+\}/g;
 
 @Component({
 	selector: 'mocker-create-mock-dialog',
@@ -54,10 +57,10 @@ export class CreateMockDialogComponent implements OnInit {
 		method: ['GET'],
 		// requestModel: [null],
 		responseModel: [null],
-		requestHeaders: [null],
-		responseHeaders: [null],
-		queryParams: [null],
-		pathParams: [null],
+		requestHeaders: [[] as string[]],
+		responseHeaders: [[] as string[]],
+		queryParams: [[] as string[]],
+		pathParams: [[] as string[]],
 	});
 
 	readonly mock$ = this.facade.getMock(this.servicePath, this.mockId!).pipe(
@@ -83,7 +86,9 @@ export class CreateMockDialogComponent implements OnInit {
 
 	readonly loading$ = this.facade.dialogLoading$;
 
-	readonly mockUrl = `${this.appConfig.serverUrl}/rest/${this.servicePath}/{path}`;
+	readonly mockUrl = `${this.appConfig.gatewayUrl}/rest/${this.servicePath}/{path}`;
+
+	readonly pathError$ = new Subject<TuiValidationError | null>();
 
 	readonly modelIdentityMatcher = (
 		a: RestModelShortDto,
@@ -122,6 +127,39 @@ export class CreateMockDialogComponent implements OnInit {
 		return this.mockId !== null ? 'Редактировать' : 'Создать';
 	}
 
+	get validatePath(): boolean {
+		if (this.form.controls.path.invalid) {
+			this.pathError$.next(null);
+			return false;
+		}
+
+		const {pathParams, path} = this.form.value as any;
+		const paramsInPath =
+			(path as string)
+				.match(PATH_PARAM_PATTERN)
+				?.map(value => value.slice(1, value.length - 1)) || [];
+
+		if (paramsInPath.length !== pathParams.length) {
+			this.pathError$.next(new TuiValidationError(PATH_PARAMS_ERROR));
+			return false;
+		}
+
+		const onlyValidInPath = paramsInPath.every(value =>
+			pathParams.includes(value)
+		);
+		const allParamsIncluded = pathParams.every((value: string) =>
+			paramsInPath.includes(value)
+		);
+
+		if (!onlyValidInPath || !allParamsIncluded) {
+			this.pathError$.next(new TuiValidationError(PATH_PARAMS_ERROR));
+			return false;
+		}
+
+		this.pathError$.next(null);
+		return true;
+	}
+
 	ngOnInit(): void {
 		iif(
 			() => this.mockId != null,
@@ -137,7 +175,8 @@ export class CreateMockDialogComponent implements OnInit {
 	}
 
 	submitMock() {
-		if (this.form.invalid) {
+		const pathValid = this.validatePath;
+		if (this.form.invalid || !pathValid) {
 			tuiMarkControlAsTouchedAndValidate(this.form);
 			return;
 		}

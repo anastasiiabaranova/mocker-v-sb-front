@@ -2,7 +2,9 @@
 	<div class="tui-form__header tui-form__header_margin-top_none">
 		Новый статический ответ
 	</div>
-	<div class="form-container">
+	<div
+		class="form-container"
+		[style.display]="showHeaders || showParams ? 'grid' : 'block'">
 		<div class="form">
 			<ng-container *ngIf="step === 0">
 				<div class="tui-form__row tui-form__row_multi-fields">
@@ -19,7 +21,7 @@
 							formControlName="statusCode"
 							tuiTextfieldSize="m"
 							[min]="100"
-							[max]="599">
+							[max]="511">
 							Status Code
 						</tui-input-number>
 						<tui-error
@@ -40,7 +42,9 @@
 			<div
 				*ngIf="step === 1"
 				class="tui-form__row tui-form__row_multi-fields">
-				<div class="tui-form__multi-field">
+				<div
+					*ngIf="mock.requestHeaders.length"
+					class="tui-form__multi-field">
 					<div class="label tui-space_bottom-2">
 						Заголовки запроса
 					</div>
@@ -53,14 +57,16 @@
 						<tui-input
 							[formControl]="requestHeader"
 							tuiTextfieldSize="m">
-							{{ mock!.requestHeaders[i] }}
+							{{ mock.requestHeaders[i] }}
 						</tui-input>
 						<tui-error
 							[formControl]="requestHeader"
 							[error]="[] | tuiFieldError | async"></tui-error>
 					</div>
 				</div>
-				<div class="tui-form__multi-field">
+				<div
+					*ngIf="mock.responseHeaders.length"
+					class="tui-form__multi-field">
 					<div class="label tui-space_bottom-2">Заголовки ответа</div>
 					<div
 						*ngFor="
@@ -71,7 +77,7 @@
 						<tui-input
 							[formControl]="responseHeader"
 							tuiTextfieldSize="m">
-							{{ mock!.responseHeaders[i] }}
+							{{ mock.responseHeaders[i] }}
 						</tui-input>
 						<tui-error
 							[formControl]="responseHeader"
@@ -83,7 +89,9 @@
 			<div
 				*ngIf="step === 2"
 				class="tui-form__row tui-form__row_multi-fields">
-				<div class="tui-form__multi-field">
+				<div
+					*ngIf="mock.queryParams.length"
+					class="tui-form__multi-field">
 					<div class="label tui-space_bottom-2">
 						Параметры запроса
 					</div>
@@ -93,14 +101,16 @@
 						<tui-input
 							[formControl]="queryParam"
 							tuiTextfieldSize="m">
-							{{ mock!.queryParams[i] }}
+							{{ mock.queryParams[i] }}
 						</tui-input>
 						<tui-error
 							[formControl]="queryParam"
 							[error]="[] | tuiFieldError | async"></tui-error>
 					</div>
 				</div>
-				<div class="tui-form__multi-field">
+				<div
+					*ngIf="mock.pathParams.length"
+					class="tui-form__multi-field">
 					<div class="label tui-space_bottom-2">Параметры пути</div>
 					<div
 						*ngFor="let pathParam of pathParams; let i = index"
@@ -108,7 +118,7 @@
 						<tui-input
 							[formControl]="pathParam"
 							tuiTextfieldSize="m">
-							{{ mock!.pathParams[i] }}
+							{{ mock.pathParams[i] }}
 						</tui-input>
 						<tui-error
 							[formControl]="pathParam"
@@ -117,14 +127,25 @@
 				</div>
 			</div>
 		</div>
-		<tui-stepper orientation="vertical" [activeItemIndex]="step">
+		<tui-stepper
+			*ngIf="showHeaders || showParams"
+			orientation="vertical"
+			[activeItemIndex]="step">
 			<button tuiStep [stepState]="firstStepState" (click)="goToStep(0)">
 				Ответ
 			</button>
-			<button tuiStep [stepState]="secondStepState" (click)="goToStep(1)">
+			<button
+				*ngIf="showHeaders"
+				tuiStep
+				[stepState]="secondStepState"
+				(click)="goToStep(1)">
 				Заголовки
 			</button>
-			<button tuiStep [stepState]="thirdStepState" (click)="goToStep(2)">
+			<button
+				*ngIf="showParams"
+				tuiStep
+				[stepState]="thirdStepState"
+				(click)="goToStep(2)">
 				Параметры
 			</button>
 		</tui-stepper>

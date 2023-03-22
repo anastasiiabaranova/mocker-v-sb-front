@@ -1,5 +1,5 @@
 <tui-loader size="l" [showLoader]="mockId !== null && !(mock$ | async)">
-	<form [formGroup]="form">
+	<form *tuiLet="pathError$ | async as pathError" [formGroup]="form">
 		<div class="tui-form__header tui-form__header_margin-top_none">
 			{{ headerText }}
 		</div>
@@ -23,12 +23,22 @@
 				<tui-input
 					formControlName="path"
 					tuiTextfieldSize="m"
-					[tuiHintContent]="path">
+					[tuiHintContent]="path"
+					[pseudoInvalid]="
+						form.controls.path.touched &&
+						(form.controls.path.invalid || !!pathError)
+					">
 					Путь
 				</tui-input>
 				<tui-error
 					formControlName="path"
-					[error]="[] | tuiFieldError | async"></tui-error>
+					[error]="[] | tuiFieldError | async">
+				</tui-error>
+				<tui-error
+					*ngIf="form.controls.path.valid"
+					formControlName="path"
+					[error]="pathError">
+				</tui-error>
 			</div>
 			<tui-select
 				class="tui-form__multi-field"
@@ -95,13 +105,17 @@
 				[tuiTextfieldLabelOutside]="true">
 				Параметры запроса
 			</tui-input-tag>
-			<tui-input-tag
-				class="tui-form__multi-field"
-				formControlName="pathParams"
-				tuiTextfieldSize="m"
-				[tuiTextfieldLabelOutside]="true">
-				Параметры пути
-			</tui-input-tag>
+			<div class="tui-form__multi-field">
+				<tui-input-tag
+					formControlName="pathParams"
+					tuiTextfieldSize="m"
+					[tuiTextfieldLabelOutside]="true"
+					[pseudoInvalid]="form.controls.path.valid && !!pathError">
+					Параметры пути
+				</tui-input-tag>
+				<tui-error *ngIf="form.controls.path.valid" [error]="pathError">
+				</tui-error>
+			</div>
 		</div>
 		<div *ngIf="mockId === null" class="tui-form__field-note">
 			Вводите названия параметров через запятую

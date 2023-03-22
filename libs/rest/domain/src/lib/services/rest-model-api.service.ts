@@ -23,7 +23,7 @@ export class RestModelApiService {
 
 	createModel(servicePath: string, model: RestModelDto): Observable<void> {
 		return this.httpClient.post<void>(
-			`api/rest/service/${servicePath}/models`,
+			`api/rest/service/${servicePath}/model`,
 			model
 		);
 	}

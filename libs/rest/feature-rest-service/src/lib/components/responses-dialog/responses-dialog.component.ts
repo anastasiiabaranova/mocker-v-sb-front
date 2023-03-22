@@ -102,7 +102,7 @@ export class ResponsesDialogComponent {
 	}
 
 	copyResponseUrlToClipboard(servicePath: string, responsePath: string) {
-		const url = `${this.appConfig.serverUrl}/${servicePath}/${responsePath}`;
+		const url = `${this.appConfig.gatewayUrl}/rest/${servicePath}/${responsePath}`;
 
 		if (this.clipboard.copy(url)) {
 			this.notificationsFacade.showNotification({

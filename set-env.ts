@@ -1,3 +1,13 @@
+const GATEWAY = process.env['GATEWAY'];
+const GRAPHQL = process.env['GRAPHQL'];
+
+if (!GATEWAY || !GRAPHQL) {
+	console.error(`Missing Gateway and/or GraphQL server adresses. Run command as follows:
+	npm run build --gateway=gateway_url --graphql=graphql_url`);
+
+	throw 'Missing command arguments';
+}
+
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 
@@ -24,12 +34,27 @@ const setEnv = async () => {
 	const envTargetFilename = 'environment.ts';
 	const proxyTargetFilename = 'proxy.conf.json';
 	const envConfigFile = `export const environment = {
-	serverUrl: '${process.env['SERVER_URL']}',
+	gatewayUrl: '${GATEWAY}',
+	graphqlUrl: '${GRAPHQL}',
 };
 `;
 	const proxyConfigFile = `{
-	"/api": {
-		"target": "${process.env['SERVER_URL']}",
+	"/api/rest": {
+		"target": "${GATEWAY}",
+		"secure": false,
+		"pathRewrite": {
+		  "^/api": ""
+		}
+	},
+	"/api/mq": {
+		"target": "${GATEWAY}",
+		"secure": false,
+		"pathRewrite": {
+		  "^/api": ""
+		}
+	},
+	"/api/graphql": {
+		"target": "${GRAPHQL}",
 		"secure": false,
 		"pathRewrite": {
 		  "^/api": ""

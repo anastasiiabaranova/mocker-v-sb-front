@@ -1,43 +1,42 @@
 :host {
-    display: block;
+	display: block;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    .title {
-        margin-top: 0;
-    }
+	.title {
+		margin-top: 0;
+	}
 }
 
 .response {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    &:not(:last-child) {
-        padding-bottom: 8px;
-        border-bottom: 1px solid var(--tui-base-03);
-    }
-
-    &:not(:first-child) {
-        padding-top: 8px;
-    }
-
-    .actions {
-        display: flex;
+	.actions {
+		display: flex;
 		justify-content: right;
 		gap: 8px;
-    }
+	}
+}
+
+.response:not(:first-child) {
+	padding-top: 8px;
+}
+
+.response:not(:last-child) {
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--tui-base-03);
 }
 
 .no-responces {
-    color: var(--tui-text-02);
+	color: var(--tui-text-02);
 }
 
 .footer {
-    margin-top: 32px;
-    display: flex;
-    justify-content: flex-end;
+	margin-top: 32px;
+	display: flex;
+	justify-content: flex-end;
 }
-

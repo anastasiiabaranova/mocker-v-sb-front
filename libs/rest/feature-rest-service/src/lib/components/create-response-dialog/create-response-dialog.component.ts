@@ -13,6 +13,7 @@ import {
 import {
 	TuiDestroyService,
 	tuiMarkControlAsTouchedAndValidate,
+	tuiPure,
 	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext, TuiNotification} from '@taiga-ui/core';
@@ -78,14 +79,18 @@ export class CreateResponseDialogComponent {
 
 	readonly loading$ = new BehaviorSubject<boolean>(false);
 
+	readonly showHeaders =
+		!!this.mock.requestHeaders.length || !!this.mock.responseHeaders.length;
+	readonly showParams =
+		!!this.mock.queryParams.length || !!this.mock.pathParams.length;
+
 	step = 0;
 
 	firstStepState = 'normal' as 'error' | 'normal' | 'pass';
 	secondStepState = 'normal' as 'error' | 'normal' | 'pass';
 	thirdStepState = 'normal' as 'error' | 'normal' | 'pass';
 
-	readonly getSubmitText = (step: number) =>
-		step === 2 ? 'Создать' : 'Далее';
+	readonly getSubmitText = () => (this.lastStep ? 'Создать' : 'Далее');
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
@@ -96,10 +101,12 @@ export class CreateResponseDialogComponent {
 		private readonly responseApiService: RestResponseApiService
 	) {}
 
+	@tuiPure
 	get mock(): RestMockDto {
 		return this.context.data.mock;
 	}
 
+	@tuiPure
 	get servicePath(): string {
 		return this.context.data.servicePath;
 	}
@@ -168,13 +175,29 @@ export class CreateResponseDialogComponent {
 		}
 	}
 
+	private get lastStep(): boolean {
+		if (!this.showHeaders && !this.showParams) {
+			return true;
+		}
+
+		if (!this.showParams) {
+			return this.step === 1;
+		}
+
+		return this.step === 2;
+	}
+
+	private get nextStep(): number {
+		return this.showHeaders ? this.step + 1 : this.step + 2;
+	}
+
 	closeDialog(created: boolean = false) {
 		this.context.completeWith(created);
 	}
 
 	submitForm() {
-		if (this.step !== 2) {
-			this.goToStep(this.step + 1);
+		if (!this.lastStep) {
+			this.goToStep(this.nextStep);
 			return;
 		}
 

@@ -57,7 +57,7 @@ export class CreateServiceDialogComponent implements OnInit {
 			],
 		],
 		makeRealCall: [this.service?.makeRealCall || false],
-		delay: [this.service?.delay || null],
+		delay: [this.service ? this.service.delay : null],
 		expirationDate: [this.expirationDate || null],
 	});
 
@@ -72,7 +72,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		new TuiTime(0, 0),
 	] as [TuiDay, TuiTime];
 
-	readonly mockServiceUrl = `${this.appConfig.serverUrl}/graphql/{name}`;
+	readonly mockServiceUrl = `${this.appConfig.graphqlUrl}/graphql/{name}`;
 
 	readonly loading$ = this.facade.dialogLoading$;
 

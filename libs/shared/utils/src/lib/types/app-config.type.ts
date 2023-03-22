@@ -1,3 +1,4 @@
 export type AppConfig = Readonly<{
-	serverUrl: string;
+	gatewayUrl: string;
+	graphqlUrl: string;
 }>;

@@ -15,39 +15,34 @@
 	</tui-loader>
 
 	<ng-container *ngIf="responses$ | async as responses">
-		<ng-container *ngIf="responses.length; else noResponces">
-			<ng-container *ngFor="let response of responses">
-				<div class="response">
-					<div class="title">{{ response.name }}</div>
-					<div class="actions">
-						<button
-							tuiIconButton
-							type="button"
-							icon="tuiIconCopy"
-							appearance="icon"
-							size="xs"
-							(click)="
-								copyResponseUrlToClipboard(
-									servicePath!,
-									response.fullPath
-								)
-							"></button>
-						<button
-							tuiIconButton
-							type="button"
-							icon="tuiIconTrash"
-							appearance="icon"
-							size="xs"
-							(click)="
-								deleteResponse(
-									servicePath!,
-									response.responseId
-								)
-							"></button>
-					</div>
+		<div *ngIf="responses.length; else noResponces">
+			<div *ngFor="let response of responses" class="response">
+				<div class="title">{{ response.name }}</div>
+				<div class="actions">
+					<button
+						tuiIconButton
+						type="button"
+						icon="tuiIconCopy"
+						appearance="icon"
+						size="xs"
+						(click)="
+							copyResponseUrlToClipboard(
+								servicePath!,
+								response.fullPath
+							)
+						"></button>
+					<button
+						tuiIconButton
+						type="button"
+						icon="tuiIconTrash"
+						appearance="icon"
+						size="xs"
+						(click)="
+							deleteResponse(servicePath!, response.responseId)
+						"></button>
 				</div>
-			</ng-container>
-		</ng-container>
+			</div>
+		</div>
 	</ng-container>
 </ng-container>
 

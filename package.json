@@ -4,16 +4,13 @@
 	"scripts": {
 		"ng": "ng",
 		"start": "nx serve mocker --proxy-config proxy.conf.json",
-		"build": "npm run config && nx build mocker",
+		"build": "GATEWAY=$npm_config_gateway GRAPHQL=$npm_config_graphql npm run config && nx build mocker",
 		"config": "ts-node set-env.ts",
 		"watch": "nx build mocker --watch --configuration development",
 		"test": "jest",
 		"lint": "nx lint mocker",
 		"prettier": "prettier --check \"{apps,libs}/**/*.{ts,less,html}\"",
-		"prepare": "husky install",
-		"e2e": "nx e2e",
-		"cypress:open": "cypress open",
-		"cypress:run": "cypress run"
+		"prepare": "husky install"
 	},
 	"private": true,
 	"jest": {

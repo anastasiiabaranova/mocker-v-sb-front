@@ -36,7 +36,7 @@ export class FeatureGraphQLServiceComponent {
 		format(new Date(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
 
 	readonly getServiceUrl = (name: string) =>
-		`${this.appConfig.serverUrl}/graphql/${name}`;
+		`${this.appConfig.graphqlUrl}/graphql/${name}`;
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

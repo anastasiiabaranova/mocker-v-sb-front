@@ -70,7 +70,7 @@ export class RestMockListComponent implements OnChanges {
 	}
 
 	copyMockUrlToClipboard(mockPath: string) {
-		const url = `${this.appConfig.serverUrl}/${this.servicePath}/${mockPath}`;
+		const url = `${this.appConfig.gatewayUrl}/rest/${this.servicePath}/${mockPath}`;
 
 		if (this.clipboard.copy(url)) {
 			this.notificationsFacade.showNotification({
