@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  # Angular App
+  mocker:
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    command: npm run mocker:dev:docker
+    ports:
+      - 4203:4200
+
+volumes:
+  mono-node-modules: null
