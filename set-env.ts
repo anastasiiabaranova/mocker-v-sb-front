@@ -29,38 +29,12 @@ const writeFileToFolder = async (
 };
 
 const setEnv = async () => {
-	const writeFile = fs.writeFile;
 	const envTargetPath = 'apps/mocker/src/environments';
 	const envTargetFilename = 'environment.ts';
-	const proxyTargetFilename = 'proxy.conf.json';
 	const envConfigFile = `export const environment = {
 	gatewayUrl: '${GATEWAY}',
 	graphqlUrl: '${GRAPHQL}',
 };
-`;
-	const proxyConfigFile = `{
-	"/api/rest": {
-		"target": "${GATEWAY}",
-		"secure": false,
-		"pathRewrite": {
-		  "^/api": ""
-		}
-	},
-	"/api/mq": {
-		"target": "${GATEWAY}",
-		"secure": false,
-		"pathRewrite": {
-		  "^/api": ""
-		}
-	},
-	"/api/graphql": {
-		"target": "${GRAPHQL}",
-		"secure": false,
-		"pathRewrite": {
-		  "^/api": ""
-		}
-	}
-}
 `;
 
 	writeFileToFolder(
@@ -78,17 +52,6 @@ const setEnv = async () => {
 			}
 		}
 	);
-
-	writeFile(proxyTargetFilename, proxyConfigFile, (err: any) => {
-		if (err) {
-			console.error(err);
-			throw err;
-		} else {
-			console.log(
-				`Angular proxy.conf.json file generated correctly at ${proxyTargetFilename}`
-			);
-		}
-	});
 };
 
 setEnv();

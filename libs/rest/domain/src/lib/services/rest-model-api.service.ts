@@ -11,33 +11,33 @@ export class RestModelApiService {
 		servicePath: string
 	): Observable<ReadonlyArray<RestModelShortDto>> {
 		return this.httpClient
-			.get<RestModelListDto>(`api/rest/service/${servicePath}/models`)
+			.get<RestModelListDto>(`rest/service/${servicePath}/models`)
 			.pipe(map(({models}) => models));
 	}
 
 	getModel(servicePath: string, modelId: string): Observable<RestModelDto> {
 		return this.httpClient.get<RestModelDto>(
-			`api/rest/service/${servicePath}/model/${modelId}`
+			`rest/service/${servicePath}/model/${modelId}`
 		);
 	}
 
 	createModel(servicePath: string, model: RestModelDto): Observable<void> {
 		return this.httpClient.post<void>(
-			`api/rest/service/${servicePath}/model`,
+			`rest/service/${servicePath}/model`,
 			model
 		);
 	}
 
 	editModel(servicePath: string, model: RestModelDto): Observable<void> {
 		return this.httpClient.put<void>(
-			`api/rest/service/${servicePath}/model/${model.modelId}`,
+			`rest/service/${servicePath}/model/${model.modelId}`,
 			model
 		);
 	}
 
 	deleteModel(servicePath: string, modelId: string): Observable<void> {
 		return this.httpClient.delete<void>(
-			`api/rest/service/${servicePath}/model/${modelId}`
+			`rest/service/${servicePath}/model/${modelId}`
 		);
 	}
 }

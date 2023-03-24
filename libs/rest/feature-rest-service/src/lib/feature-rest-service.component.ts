@@ -36,7 +36,7 @@ export class FeatureRestServiceComponent {
 		format(new Date(expirationTime), 'dd MMMM yyyy, HH:mm', {locale: ru});
 
 	readonly getServiceUrl = (path: string) =>
-		`${this.appConfig.gatewayUrl}/rest/service/${path}`;
+		`${this.appConfig.gatewayUrl}/rest/${path}`;
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

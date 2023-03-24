@@ -15,7 +15,7 @@ export class GraphQLApiService {
 		search?: string
 	): Observable<ReadonlyArray<GraphQLServiceShortDto>> {
 		return this.httpClient.get<ReadonlyArray<GraphQLServiceShortDto>>(
-			'api/graphql/services',
+			'graphql/services',
 			{
 				...(search && {
 					params: new HttpParams({
@@ -27,49 +27,47 @@ export class GraphQLApiService {
 	}
 
 	getService(id: string): Observable<GraphQLServiceDto> {
-		return this.httpClient.get<GraphQLServiceDto>(
-			`api/graphql/services/${id}`
-		);
+		return this.httpClient.get<GraphQLServiceDto>(`graphql/services/${id}`);
 	}
 
 	createService(service: GraphQLServiceDto): Observable<string> {
 		return this.httpClient
-			.post<{id: string}>('api/graphql/services', service)
+			.post<{id: string}>('graphql/services', service)
 			.pipe(map(({id}) => id));
 	}
 
 	editService(service: GraphQLServiceDto): Observable<void> {
 		return this.httpClient.put<void>(
-			`api/graphql/services/${service.id}`,
+			`graphql/services/${service.id}`,
 			service
 		);
 	}
 
 	deleteService(id: string): Observable<void> {
-		return this.httpClient.delete<void>(`api/graphql/services/${id}`);
+		return this.httpClient.delete<void>(`graphql/services/${id}`);
 	}
 
 	getAllMocks(id: string): Observable<ReadonlyArray<GraphQLMockDto>> {
 		return this.httpClient.get<ReadonlyArray<GraphQLMockDto>>(
-			`api/graphql/services/${id}/mocks`
+			`graphql/services/${id}/mocks`
 		);
 	}
 
 	getMock(id: string): Observable<GraphQLMockDto> {
-		return this.httpClient.get<GraphQLMockDto>(`api/graphql/mocks/${id}`);
+		return this.httpClient.get<GraphQLMockDto>(`graphql/mocks/${id}`);
 	}
 
 	createMock(mock: GraphQLMockDto): Observable<string> {
 		return this.httpClient
-			.post<{id: string}>('api/graphql/mocks', mock)
+			.post<{id: string}>('graphql/mocks', mock)
 			.pipe(map(({id}) => id));
 	}
 
 	editMock(mock: GraphQLMockDto): Observable<void> {
-		return this.httpClient.put<void>(`api/graphql/mocks/${mock.id}`, mock);
+		return this.httpClient.put<void>(`graphql/mocks/${mock.id}`, mock);
 	}
 
 	deleteMock(id: string): Observable<void> {
-		return this.httpClient.delete<void>(`api/graphql/mocks/${id}`);
+		return this.httpClient.delete<void>(`graphql/mocks/${id}`);
 	}
 }

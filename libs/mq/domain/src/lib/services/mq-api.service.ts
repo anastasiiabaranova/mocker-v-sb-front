@@ -20,7 +20,7 @@ export class MQApiService {
 		search?: string
 	): Observable<ReadonlyArray<TopicShort>> {
 		return this.httpClient
-			.get<TopicList>('api/mq/topics', {
+			.get<TopicList>('mq/topics', {
 				params: new HttpParams({
 					fromObject: {
 						...(brokerType && {brokerType}),
@@ -32,7 +32,7 @@ export class MQApiService {
 	}
 
 	getTopic(brokerType: BrokerType, topicName: string): Observable<Topic> {
-		return this.httpClient.get<Topic>('api/mq/topic', {
+		return this.httpClient.get<Topic>('mq/topic', {
 			params: new HttpParams({
 				fromObject: {brokerType, topicName},
 			}),
@@ -40,11 +40,11 @@ export class MQApiService {
 	}
 
 	createTopic(topic: TopicShort): Observable<Topic> {
-		return this.httpClient.post<Topic>('api/mq/topic', topic);
+		return this.httpClient.post<Topic>('mq/topic', topic);
 	}
 
 	deleteTopic(brokerType: BrokerType, topicName: string): Observable<void> {
-		return this.httpClient.delete<void>('api/mq/topic', {
+		return this.httpClient.delete<void>('mq/topic', {
 			params: new HttpParams({
 				fromObject: {brokerType, topicName},
 			}),
@@ -52,7 +52,7 @@ export class MQApiService {
 	}
 
 	sendMessages(messages: TopicMessage): Observable<void> {
-		return this.httpClient.post<void>('api/mq/messages', messages);
+		return this.httpClient.post<void>('mq/messages', messages);
 	}
 
 	readMessages(
@@ -60,7 +60,7 @@ export class MQApiService {
 		topicName: string
 	): Observable<ReadonlyArray<Message>> {
 		return this.httpClient
-			.get<MessageList>('api/mq/messages', {
+			.get<MessageList>('mq/messages', {
 				params: new HttpParams({
 					fromObject: {brokerType, topicName},
 				}),
