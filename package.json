@@ -4,8 +4,8 @@
 	"scripts": {
 		"ng": "ng",
 		"start": "nx serve mocker --host=0.0.0.0 --poll 5000",
-		"build": "GATEWAY=$npm_config_gateway GRAPHQL=$npm_config_graphql npm run config && nx build mocker",
-		"config": "ts-node set-env.ts",
+		"config": "GATEWAY=$npm_config_gateway GRAPHQL=$npm_config_graphql ts-node set-env.ts",
+		"build": "npm run config && nx build mocker",
 		"watch": "nx build mocker --watch --configuration development",
 		"test": "jest",
 		"lint": "nx lint mocker",

@@ -3,6 +3,11 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
 	{
+		path: '',
+		pathMatch: 'full',
+		redirectTo: 'rest-api',
+	},
+	{
 		path: '**',
 		loadChildren: () => import('./pages').then(m => m.PageNotFoundModule),
 	},

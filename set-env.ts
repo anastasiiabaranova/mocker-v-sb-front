@@ -8,6 +8,9 @@ if (!GATEWAY || !GRAPHQL) {
 	throw 'Missing command arguments';
 }
 
+console.log('gatewayUrl =', GATEWAY)
+console.log('graphqlUrl =', GRAPHQL)
+
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 
