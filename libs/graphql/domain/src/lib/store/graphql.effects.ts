@@ -218,7 +218,7 @@ export class GraphQLEffects {
 					map(() => graphQLActions.mockDeleted({mock})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
-							label: 'Не удалось удалить шаблон мока',
+							label: 'Не удалось удалить мок',
 							content: 'Попробуйте еще раз позже',
 							status: TuiNotification.Error,
 						});

@@ -7,7 +7,6 @@ import {
 	tap,
 	withLatestFrom,
 	filter,
-	mergeMap,
 } from 'rxjs/operators';
 import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
@@ -15,8 +14,6 @@ import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
 import {ROUTER_NAVIGATED} from '@ngrx/router-store';
 import {Router} from '@angular/router';
-import {Location} from '@angular/common';
-import {tuiIsPresent} from '@taiga-ui/cdk';
 
 import {fromMQ} from './mq.selectors';
 import {mqActions} from './mq.actions';
@@ -48,16 +45,13 @@ export class MQEffects {
 		this.actions$.pipe(
 			ofType(ROUTER_NAVIGATED),
 			withLatestFrom(
-				this.store$
-					.select(fromMQ.getBrokerType)
-					.pipe(filter(tuiIsPresent)),
-				this.store$
-					.select(fromMQ.getTopicName)
-					.pipe(filter(tuiIsPresent))
+				this.store$.select(fromMQ.getBrokerType),
+				this.store$.select(fromMQ.getTopicName)
 			),
+			filter(([, brokerType, topicName]) => !!brokerType && !!topicName),
 			switchMap(([, brokerType, topicName]) =>
 				this.apiService
-					.getTopic(brokerType as BrokerType, topicName)
+					.getTopic(brokerType as BrokerType, topicName!)
 					.pipe(
 						map(topic => mqActions.setCurrentTopic({topic})),
 						catchError(() => {
@@ -84,16 +78,15 @@ export class MQEffects {
 							status: TuiNotification.Success,
 						})
 					),
-					tap(() =>
-						this.location.go(
-							'mq/topic',
-							`topicName=${topic.topicName}&brokerType=${topic.brokerType}`
-						)
-					),
-					mergeMap(topic => [
-						mqActions.topicCreated({topic}),
-						mqActions.setCurrentTopic({topic}),
-					]),
+					tap(() => {
+						this.router.navigate(['mq/topic'], {
+							queryParams: {
+								topicName: topic.topicName,
+								brokerType: topic.brokerType,
+							},
+						});
+					}),
+					map(topic => mqActions.topicCreated({topic})),
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось создать топик',
@@ -163,7 +156,6 @@ export class MQEffects {
 		private readonly store$: Store,
 		private readonly apiService: MQApiService,
 		private readonly notificationsFacade: NotificationsFacade,
-		private readonly router: Router,
-		private readonly location: Location
+		private readonly router: Router
 	) {}
 }
