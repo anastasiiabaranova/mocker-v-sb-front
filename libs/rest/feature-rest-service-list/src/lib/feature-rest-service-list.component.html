@@ -9,7 +9,7 @@
 	</mocker-list-header>
 
 	<tui-scrollbar
-		*ngIf="services$ | async as services"
+		*tuiLet="services$ | async as services"
 		class="services"
 		[hidden]="true">
 		<ng-container *ngIf="services !== undefined; else skeleton">

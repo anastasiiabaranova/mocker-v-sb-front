@@ -175,14 +175,14 @@ export class CreateMockDialogComponent implements OnInit {
 	}
 
 	submitMock() {
-		const pathValid = this.validatePath;
-		if (this.form.invalid || !pathValid) {
-			tuiMarkControlAsTouchedAndValidate(this.form);
+		if (this.mockId !== null) {
+			this.editModel();
 			return;
 		}
 
-		if (this.mockId !== null) {
-			this.editModel();
+		const pathValid = this.validatePath;
+		if (this.form.invalid || !pathValid) {
+			tuiMarkControlAsTouchedAndValidate(this.form);
 			return;
 		}
 
@@ -216,6 +216,11 @@ export class CreateMockDialogComponent implements OnInit {
 	}
 
 	editModel() {
+		if (this.form.invalid) {
+			tuiMarkControlAsTouchedAndValidate(this.form);
+			return;
+		}
+
 		const {
 			name,
 			description,
