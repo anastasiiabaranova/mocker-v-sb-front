@@ -34,7 +34,12 @@
 		</tui-input-date-time>
 	</div>
 	<div class="tui-form__row">
-		<tui-text-area formControlName="description">Описание</tui-text-area>
+		<tui-text-area formControlName="description" [maxLength]="128">
+			Описание
+		</tui-text-area>
+		<tui-error
+			formControlName="description"
+			[error]="[] | tuiFieldError | async"></tui-error>
 	</div>
 	<div class="tui-form__buttons tui-form__buttons_align_end">
 		<button

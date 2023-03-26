@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 }
@@ -27,20 +29,32 @@
 	.table {
 		width: 100%;
 
-		& th:first-child {
-			text-align: center;
+		td {
+			white-space: nowrap;
+			overflow: hidden;
 		}
 
-		& td:first-child {
+		& th.mock-method {
+			text-align: center;
 			width: 100px;
 		}
 
-		& td:nth-child(2) {
-			width: 30%;
+		& th.mock-name {
+			width: 20%;
 		}
 
-		& td:nth-child(3) {
-			width: 30%;
+		& th.mock-actions {
+			width: 176px;
+		}
+
+		@media @tui-desktop {
+			.mock-path {
+				display: none;
+			}
+
+			& th.mock-name {
+				width: 100%;
+			}
 		}
 	}
 
@@ -79,7 +93,7 @@
 	justify-content: center;
 
 	&.get {
-		background-color: rgba(168, 206, 241, 0.5)
+		background-color: rgba(168, 206, 241, 0.5);
 	}
 
 	&.post {
@@ -87,15 +101,15 @@
 	}
 
 	&.put {
-		background-color:  rgba(252, 192, 104, 0.5);
+		background-color: rgba(252, 192, 104, 0.5);
 	}
 
 	&.delete {
-		background-color: rgba(255, 0, 0, 0.5)
+		background-color: rgba(255, 0, 0, 0.5);
 	}
 
 	&.patch {
-		background-color: rgba(255, 138, 0, 0.5)
+		background-color: rgba(255, 138, 0, 0.5);
 	}
 }
 

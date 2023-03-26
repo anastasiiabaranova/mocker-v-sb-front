@@ -10,6 +10,7 @@ import {
 	AppConfig,
 	ENVIRONMENT,
 	forbiddenValueValidatorFactory,
+	maxLengthValidatorFactory,
 	patternValidatorFactory,
 	requiredValidatorFactory,
 } from '@mocker/shared/utils';
@@ -29,6 +30,7 @@ const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const PATH_REQUIRED_ERROR = 'Укажите путь сервиса';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
 const PATH_FORBIDDEN_ERROR = 'Запрещенный путь';
+const DESCRIPTION_LENGTH_ERROR = 'Используйте до 128 символов';
 
 const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$/;
 const FORBIDDEN_PATH = 'service';
@@ -58,7 +60,10 @@ export class CreateServiceDialogComponent implements OnInit {
 			],
 		],
 		expirationTime: [this.expirationTime || null],
-		description: [this.service?.description || null],
+		description: [
+			this.service?.description || null,
+			maxLengthValidatorFactory(DESCRIPTION_LENGTH_ERROR, 128),
+		],
 	});
 
 	readonly minDateTime = [

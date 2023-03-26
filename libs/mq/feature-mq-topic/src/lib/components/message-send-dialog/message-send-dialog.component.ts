@@ -72,7 +72,7 @@ export class MessageSendDialogComponent implements OnInit {
 			topicName,
 			key,
 			content,
-			repeat,
+			repeat: repeat || 1,
 		};
 
 		this.facade.sendMessages(messages);

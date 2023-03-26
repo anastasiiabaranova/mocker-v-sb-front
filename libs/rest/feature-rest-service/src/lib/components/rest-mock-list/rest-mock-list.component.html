@@ -21,15 +21,15 @@
 	<table tuiTable class="table" [columns]="columns">
 		<thead>
 			<tr tuiThGroup>
-				<th tuiTh>Метод</th>
-				<th tuiTh>Имя</th>
-				<th tuiTh>Путь</th>
-				<th tuiTh></th>
+				<th tuiTh class="mock-method">Метод</th>
+				<th tuiTh class="mock-name">Имя</th>
+				<th tuiTh class="mock-path">Путь</th>
+				<th tuiTh class="mock-actions"></th>
 			</tr>
 		</thead>
 		<tbody *ngIf="mocks" tuiTbody [data]="mocks">
 			<tr *ngFor="let mock of displayedMocks" tuiTr>
-				<td *tuiCell="'method'" tuiTd>
+				<td *tuiCell="'method'" tuiTd class="mock-method">
 					<tui-tag
 						size="m"
 						status="custom"
@@ -37,10 +37,10 @@
 						[ngClass]="mock | tuiMapper : getMethodClass"
 						[value]="mock.method"></tui-tag>
 				</td>
-				<td *tuiCell="'name'" tuiTd>
+				<td *tuiCell="'name'" tuiTd class="mock-name">
 					{{ mock.name }}
 				</td>
-				<td *tuiCell="'path'" tuiTd>
+				<td *tuiCell="'path'" tuiTd class="mock-path">
 					{{ mock.path }}
 				</td>
 				<td *tuiCell="'actions'" tuiTd class="mock-actions">
