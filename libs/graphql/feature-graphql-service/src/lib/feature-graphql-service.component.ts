@@ -36,7 +36,7 @@ export class FeatureGraphQLServiceComponent {
 		format(new Date(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
 
 	readonly getServiceUrl = (name: string) =>
-		`${this.appConfig.graphqlUrl}/mocker/${name}`;
+		`${this.appConfig.gatewayUrl}/mocker/${name}`;
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

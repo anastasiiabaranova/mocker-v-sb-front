@@ -72,7 +72,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		new TuiTime(0, 0),
 	] as [TuiDay, TuiTime];
 
-	readonly mockServiceUrl = `${this.appConfig.graphqlUrl}/graphql/{name}`;
+	readonly mockServiceUrl = `${this.appConfig.gatewayUrl}/graphql/{name}`;
 
 	readonly loading$ = this.facade.dialogLoading$;
 

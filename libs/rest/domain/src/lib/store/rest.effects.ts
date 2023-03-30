@@ -202,6 +202,14 @@ export class RestEffects {
 		)
 	);
 
+	setServiceAfterEdit$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.serviceEdited),
+			filter(({path, service}) => path === service.path),
+			map(({service}) => restActions.setCurrentService({service}))
+		)
+	);
+
 	deleteService$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.deleteService),

@@ -16,14 +16,9 @@ export class ApiInterceptor implements HttpInterceptor {
 		req: HttpRequest<any>,
 		next: HttpHandler
 	): Observable<HttpEvent<any>> {
-		const address =
-			req.url.split('/')[0] === 'graphql'
-				? this.appConfig.graphqlUrl
-				: this.appConfig.gatewayUrl;
-
 		return next.handle(
 			req.clone({
-				url: `${address}/${req.url}`,
+				url: `${this.appConfig.gatewayUrl}/${req.url}`,
 			})
 		);
 	}
