@@ -163,7 +163,7 @@ export class CreateMockDialogComponent implements OnInit {
 	ngOnInit(): void {
 		iif(
 			() => this.mockId != null,
-			this.facade.mockCreated$,
+			this.facade.mockEdited$,
 			this.facade.mockCreated$
 		)
 			.pipe(takeUntil(this.destroy$))
