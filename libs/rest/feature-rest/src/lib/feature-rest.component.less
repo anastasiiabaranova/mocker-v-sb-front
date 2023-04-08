@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
 	display: block;
 	height: calc(100% - 63px);
@@ -6,6 +8,12 @@
 .container {
 	display: flex;
 	height: 100%;
+}
+
+.hideMobile {
+	@media @tui-mobile {
+		display: none;
+	}
 }
 
 .service-not-selected {
@@ -17,5 +25,9 @@
 		filter: grayscale(100%);
 		width: 96px;
 		transform: scale(2);
+	}
+
+	@media @tui-mobile {
+		display: none;
 	}
 }

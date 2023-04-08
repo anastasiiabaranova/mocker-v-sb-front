@@ -1,5 +1,7 @@
 <div class="container">
-	<mocker-feature-rest-service-list></mocker-feature-rest-service-list>
+	<mocker-feature-rest-service-list
+		[ngClass]="{hideMobile: !showServicePlug}">
+	</mocker-feature-rest-service-list>
 	<router-outlet
 		name="service"
 		(activate)="toggleServicePlug(false)"
