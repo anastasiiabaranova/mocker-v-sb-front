@@ -1,0 +1,46 @@
+<div class="container">
+	<form [formGroup]="form">
+		<h5 class="tui-form__header tui-form__header_margin-top_none">
+			Регистрация
+		</h5>
+		<div class="tui-form__row">
+			<tui-input tuiTextfieldSize="m" formControlName="email">
+				Email
+			</tui-input>
+			<tui-error
+				formControlName="email"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__row">
+			<tui-input-password tuiTextfieldSize="m" formControlName="password">
+				Пароль
+			</tui-input-password>
+			<tui-error
+				formControlName="password"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__row">
+			<tui-input-password
+				tuiTextfieldSize="m"
+				formControlName="repeatPassword">
+				Подтверждение
+			</tui-input-password>
+			<tui-error
+				formControlName="repeatPassword"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__buttons">
+			<button tuiButton class="tui-form__button" type="button" size="m">
+				Создать аккаунт
+			</button>
+			<button
+				tuiButton
+				class="tui-form__button"
+				type="button"
+				appearance="flat"
+				size="m">
+				Войти
+			</button>
+		</div>
+	</form>
+</div>

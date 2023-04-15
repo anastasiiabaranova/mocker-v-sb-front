@@ -34,6 +34,9 @@
 			"@mocker/graphql/shell": ["libs/graphql/shell/src/index.ts"],
 			"@mocker/mq/domain": ["libs/mq/domain/src/index.ts"],
 			"@mocker/mq/feature-mq": ["libs/mq/feature-mq/src/index.ts"],
+			"@mocker/mq/feature-mq-topic": [
+				"libs/mq/feature-mq-topic/src/index.ts"
+			],
 			"@mocker/mq/feature-mq-topic-list": [
 				"libs/mq/feature-mq-topic-list/src/index.ts"
 			],
@@ -51,7 +54,9 @@
 			"@mocker/rest/shell": ["libs/rest/shell/src/index.ts"],
 			"@mocker/shared/ui": ["libs/shared/ui/src/index.ts"],
 			"@mocker/shared/utils": ["libs/shared/utils/src/index.ts"],
-			"@mocker/mq/feature-mq-topic": ["libs/mq/feature-mq-topic/src/index.ts"]
+			"@mocker/auth/domain": ["libs/auth/domain/src/index.ts"],
+			"@mocker/auth/feature-auth": ["libs/auth/feature-auth/src/index.ts"],
+			"@mocker/auth/shell": ["libs/auth/shell/src/index.ts"]
 		},
 		"types": ["node"],
 		"rootDir": "."

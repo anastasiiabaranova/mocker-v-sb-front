@@ -1,0 +1,25 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+:host {
+	display: block;
+	height: calc(100% - 63px);
+	padding: 24px;
+	position: relative;
+}
+
+.container {
+	padding: 24px;
+	width: 380px;
+	border-radius: var(--tui-radius-s);
+	border: 1px solid var(--tui-base-03);
+
+	margin: 0;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	@media @tui-mobile {
+		border: none;
+	}
+}

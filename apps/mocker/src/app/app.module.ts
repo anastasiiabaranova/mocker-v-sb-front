@@ -21,6 +21,7 @@ import {AppComponent} from './app.component';
 import {HeaderModule} from './components';
 import {CoreModule} from './core';
 import {MQShellModule} from '@mocker/mq/shell';
+import {AuthShellModule} from '@mocker/auth/shell';
 
 @NgModule({
 	bootstrap: [AppComponent],
@@ -47,6 +48,7 @@ import {MQShellModule} from '@mocker/mq/shell';
 		RestShellModule,
 		GraphQLShellModule,
 		MQShellModule,
+		AuthShellModule,
 		AppRoutingModule,
 		TuiModeModule,
 	],
