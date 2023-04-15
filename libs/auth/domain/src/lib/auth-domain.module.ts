@@ -1,7 +1,9 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AuthStoreModule} from './store';
+import {AuthApiService} from './services';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [AuthStoreModule],
+	providers: [AuthApiService],
 })
 export class AuthDomainModule {}

@@ -11,10 +11,10 @@ import {
 	TuiInputModule,
 	TuiInputPasswordModule,
 } from '@taiga-ui/kit';
-import {SignInComponent} from './sign-in.component';
+import {LoginComponent} from './login.component';
 
 @NgModule({
-	declarations: [SignInComponent],
+	declarations: [LoginComponent],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
@@ -25,6 +25,6 @@ import {SignInComponent} from './sign-in.component';
 		TuiTextfieldControllerModule,
 		TuiFieldErrorPipeModule,
 	],
-	exports: [SignInComponent],
+	exports: [LoginComponent],
 })
-export class SignInModule {}
+export class LoginModule {}

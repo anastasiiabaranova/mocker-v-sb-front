@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 
 @Component({
-	selector: 'mocker-sign-in',
-	templateUrl: './sign-in.component.html',
-	styleUrls: ['./sign-in.component.less'],
+	selector: 'mocker-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignInComponent {
+export class LoginComponent {
 	readonly form = this.formBuilder.group({
 		username: [null],
 		password: [null],

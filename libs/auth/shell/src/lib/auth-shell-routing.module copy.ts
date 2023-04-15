@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {SignInComponent, SignUpComponent} from '@mocker/auth/feature-auth';
+import {LoginComponent, SignUpComponent} from '@mocker/auth/feature-auth';
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
 			{
-				path: 'signin',
-				component: SignInComponent,
+				path: 'login',
+				component: LoginComponent,
 			},
 			{
 				path: 'signup',
