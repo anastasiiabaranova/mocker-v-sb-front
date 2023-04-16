@@ -2,7 +2,7 @@ import {createAction, props} from '@ngrx/store';
 import {AuthDto} from '../dtos';
 
 const login = createAction('[AUTH] Login', props<{data: AuthDto}>());
-const signUp = createAction('[AUTH] Sign Up', props<{data: AuthDto}>());
+const signup = createAction('[AUTH] Sign Up', props<{data: AuthDto}>());
 const logout = createAction('[AUTH] Logout');
 const loginSuccess = createAction(
 	'[AUTH] Login Success',
@@ -16,7 +16,7 @@ const requestFailure = createAction(
 
 export const authActions = {
 	login,
-	signUp,
+	signup,
 	logout,
 	loginSuccess,
 	logoutSuccess,

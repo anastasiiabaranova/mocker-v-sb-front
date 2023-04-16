@@ -5,12 +5,10 @@ import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 
-import {AuthApiService} from '../services';
+import {AuthApiService, TokensStorageService} from '../services';
 import {authActions} from './auth.actions';
 import {Router} from '@angular/router';
 
-const REFRESH_TOKEN = 'refreshToken';
-const ACCESS_TOKEN = 'accessToken';
 const LOGIN_ERROR = 'Неверный email или пароль';
 const SIGNUP_ERROR = 'Этот email уже используется';
 
@@ -22,8 +20,9 @@ export class AuthEffects {
 			switchMap(({data}) =>
 				this.apiService.login(data).pipe(
 					tap(({authenticationToken, refreshToken}) => {
-						this.saveToStorage(ACCESS_TOKEN, authenticationToken);
-						this.saveToStorage(REFRESH_TOKEN, refreshToken);
+						this.tokensStorageService.accessToken =
+							authenticationToken;
+						this.tokensStorageService.refreshToken = refreshToken;
 					}),
 					map(({email}) => authActions.loginSuccess({email})),
 					catchError(({status}) => {
@@ -47,7 +46,7 @@ export class AuthEffects {
 
 	signup$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(authActions.signUp),
+			ofType(authActions.signup),
 			switchMap(({data}) =>
 				this.apiService.signup(data).pipe(
 					map(() => authActions.login({data})),
@@ -79,9 +78,9 @@ export class AuthEffects {
 				switchMap(() =>
 					this.apiService.logout().pipe(
 						tap(() => {
-							this.removeFromStorage(ACCESS_TOKEN);
-							this.removeFromStorage(REFRESH_TOKEN);
-							this.router.navigate(['signin']);
+							this.tokensStorageService.accessToken = null;
+							this.tokensStorageService.refreshToken = null;
+							this.router.navigate(['login']);
 						}),
 						catchError(() => {
 							this.notificationsFacade.showNotification({
@@ -100,19 +99,8 @@ export class AuthEffects {
 	constructor(
 		private readonly actions$: Actions,
 		private readonly apiService: AuthApiService,
+		private readonly tokensStorageService: TokensStorageService,
 		private readonly notificationsFacade: NotificationsFacade,
 		private readonly router: Router
 	) {}
-
-	get refreshToken(): string | null {
-		return localStorage.getItem(REFRESH_TOKEN);
-	}
-
-	private saveToStorage(key: string, value: string) {
-		localStorage.setItem(key, value);
-	}
-
-	private removeFromStorage(key: string) {
-		localStorage.removeItem(key);
-	}
 }

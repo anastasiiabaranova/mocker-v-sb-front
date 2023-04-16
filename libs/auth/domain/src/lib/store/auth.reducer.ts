@@ -15,7 +15,7 @@ const authReducer = createReducer(
 		error: null,
 		loading: true,
 	})),
-	on(authActions.signUp, state => ({
+	on(authActions.signup, state => ({
 		...state,
 		error: null,
 		loading: true,
