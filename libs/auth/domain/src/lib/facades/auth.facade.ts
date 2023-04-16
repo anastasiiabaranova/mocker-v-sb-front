@@ -3,10 +3,16 @@ import {Store} from '@ngrx/store';
 import {Observable, tap} from 'rxjs';
 import {AuthDto, LoginResponseDto} from '../dtos';
 import {AuthApiService, TokensStorageService} from '../services';
-import {authActions} from '../store';
+import {authActions, fromAuth} from '../store';
 
 @Injectable()
 export class AuthFacade {
+	readonly email$ = this.store$.select(fromAuth.getEmail);
+
+	readonly loading$ = this.store$.select(fromAuth.getLoading);
+
+	readonly error$ = this.store$.select(fromAuth.getError);
+
 	constructor(
 		private readonly store$: Store,
 		private readonly authApiService: AuthApiService,

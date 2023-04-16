@@ -1,16 +1,22 @@
 <div class="container">
-	<form [formGroup]="form">
+	<form *tuiLet="error$ | async as error" [formGroup]="form">
 		<h5 class="tui-form__header tui-form__header_margin-top_none">Вход</h5>
 		<div class="tui-form__row">
-			<tui-input tuiTextfieldSize="m" formControlName="username">
+			<tui-input
+				tuiTextfieldSize="m"
+				[formControl]="email"
+				[pseudoInvalid]="email.invalid || !!error">
 				Имя пользователя
 			</tui-input>
 			<tui-error
-				formControlName="username"
+				formControlName="email"
 				[error]="[] | tuiFieldError | async"></tui-error>
 		</div>
 		<div class="tui-form__row">
-			<tui-input-password tuiTextfieldSize="m" formControlName="password">
+			<tui-input-password
+				tuiTextfieldSize="m"
+				[formControl]="password"
+				[pseudoInvalid]="password.invalid || !!error">
 				Пароль
 			</tui-input-password>
 			<tui-error
@@ -18,7 +24,13 @@
 				[error]="[] | tuiFieldError | async"></tui-error>
 		</div>
 		<div class="tui-form__buttons">
-			<button tuiButton class="tui-form__button" type="button" size="m">
+			<button
+				tuiButton
+				class="tui-form__button"
+				type="button"
+				size="m"
+				[showLoader]="!!(loading$ | async)"
+				(click)="login()">
 				Войти
 			</button>
 			<button

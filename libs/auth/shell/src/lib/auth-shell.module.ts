@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {AuthShellRoutingModule} from './auth-shell-routing.module copy';
+import {AuthShellRoutingModule} from './auth-shell-routing.module';
 
 @NgModule({
 	imports: [AuthShellRoutingModule],

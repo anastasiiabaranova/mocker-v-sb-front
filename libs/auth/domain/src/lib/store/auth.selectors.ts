@@ -6,8 +6,10 @@ const authFeature = createFeatureSelector<AuthState>(AUTH_FEATURE);
 
 const getEmail = createSelector(authFeature, ({email}) => email);
 const getLoading = createSelector(authFeature, ({loading}) => loading);
+const getError = createSelector(authFeature, ({error}) => error);
 
 export const fromAuth = {
 	getEmail,
 	getLoading,
+	getError,
 };

@@ -1,6 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
+import {AuthDomainModule} from '@mocker/auth/domain';
+import {TuiLetModule} from '@taiga-ui/cdk';
 import {
 	TuiButtonModule,
 	TuiErrorModule,
@@ -11,7 +13,8 @@ import {
 	TuiInputModule,
 	TuiInputPasswordModule,
 } from '@taiga-ui/kit';
-import {LoginComponent} from './login.component';
+import {FeatureAuthRoutingModule} from './feature-auth-routing.module';
+import {LoginComponent} from './components';
 
 @NgModule({
 	declarations: [LoginComponent],
@@ -24,7 +27,10 @@ import {LoginComponent} from './login.component';
 		TuiErrorModule,
 		TuiTextfieldControllerModule,
 		TuiFieldErrorPipeModule,
+		TuiLetModule,
+		AuthDomainModule,
+		FeatureAuthRoutingModule,
 	],
 	exports: [LoginComponent],
 })
-export class LoginModule {}
+export class FeatureAuthModule {}
