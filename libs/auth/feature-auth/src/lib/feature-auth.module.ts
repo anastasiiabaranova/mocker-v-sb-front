@@ -14,10 +14,10 @@ import {
 	TuiInputPasswordModule,
 } from '@taiga-ui/kit';
 import {FeatureAuthRoutingModule} from './feature-auth-routing.module';
-import {LoginComponent} from './components';
+import {LoginComponent, SignUpComponent} from './components';
 
 @NgModule({
-	declarations: [LoginComponent],
+	declarations: [LoginComponent, SignUpComponent],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
@@ -31,6 +31,6 @@ import {LoginComponent} from './components';
 		AuthDomainModule,
 		FeatureAuthRoutingModule,
 	],
-	exports: [LoginComponent],
+	exports: [LoginComponent, SignUpComponent],
 })
 export class FeatureAuthModule {}

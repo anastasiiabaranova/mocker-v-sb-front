@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {AuthShellRoutingModule} from './auth-shell-routing.module';
+import {FeatureAuthModule} from '@mocker/auth/feature-auth';
 
 @NgModule({
-	imports: [AuthShellRoutingModule],
+	imports: [FeatureAuthModule],
 })
 export class AuthShellModule {}

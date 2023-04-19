@@ -11,7 +11,7 @@ import {AuthFacade, TokensStorageService} from '@mocker/auth/domain';
 import {catchError, concatMap, EMPTY, Observable, throwError} from 'rxjs';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class AuthErrorInterceptor implements HttpInterceptor {
 	constructor(
 		private readonly router: Router,
 		private readonly authFacade: AuthFacade,
@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			return EMPTY;
 		}
 
-		return this.authFacade.refresh().pipe(
+		return this.authFacade.refresh(refreshToken).pipe(
 			concatMap(() => next.handle(req)),
 			catchError(() => {
 				this.navigateToLogin();

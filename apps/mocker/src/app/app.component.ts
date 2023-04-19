@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AuthFacade} from '@mocker/auth/domain';
 
 @Component({
 	selector: 'mocker-root',
@@ -6,4 +7,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 	styleUrls: ['./app.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+	constructor(private readonly authFacade: AuthFacade) {}
+
+	ngOnInit() {
+		this.authFacade.initialize();
+	}
+}
