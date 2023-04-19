@@ -13,6 +13,7 @@ const requestFailure = createAction(
 	'[AUTH] Request Failure',
 	props<{error: string | null}>()
 );
+const resetError = createAction('[AUTH] Reset Error');
 
 export const authActions = {
 	login,
@@ -21,4 +22,5 @@ export const authActions = {
 	loginSuccess,
 	logoutSuccess,
 	requestFailure,
+	resetError,
 };

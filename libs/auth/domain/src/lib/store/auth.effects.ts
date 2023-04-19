@@ -7,7 +7,7 @@ import {TuiNotification} from '@taiga-ui/core';
 
 import {AuthApiService, TokensStorageService} from '../services';
 import {authActions} from './auth.actions';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 const LOGIN_ERROR = 'Неверный email или пароль';
 const SIGNUP_ERROR = 'Этот email уже используется';
@@ -23,6 +23,13 @@ export class AuthEffects {
 						this.tokensStorageService.accessToken =
 							authenticationToken;
 						this.tokensStorageService.refreshToken = refreshToken;
+
+						const redirect =
+							this.activatedRoute.snapshot.queryParams[
+								'redirect'
+							] || '';
+
+						this.router.navigate([redirect]);
 					}),
 					map(({email}) => authActions.loginSuccess({email})),
 					catchError(({status}) => {
@@ -101,6 +108,7 @@ export class AuthEffects {
 		private readonly apiService: AuthApiService,
 		private readonly tokensStorageService: TokensStorageService,
 		private readonly notificationsFacade: NotificationsFacade,
+		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router
 	) {}
 }

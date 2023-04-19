@@ -31,6 +31,10 @@ const authReducer = createReducer(
 		error,
 		email: null,
 		loading: false,
+	})),
+	on(authActions.resetError, state => ({
+		...state,
+		error: null,
 	}))
 );
 

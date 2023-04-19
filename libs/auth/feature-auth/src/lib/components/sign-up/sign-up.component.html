@@ -1,15 +1,19 @@
 <div class="container">
-	<form [formGroup]="form">
+	<form *tuiLet="error$ | async as error" [formGroup]="form">
 		<h5 class="tui-form__header tui-form__header_margin-top_none">
 			Регистрация
 		</h5>
 		<div class="tui-form__row">
-			<tui-input tuiTextfieldSize="m" formControlName="email">
+			<tui-input
+				tuiTextfieldSize="m"
+				formControlName="email"
+				[pseudoInvalid]="email.invalid || !!error">
 				Email
 			</tui-input>
 			<tui-error
 				formControlName="email"
 				[error]="[] | tuiFieldError | async"></tui-error>
+			<tui-error *ngIf="email.valid" [error]="error"></tui-error>
 		</div>
 		<div class="tui-form__row">
 			<tui-input-password tuiTextfieldSize="m" formControlName="password">
@@ -30,7 +34,12 @@
 				[error]="[] | tuiFieldError | async"></tui-error>
 		</div>
 		<div class="tui-form__buttons">
-			<button tuiButton class="tui-form__button" type="button" size="m">
+			<button
+				tuiButton
+				class="tui-form__button"
+				type="button"
+				size="m"
+				(click)="signup()">
 				Создать аккаунт
 			</button>
 			<button
@@ -38,7 +47,9 @@
 				class="tui-form__button"
 				type="button"
 				appearance="flat"
-				size="m">
+				size="m"
+				[showLoader]="!!(loading$ | async)"
+				(click)="navigateToLogin()">
 				Войти
 			</button>
 		</div>

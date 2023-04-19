@@ -22,6 +22,7 @@
 			<tui-error
 				formControlName="password"
 				[error]="[] | tuiFieldError | async"></tui-error>
+			<tui-error *ngIf="password.valid" [error]="error"></tui-error>
 		</div>
 		<div class="tui-form__buttons">
 			<button
@@ -38,7 +39,8 @@
 				class="tui-form__button"
 				type="button"
 				appearance="flat"
-				size="m">
+				size="m"
+				(click)="navigateToSignUp()">
 				Зарегистрироваться
 			</button>
 		</div>

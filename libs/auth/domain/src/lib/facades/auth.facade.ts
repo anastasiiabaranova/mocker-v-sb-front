@@ -61,6 +61,10 @@ export class AuthFacade implements OnDestroy {
 		this.store$.dispatch(authActions.logout());
 	}
 
+	resetError() {
+		this.store$.dispatch(authActions.resetError());
+	}
+
 	refresh(refreshToken: string): Observable<LoginResponseDto> {
 		return this.authApiService.refresh({refreshToken}).pipe(
 			tap(({authenticationToken, refreshToken, email}) => {
