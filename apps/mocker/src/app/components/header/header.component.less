@@ -41,4 +41,24 @@
 .services {
 	height: 100%;
 	margin-left: 24px;
+
+	@media @tui-mobile {
+		margin-left: 0;
+	}
+}
+
+.auth {
+	flex-grow: 1;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 16px;
+
+	&-email {
+		color: var(--tui-text-02);
+
+		@media @tui-mobile {
+			display: none;
+		}
+	}
 }

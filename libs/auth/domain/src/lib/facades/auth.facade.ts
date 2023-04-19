@@ -1,4 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
+import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {catchError, EMPTY, Observable, Subject, takeUntil, tap} from 'rxjs';
@@ -20,7 +21,8 @@ export class AuthFacade implements OnDestroy {
 		private readonly store$: Store,
 		private readonly authApiService: AuthApiService,
 		private readonly tokensStorageService: TokensStorageService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly location: Location
 	) {}
 
 	ngOnDestroy(): void {
@@ -70,7 +72,7 @@ export class AuthFacade implements OnDestroy {
 	}
 
 	navigateToLogin() {
-		const redirect = this.router.url;
+		const redirect = this.location.path();
 
 		if (redirect.includes('/login') || redirect.includes('/signup')) {
 			return;

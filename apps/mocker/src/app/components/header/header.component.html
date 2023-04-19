@@ -1,12 +1,26 @@
-<div class="container">
+<div *tuiLet="email$ | async as email" class="container">
 	<div class="logo-container">
 		<tui-svg class="logo" src="pig-logo.svg"></tui-svg>
 		<div class="title tui-text_h5">МОКЕР В СБ</div>
 	</div>
 
-	<tui-tabs class="services">
+	<tui-tabs *ngIf="email" class="services">
 		<a tuiTab routerLink="/rest-api" routerLinkActive> REST API </a>
 		<a tuiTab routerLink="/graphql" routerLinkActive> GraphQL </a>
 		<a tuiTab routerLink="/mq" routerLinkActive> MQ </a>
 	</tui-tabs>
+
+	<div *ngIf="email" class="auth">
+		<div class="auth-email tui-text_body-m">
+			{{ email | tuiMapper : getUsername }}
+		</div>
+		<button
+			tuiIconButton
+			class="auth-logout"
+			type="button"
+			icon="tuiIconLogOutLarge"
+			appearance="icon"
+			size="s"
+			(click)="logout()"></button>
+	</div>
 </div>
