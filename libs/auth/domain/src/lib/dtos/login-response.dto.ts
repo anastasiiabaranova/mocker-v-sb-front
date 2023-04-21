@@ -1,6 +1,6 @@
 export type LoginResponseDto = Readonly<{
 	email: string;
-	authenticationToken: string;
+	accessToken: string;
 	refreshToken: string;
 	expiresAt: number;
 }>;

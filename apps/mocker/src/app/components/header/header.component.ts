@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {AuthFacade} from '@mocker/auth/domain';
 
 @Component({
@@ -8,7 +8,7 @@ import {AuthFacade} from '@mocker/auth/domain';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-	readonly email$ = this.authFacade.email$;
+	@Input() email!: string | null;
 
 	readonly getUsername = (email: string) => email.split('@')[0];
 

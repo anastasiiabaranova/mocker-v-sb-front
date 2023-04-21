@@ -26,6 +26,10 @@ const authReducer = createReducer(
 		error: null,
 		loading: false,
 	})),
+	on(authActions.logout, state => ({
+		...state,
+		email: null,
+	})),
 	on(authActions.requestFailure, (state, {error}) => ({
 		...state,
 		error,

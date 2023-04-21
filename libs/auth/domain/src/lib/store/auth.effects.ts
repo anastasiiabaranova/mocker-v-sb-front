@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {map, catchError, switchMap, tap} from 'rxjs/operators';
-import {EMPTY, of} from 'rxjs';
+import {of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 
@@ -19,9 +19,8 @@ export class AuthEffects {
 			ofType(authActions.login),
 			switchMap(({data}) =>
 				this.apiService.login(data).pipe(
-					tap(({authenticationToken, refreshToken}) => {
-						this.tokensStorageService.accessToken =
-							authenticationToken;
+					tap(({accessToken, refreshToken}) => {
+						this.tokensStorageService.accessToken = accessToken;
 						this.tokensStorageService.refreshToken = refreshToken;
 
 						const redirect =
@@ -84,18 +83,11 @@ export class AuthEffects {
 				ofType(authActions.logout),
 				switchMap(() =>
 					this.apiService.logout().pipe(
+						catchError(() => of({})),
 						tap(() => {
 							this.tokensStorageService.accessToken = null;
 							this.tokensStorageService.refreshToken = null;
 							this.router.navigate(['login']);
-						}),
-						catchError(() => {
-							this.notificationsFacade.showNotification({
-								label: 'Не удалось выйти',
-								content: 'Попробуйте еще раз позже',
-								status: TuiNotification.Error,
-							});
-							return EMPTY;
 						})
 					)
 				)

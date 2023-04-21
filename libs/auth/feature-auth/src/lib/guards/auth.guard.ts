@@ -23,6 +23,8 @@ export class AuthGuard {
 			return of(true);
 		}
 
-		return this.authFacade.email$.pipe(map(tuiIsPresent));
+		return this.authFacade.email$.pipe(
+			map(email => tuiIsPresent(email) && this.authFacade.tokensPresent)
+		);
 	}
 }

@@ -4,7 +4,7 @@ import {HeaderComponent} from './header.component';
 import {TuiButtonModule, TuiSvgModule} from '@taiga-ui/core';
 import {TuiTabsModule} from '@taiga-ui/kit';
 import {RouterModule} from '@angular/router';
-import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
+import {TuiMapperPipeModule} from '@taiga-ui/cdk';
 
 @NgModule({
 	declarations: [HeaderComponent],
@@ -13,7 +13,6 @@ import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 		TuiSvgModule,
 		TuiTabsModule,
 		RouterModule,
-		TuiLetModule,
 		TuiButtonModule,
 		TuiMapperPipeModule,
 	],

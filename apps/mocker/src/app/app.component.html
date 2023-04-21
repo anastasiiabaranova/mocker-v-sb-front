@@ -1,4 +1,8 @@
 <tui-root class="root">
-	<mocker-header class="header"></mocker-header>
-	<router-outlet></router-outlet>
+	<mocker-header class="header" [email]="email$ | async"></mocker-header>
+	<router-outlet *ngIf="showRouter$ | async; else loader"></router-outlet>
+
+	<ng-template #loader>
+		<tui-loader class="loader" size="xxl"></tui-loader>
+	</ng-template>
 </tui-root>

@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {catchError, EMPTY, Observable, Subject, takeUntil, tap} from 'rxjs';
 import {AuthDto, LoginResponseDto} from '../dtos';
@@ -21,9 +21,17 @@ export class AuthFacade implements OnDestroy {
 		private readonly store$: Store,
 		private readonly authApiService: AuthApiService,
 		private readonly tokensStorageService: TokensStorageService,
+		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router,
 		private readonly location: Location
 	) {}
+
+	get tokensPresent(): boolean {
+		return (
+			!!this.tokensStorageService.accessToken &&
+			!!this.tokensStorageService.refreshToken
+		);
+	}
 
 	ngOnDestroy(): void {
 		this.destroy$.next();
@@ -40,6 +48,7 @@ export class AuthFacade implements OnDestroy {
 
 		this.refresh(refreshToken)
 			.pipe(
+				tap(() => this.navigateAfterRefresh()),
 				catchError(() => {
 					this.navigateToLogin();
 					return EMPTY;
@@ -67,8 +76,8 @@ export class AuthFacade implements OnDestroy {
 
 	refresh(refreshToken: string): Observable<LoginResponseDto> {
 		return this.authApiService.refresh({refreshToken}).pipe(
-			tap(({authenticationToken, refreshToken, email}) => {
-				this.tokensStorageService.accessToken = authenticationToken;
+			tap(({accessToken, refreshToken, email}) => {
+				this.tokensStorageService.accessToken = accessToken;
 				this.tokensStorageService.refreshToken = refreshToken;
 				this.store$.dispatch(authActions.loginSuccess({email}));
 			})
@@ -85,5 +94,12 @@ export class AuthFacade implements OnDestroy {
 		this.router.navigate(['login'], {
 			queryParams: {redirect},
 		});
+	}
+
+	private navigateAfterRefresh() {
+		const redirect =
+			this.activatedRoute.snapshot.queryParams['redirect'] || '';
+
+		this.router.navigate([redirect]);
 	}
 }

@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {
 	TuiAlertModule,
 	TuiDialogModule,
+	TuiLoaderModule,
 	TuiModeModule,
 	TuiRootModule,
 } from '@taiga-ui/core';
@@ -51,6 +52,7 @@ import {AuthShellModule} from '@mocker/auth/shell';
 		AuthShellModule,
 		AppRoutingModule,
 		TuiModeModule,
+		TuiLoaderModule,
 	],
 })
 export class AppModule {}

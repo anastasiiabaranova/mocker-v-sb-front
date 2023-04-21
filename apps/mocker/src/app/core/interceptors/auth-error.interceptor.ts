@@ -7,7 +7,13 @@ import {
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthFacade, TokensStorageService} from '@mocker/auth/domain';
+import {
+	AuthFacade,
+	TokensStorageService,
+	UNAUTHORIZED,
+} from '@mocker/auth/domain';
+import {NotificationsFacade} from '@mocker/shared/utils';
+import {TuiNotification} from '@taiga-ui/core';
 import {catchError, concatMap, EMPTY, Observable, throwError} from 'rxjs';
 
 @Injectable()
@@ -15,16 +21,19 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 	constructor(
 		private readonly router: Router,
 		private readonly authFacade: AuthFacade,
-		private readonly tokensStorageService: TokensStorageService
+		private readonly tokensStorageService: TokensStorageService,
+		private readonly notificationsFacade: NotificationsFacade
 	) {}
 
 	intercept(
 		req: HttpRequest<any>,
 		next: HttpHandler
 	): Observable<HttpEvent<any>> {
+		const skip = req.context.get(UNAUTHORIZED);
+
 		return next.handle(req).pipe(
 			catchError((error: HttpErrorResponse) => {
-				if (error.status === 401) {
+				if (!skip && error.status === 401) {
 					return this.refreshAndRetry(req, next);
 				}
 				return throwError(() => error);
@@ -53,6 +62,10 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 	}
 
 	private navigateToLogin() {
+		this.notificationsFacade.showNotification({
+			status: TuiNotification.Error,
+			content: 'Войдите в аккаунт, чтобы пользоваться сервисом',
+		});
 		this.router.navigate(['login'], {
 			queryParams: {redirect: this.router.url},
 		});
