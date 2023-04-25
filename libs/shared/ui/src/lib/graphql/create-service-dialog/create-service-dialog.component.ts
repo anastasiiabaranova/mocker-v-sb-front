@@ -10,6 +10,7 @@ import {
 	ENVIRONMENT,
 	patternValidatorFactory,
 	requiredValidatorFactory,
+	urlValidatorFactory,
 } from '@mocker/shared/utils';
 import {
 	TuiDay,
@@ -30,8 +31,6 @@ const URL_REQUIRED_ERROR = 'Укажите URL для редиректа';
 const URL_FORMAT_ERROR = 'Некорректный формат URL';
 
 const NAME_PATTERN = /^[a-zA-Z0-9_-]{3,255}$/;
-const URL_PATTERN =
-	/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))/i;
 
 @Component({
 	selector: 'mocker-create-service-dialog',
@@ -53,7 +52,7 @@ export class CreateServiceDialogComponent implements OnInit {
 			this.service?.location || null,
 			[
 				requiredValidatorFactory(URL_REQUIRED_ERROR),
-				patternValidatorFactory(URL_FORMAT_ERROR, URL_PATTERN),
+				urlValidatorFactory(URL_FORMAT_ERROR),
 			],
 		],
 		makeRealCall: [this.service?.makeRealCall || false],

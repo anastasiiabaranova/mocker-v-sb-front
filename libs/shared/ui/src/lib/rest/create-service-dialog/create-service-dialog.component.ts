@@ -13,6 +13,7 @@ import {
 	maxLengthValidatorFactory,
 	patternValidatorFactory,
 	requiredValidatorFactory,
+	urlValidatorFactory,
 } from '@mocker/shared/utils';
 import {
 	TuiDay,
@@ -21,16 +22,17 @@ import {
 	tuiPure,
 	TuiTime,
 } from '@taiga-ui/cdk';
-import {TuiDialogContext} from '@taiga-ui/core';
+import {TuiDialogContext, tuiFadeIn, tuiHeightCollapse} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
 import {iif} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, startWith, takeUntil, tap} from 'rxjs/operators';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const PATH_REQUIRED_ERROR = 'Укажите путь сервиса';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
 const PATH_FORBIDDEN_ERROR = 'Запрещенный путь';
 const DESCRIPTION_LENGTH_ERROR = 'Используйте до 128 символов';
+const URL_FORMAT_ERROR = 'Некорректный формат URL';
 
 const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$/;
 const FORBIDDEN_PATH = 'service';
@@ -40,6 +42,7 @@ const FORBIDDEN_PATH = 'service';
 	templateUrl: './create-service-dialog.component.html',
 	styleUrls: ['./create-service-dialog.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [tuiHeightCollapse, tuiFadeIn],
 	providers: [TuiDestroyService],
 })
 export class CreateServiceDialogComponent implements OnInit {
@@ -48,6 +51,11 @@ export class CreateServiceDialogComponent implements OnInit {
 			this.service?.name || null,
 			requiredValidatorFactory(NAME_REQUIRED_ERROR),
 		],
+		url: [
+			this.service?.url || null,
+			[urlValidatorFactory(URL_FORMAT_ERROR)],
+		],
+		isProxyEnabled: [this.service?.isProxyEnabled || false],
 		path: [
 			this.service?.path || null,
 			[
@@ -66,6 +74,8 @@ export class CreateServiceDialogComponent implements OnInit {
 		],
 	});
 
+	private readonly urlControl = this.form.controls.url;
+
 	readonly minDateTime = [
 		TuiDay.currentLocal().append({day: 1}),
 		new TuiTime(0, 0),
@@ -74,6 +84,12 @@ export class CreateServiceDialogComponent implements OnInit {
 	readonly mockServiceUrl = `${this.appConfig.gatewayUrl}/rest/{path}`;
 
 	readonly loading$ = this.facade.dialogLoading$;
+
+	readonly showProxy$ = this.urlControl.valueChanges.pipe(
+		startWith(this.urlControl.value),
+		tap(value => !value && this.form.patchValue({isProxyEnabled: null})),
+		map(value => !!value && this.urlControl.valid)
+	);
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

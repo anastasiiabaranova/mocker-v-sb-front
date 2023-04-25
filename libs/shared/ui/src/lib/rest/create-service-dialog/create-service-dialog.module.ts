@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {
+	TuiCheckboxLabeledModule,
 	TuiFieldErrorPipeModule,
 	TuiInputDateTimeModule,
 	TuiInputModule,
@@ -13,6 +14,7 @@ import {
 	TuiHintModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
+import {TuiLetModule} from '@taiga-ui/cdk';
 
 import {CreateServiceDialogComponent} from './create-service-dialog.component';
 
@@ -21,6 +23,7 @@ import {CreateServiceDialogComponent} from './create-service-dialog.component';
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
+		TuiLetModule,
 		TuiTextfieldControllerModule,
 		TuiInputModule,
 		TuiTextAreaModule,
@@ -29,6 +32,7 @@ import {CreateServiceDialogComponent} from './create-service-dialog.component';
 		TuiHintModule,
 		TuiErrorModule,
 		TuiFieldErrorPipeModule,
+		TuiCheckboxLabeledModule,
 	],
 	exports: [CreateServiceDialogComponent],
 })

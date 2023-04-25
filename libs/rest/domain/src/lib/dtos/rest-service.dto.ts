@@ -9,4 +9,5 @@ export type RestServiceDto = Readonly<{
 	description?: string;
 	url?: string;
 	expirationTime?: number;
+	isProxyEnabled: boolean;
 }>;

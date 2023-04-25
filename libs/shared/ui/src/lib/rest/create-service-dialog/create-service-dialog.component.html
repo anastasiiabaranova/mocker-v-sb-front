@@ -2,8 +2,8 @@
 	<h3 class="tui-form__header tui-form__header_margin-top_none">
 		{{ headerText }}
 	</h3>
-	<div class="tui-form__row tui-form__row_half-width">
-		<div>
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
 			<tui-input formControlName="name" tuiTextfieldSize="m">
 				Имя
 			</tui-input>
@@ -11,6 +11,30 @@
 				formControlName="name"
 				[error]="[] | tuiFieldError | async"></tui-error>
 		</div>
+		<div class="tui-form__multi-field">
+			<tui-input formControlName="url" tuiTextfieldSize="m">
+				URL мокируемого сервиса
+			</tui-input>
+			<tui-error
+				formControlName="url"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<div
+		*ngIf="showProxy$ | async"
+		@tuiHeightCollapse
+		@tuiFadeIn
+		class="proxy-row tui-form__row">
+		<tui-checkbox-labeled
+			class="proxy-row__field"
+			formControlName="isProxyEnabled"
+			size="m">
+			Включить проксирование
+			<div class="sub-label">
+				Если не найдем подходящий мок, спроксируем запрос по указанному
+				адресу
+			</div>
+		</tui-checkbox-labeled>
 	</div>
 	<div class="tui-form__row tui-form__row_multi-fields">
 		<div class="tui-form__multi-field">
