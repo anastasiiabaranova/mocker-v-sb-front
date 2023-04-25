@@ -5,7 +5,7 @@ import {
 	HttpEvent,
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {TokensStorageService, UNAUTHORIZED} from '@mocker/auth/domain';
+import {TokensStorageService, UNAUTHORIZED} from '@mocker/auth/api';
 import {Observable} from 'rxjs';
 
 @Injectable()

@@ -48,7 +48,6 @@ export class AuthFacade implements OnDestroy {
 
 		this.refresh(refreshToken)
 			.pipe(
-				tap(() => this.navigateAfterRefresh()),
 				catchError(() => {
 					this.navigateToLogin();
 					return EMPTY;
@@ -94,12 +93,5 @@ export class AuthFacade implements OnDestroy {
 		this.router.navigate(['login'], {
 			queryParams: {redirect},
 		});
-	}
-
-	private navigateAfterRefresh() {
-		const redirect =
-			this.activatedRoute.snapshot.queryParams['redirect'] || '';
-
-		this.router.navigate([redirect]);
 	}
 }

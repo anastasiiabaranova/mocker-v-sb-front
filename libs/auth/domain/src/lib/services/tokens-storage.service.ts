@@ -28,4 +28,9 @@ export class TokensStorageService {
 			localStorage.removeItem(REFRESH_TOKEN);
 		}
 	}
+
+	clearTokens() {
+		this.accessToken = null;
+		this.refreshToken = null;
+	}
 }

@@ -12,6 +12,8 @@ import {
 } from '@taiga-ui/core';
 import {RestShellModule} from '@mocker/rest/shell';
 import {GraphQLShellModule} from '@mocker/graphql/shell';
+import {MQShellModule} from '@mocker/mq/shell';
+import {AuthShellModule} from '@mocker/auth/api';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
@@ -21,8 +23,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderModule} from './components';
 import {CoreModule} from './core';
-import {MQShellModule} from '@mocker/mq/shell';
-import {AuthShellModule} from '@mocker/auth/shell';
 
 @NgModule({
 	bootstrap: [AppComponent],

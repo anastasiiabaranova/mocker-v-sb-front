@@ -7,11 +7,7 @@ import {
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {
-	AuthFacade,
-	TokensStorageService,
-	UNAUTHORIZED,
-} from '@mocker/auth/domain';
+import {AuthFacade, TokensStorageService, UNAUTHORIZED} from '@mocker/auth/api';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {catchError, concatMap, EMPTY, Observable, throwError} from 'rxjs';
@@ -66,6 +62,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 			status: TuiNotification.Error,
 			content: 'Войдите в аккаунт, чтобы пользоваться сервисом',
 		});
+		this.tokensStorageService.clearTokens();
 		this.router.navigate(['login'], {
 			queryParams: {redirect: this.router.url},
 		});

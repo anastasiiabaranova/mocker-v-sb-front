@@ -21,6 +21,12 @@
 		"lib": ["ES2022", "dom"],
 		"esModuleInterop": true,
 		"paths": {
+			"@mocker/auth/api": ["libs/auth/api/src/index.ts"],
+			"@mocker/auth/domain": ["libs/auth/domain/src/index.ts"],
+			"@mocker/auth/feature-auth": [
+				"libs/auth/feature-auth/src/index.ts"
+			],
+			"@mocker/auth/shell": ["libs/auth/shell/src/index.ts"],
 			"@mocker/graphql/domain": ["libs/graphql/domain/src/index.ts"],
 			"@mocker/graphql/feature-graphql": [
 				"libs/graphql/feature-graphql/src/index.ts"
@@ -54,9 +60,7 @@
 			"@mocker/rest/shell": ["libs/rest/shell/src/index.ts"],
 			"@mocker/shared/ui": ["libs/shared/ui/src/index.ts"],
 			"@mocker/shared/utils": ["libs/shared/utils/src/index.ts"],
-			"@mocker/auth/domain": ["libs/auth/domain/src/index.ts"],
-			"@mocker/auth/feature-auth": ["libs/auth/feature-auth/src/index.ts"],
-			"@mocker/auth/shell": ["libs/auth/shell/src/index.ts"]
+			"@mocker/graphql/api": ["libs/graphql/api/src/index.ts"]
 		},
 		"types": ["node"],
 		"rootDir": "."

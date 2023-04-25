@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
-import {AuthFacade} from '@mocker/auth/domain';
+import {AuthFacade} from '@mocker/auth/api';
 import {combineLatest, filter, map, shareReplay} from 'rxjs';
 
 function authRoute(url: string) {

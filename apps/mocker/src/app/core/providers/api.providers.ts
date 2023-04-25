@@ -13,12 +13,12 @@ export const API_PROVIDERS = [
 	},
 	{
 		provide: HTTP_INTERCEPTORS,
-		useClass: AuthInterceptor,
+		useClass: AuthErrorInterceptor,
 		multi: true,
 	},
 	{
 		provide: HTTP_INTERCEPTORS,
-		useClass: AuthErrorInterceptor,
+		useClass: AuthInterceptor,
 		multi: true,
 	},
 ];

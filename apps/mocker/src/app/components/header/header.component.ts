@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {AuthFacade} from '@mocker/auth/domain';
+import {AuthFacade} from '@mocker/auth/api';
 
 @Component({
 	selector: 'mocker-header',

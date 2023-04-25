@@ -85,8 +85,7 @@ export class AuthEffects {
 					this.apiService.logout().pipe(
 						catchError(() => of({})),
 						tap(() => {
-							this.tokensStorageService.accessToken = null;
-							this.tokensStorageService.refreshToken = null;
+							this.tokensStorageService.clearTokens();
 							this.router.navigate(['login']);
 						})
 					)

@@ -23,8 +23,7 @@ export class AuthApiService {
 	refresh(data: RefreshDto): Observable<LoginResponseDto> {
 		return this.httpClient.post<LoginResponseDto>(
 			'auth/refresh/token',
-			data,
-			{context: new HttpContext().set(UNAUTHORIZED, true)}
+			data
 		);
 	}
 
