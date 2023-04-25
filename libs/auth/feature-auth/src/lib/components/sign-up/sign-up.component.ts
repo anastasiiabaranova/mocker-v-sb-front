@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	OnInit,
+	QueryList,
+	ViewChildren,
+} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthFacade} from '@mocker/auth/domain';
@@ -43,6 +50,12 @@ function emailValidator(control: AbstractControl) {
 	providers: [TuiDestroyService],
 })
 export class SignUpComponent implements OnInit {
+	@ViewChildren('password', {read: ElementRef})
+	password!: QueryList<ElementRef>;
+
+	@ViewChildren('confirmation', {read: ElementRef})
+	confirmation!: QueryList<ElementRef>;
+
 	readonly form = this.formBuilder.group({
 		email: [
 			null,
@@ -101,5 +114,13 @@ export class SignUpComponent implements OnInit {
 		}
 
 		this.authFacade.signup(this.form.value as any);
+	}
+
+	goToPassword() {
+		this.password.first.nativeElement.focus();
+	}
+
+	goToConfirmation() {
+		this.confirmation.first.nativeElement.focus();
 	}
 }

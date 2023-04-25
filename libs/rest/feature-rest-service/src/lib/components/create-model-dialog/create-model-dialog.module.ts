@@ -2,9 +2,15 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CodeEditorModule} from '@ngstack/code-editor';
-import {TuiFieldErrorPipeModule, TuiInputModule} from '@taiga-ui/kit';
+import {
+	TuiDataListWrapperModule,
+	TuiFieldErrorPipeModule,
+	TuiInputModule,
+	TuiSelectModule,
+} from '@taiga-ui/kit';
 import {
 	TuiButtonModule,
+	TuiDataListModule,
 	TuiErrorModule,
 	TuiLoaderModule,
 	TuiTextfieldControllerModule,
@@ -26,6 +32,9 @@ import {CreateModelDialogComponent} from './create-model-dialog.component';
 		TuiFieldErrorPipeModule,
 		TuiMapperPipeModule,
 		TuiLoaderModule,
+		TuiSelectModule,
+		TuiDataListModule,
+		TuiDataListWrapperModule,
 	],
 	exports: [CreateModelDialogComponent],
 })

@@ -5,7 +5,8 @@
 			<tui-input
 				tuiTextfieldSize="m"
 				[formControl]="email"
-				[pseudoInvalid]="email.invalid || !!error">
+				[pseudoInvalid]="email.invalid || !!error"
+				(keyup.enter)="goToPassword()">
 				Email
 			</tui-input>
 			<tui-error
@@ -16,8 +17,10 @@
 			<tui-input-password
 				tuiTextfieldSize="m"
 				[formControl]="password"
-				[pseudoInvalid]="password.invalid || !!error">
+				[pseudoInvalid]="password.invalid || !!error"
+				(keyup.enter)="login()">
 				Пароль
+				<input #passwordField tuiTextfield />
 			</tui-input-password>
 			<tui-error
 				formControlName="password"

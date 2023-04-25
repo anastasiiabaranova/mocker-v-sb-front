@@ -7,7 +7,8 @@
 			<tui-input
 				tuiTextfieldSize="m"
 				formControlName="email"
-				[pseudoInvalid]="email.invalid || !!error">
+				[pseudoInvalid]="email.invalid || !!error"
+				(keyup.enter)="goToPassword()">
 				Email
 			</tui-input>
 			<tui-error
@@ -16,8 +17,12 @@
 			<tui-error *ngIf="email.valid" [error]="error"></tui-error>
 		</div>
 		<div class="tui-form__row">
-			<tui-input-password tuiTextfieldSize="m" formControlName="password">
+			<tui-input-password
+				tuiTextfieldSize="m"
+				formControlName="password"
+				(keyup.enter)="goToConfirmation()">
 				Пароль
+				<input #password tuiTextfield />
 			</tui-input-password>
 			<tui-error
 				formControlName="password"
@@ -26,8 +31,10 @@
 		<div class="tui-form__row">
 			<tui-input-password
 				tuiTextfieldSize="m"
-				formControlName="repeatPassword">
+				formControlName="repeatPassword"
+				(keyup.enter)="signup()">
 				Подтверждение
+				<input #confirmation tuiTextfield />
 			</tui-input-password>
 			<tui-error
 				formControlName="repeatPassword"
@@ -39,6 +46,7 @@
 				class="tui-form__button"
 				type="button"
 				size="m"
+				[showLoader]="!!(loading$ | async)"
 				(click)="signup()">
 				Создать аккаунт
 			</button>
@@ -48,7 +56,6 @@
 				type="button"
 				appearance="flat"
 				size="m"
-				[showLoader]="!!(loading$ | async)"
 				(click)="navigateToLogin()">
 				Войти
 			</button>

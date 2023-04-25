@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	OnInit,
+	QueryList,
+	ViewChildren,
+} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {requiredValidatorFactory} from '@mocker/shared/utils';
@@ -21,6 +28,9 @@ const PASSWORD_REQUIRED_ERROR = 'Введите пароль';
 	providers: [TuiDestroyService],
 })
 export class LoginComponent implements OnInit {
+	@ViewChildren('passwordField', {read: ElementRef})
+	passwordField!: QueryList<ElementRef>;
+
 	readonly form = this.formBuilder.group({
 		email: [null, requiredValidatorFactory(EMAIL_REQUIRED_ERROR)],
 		password: [null, requiredValidatorFactory(PASSWORD_REQUIRED_ERROR)],
@@ -64,5 +74,9 @@ export class LoginComponent implements OnInit {
 		const {queryParams} = this.activatedRoute.snapshot;
 
 		this.router.navigate(['signup'], {queryParams});
+	}
+
+	goToPassword() {
+		this.passwordField.first.nativeElement.focus();
 	}
 }

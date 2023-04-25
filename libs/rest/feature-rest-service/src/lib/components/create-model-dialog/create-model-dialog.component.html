@@ -18,12 +18,25 @@
 				</tui-input>
 			</div>
 		</div>
+
+		<tui-select
+			class="tui-form__row tui-form__row_half-width"
+			formControlName="responseType"
+			tuiTextfieldSize="m"
+			[valueContent]="responseTypeContent">
+			Формат ответа
+			<tui-data-list-wrapper
+				*tuiDataList
+				[items]="responseTypes"
+				[itemContent]="responseTypeContent">
+			</tui-data-list-wrapper>
+		</tui-select>
+
 		<div class="tui-form__row">
-			<div class="tui-text_body-m tui-space_bottom-5">Пример body</div>
+			<div class="tui-text_body-m tui-space_bottom-3">Пример body</div>
 			<div class="editor">
 				<ngs-code-editor [codeModel]="bodyCodeModel"></ngs-code-editor>
 			</div>
-			<tui-error [error]="schemaError$ | async"></tui-error>
 		</div>
 
 		<div class="tui-form__buttons tui-form__buttons_align_end">
@@ -48,3 +61,7 @@
 		</div>
 	</form>
 </tui-loader>
+
+<ng-template #responseTypeContent let-responseType>
+	{{ responseType | tuiMapper : getDisplayResponseType }}
+</ng-template>
