@@ -27,7 +27,7 @@ export class AuthApiService {
 		);
 	}
 
-	logout(): Observable<void> {
-		return this.httpClient.post<void>('auth/logout', null);
+	logout(data: RefreshDto): Observable<void> {
+		return this.httpClient.post<void>('auth/logout', data);
 	}
 }

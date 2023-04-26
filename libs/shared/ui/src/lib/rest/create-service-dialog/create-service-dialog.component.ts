@@ -87,7 +87,7 @@ export class CreateServiceDialogComponent implements OnInit {
 
 	readonly showProxy$ = this.urlControl.valueChanges.pipe(
 		startWith(this.urlControl.value),
-		tap(value => !value && this.form.patchValue({isProxyEnabled: null})),
+		tap(value => !value && this.form.patchValue({isProxyEnabled: false})),
 		map(value => !!value && this.urlControl.valid)
 	);
 

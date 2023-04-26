@@ -81,8 +81,9 @@ export class AuthEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(authActions.logout),
-				switchMap(() =>
-					this.apiService.logout().pipe(
+				map(() => this.tokensStorageService.refreshToken!),
+				switchMap(refreshToken =>
+					this.apiService.logout({refreshToken}).pipe(
 						catchError(() => of({})),
 						tap(() => {
 							this.tokensStorageService.clearTokens();
