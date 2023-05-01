@@ -37,15 +37,16 @@
 				</td>
 				<td *tuiCell="'enable'" tuiTd>
 					{{ mock.enable | tuiMapper : getEnabled }}
-					<!-- <div class="enablement">
-						<tui-toggle
-							[ngModel]="mock.enable"
-							(ngModelChange)="toggleEnablement(mock)">
-						</tui-toggle>
-					</div> -->
 				</td>
 				<td *tuiCell="'actions'" tuiTd>
 					<div class="mock-actions">
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconZap"
+							appearance="icon"
+							size="xs"
+							(click)="openTriggersFor(mock)"></button>
 						<button
 							tuiIconButton
 							type="button"

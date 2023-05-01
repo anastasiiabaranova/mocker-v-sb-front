@@ -18,68 +18,57 @@
 	padding: 12px;
 	border: 1px solid var(--tui-base-03);
 	border-radius: var(--tui-radius-m);
+}
 
-	.pagination {
-		width: 100%;
-		padding: 12px 12px 0 12px;
+.table {
+	width: 100%;
+
+	& td:first-child {
+		width: calc(100% - 350px);
 	}
 
-	.table {
-		width: 100%;
-
-		& td:first-child {
-			width: calc(100% - 350px);
-		}
-
-		& td:nth-child(2) {
-			width: 20%;
-			min-width: 150px;
-		}
-
-		& td:nth-child(3) {
-			width: 15%;
-			min-width: 100px;
-		}
-
-		& td:last-child {
-			width: 100px;
-		}
+	& td:nth-child(2) {
+		width: 20%;
+		min-width: 150px;
 	}
 
-	.mock-actions {
-		display: flex;
-		align-items: center;
-		justify-content: right;
-		gap: 8px;
+	& td:nth-child(3) {
+		width: 15%;
+		min-width: 100px;
 	}
 
-	// .enablement {
-	// 	height: 100%;
-	// 	padding: 0 0.75rem;
-	// 	display: flex;
-	// 	align-items: center;
-	// 	flex-wrap: nowrap;
-	// 	gap: 8px;
-	// }
-
-	.no-mocks {
-		padding: 12px;
-		color: var(--tui-text-03);
+	& td:last-child {
+		width: 100px;
 	}
 
-	&::ng-deep {
-		td,
-		th {
-			border: none;
-			border-bottom: 1px solid var(--tui-base-03);
-		}
+	& td,
+	& th {
+		border: none;
+		border-bottom: 1px solid var(--tui-base-03);
+	}
 
-		tbody {
-			border: none;
+	& tbody {
+		border: none;
 
-			tr:last-child > td {
-				border-bottom: none;
-			}
+		tr:last-child > td {
+			border-bottom: none;
 		}
 	}
+}
+
+.pagination {
+	width: 100%;
+	padding: 12px 12px 0 12px;
+}
+
+.mock-actions {
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	gap: 8px;
+}
+
+.no-mocks {
+	padding: 12px;
+	color: var(--tui-text-03);
 }

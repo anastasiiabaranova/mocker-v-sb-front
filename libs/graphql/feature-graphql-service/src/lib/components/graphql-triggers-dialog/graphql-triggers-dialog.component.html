@@ -1,0 +1,71 @@
+<h5 class="title tui-text_h5">Триггеры {{ mock.name }}</h5>
+<div *ngIf="triggers$ | async as triggers">
+	<table
+		*ngIf="triggers.length; else noTriggers"
+		class="tui-table tui-table_font-size_s">
+		<thead>
+			<tr class="tui-table__tr tui-table__tr_hover_disabled">
+				<th class="tui-table__th">Путь</th>
+				<th class="tui-table__th">Операция</th>
+				<th class="tui-table__th">Тип значения</th>
+				<th class="tui-table__th">Значение</th>
+				<th class="tui-table__th"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+				*ngFor="let trigger of triggers"
+				class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+				<td class="tui-table__td">
+					{{ trigger.path }}
+				</td>
+				<td class="tui-table__td">
+					{{ trigger.operation }}
+				</td>
+				<td class="tui-table__td">
+					{{ trigger.valueType }}
+				</td>
+				<td class="tui-table__td">
+					{{ trigger.value }}
+				</td>
+				<td class="tui-table__td">
+					<div class="mock-actions">
+						<tui-toggle
+							[ngModel]="trigger.enable"
+							(ngModelChange)="switchTrigger(trigger)">
+						</tui-toggle>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconEdit3"
+							appearance="icon"
+							size="xs"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconTrash"
+							appearance="icon"
+							size="xs"
+							(click)="deleteTrigger(trigger)"></button>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="footer">
+	<button
+		tuiButton
+		type="button"
+		appearance="primary"
+		size="m"
+		class="tui-form__button"
+		(click)="closeDialog()">
+		Закрыть
+	</button>
+</div>
+
+<ng-template #noTriggers>
+	<span class="no-triggers tui-text_body-l">Нет триггеров</span>
+</ng-template>

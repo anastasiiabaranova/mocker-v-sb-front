@@ -2,14 +2,18 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	EventEmitter,
+	Injector,
 	Input,
 	OnChanges,
 	Output,
 } from '@angular/core';
 import {TuiDestroyService} from '@taiga-ui/cdk';
+import {TuiDialogService} from '@taiga-ui/core';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {GraphQLMockDto} from '@mocker/graphql/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
+import {GraphQLTriggersDialogComponent} from '../graphql-triggers-dialog/graphql-triggers-dialog.component';
 
 @Component({
 	selector: 'mocker-graphql-mock-list',
@@ -42,6 +46,11 @@ export class GraphQLMockListComponent implements OnChanges {
 
 	readonly getEnabled = (enabled: boolean) => (enabled ? 'Вкл.' : 'Выкл.');
 
+	constructor(
+		private readonly dialogService: TuiDialogService,
+		private readonly injector: Injector
+	) {}
+
 	get displayedMocks() {
 		if (!this._displayedMocks) {
 			this._displayedMocks = (this.mocks || []).slice(
@@ -62,5 +71,17 @@ export class GraphQLMockListComponent implements OnChanges {
 			this.page * this.size,
 			this.page * this.size + this.size
 		);
+	}
+
+	openTriggersFor(mock: GraphQLMockDto) {
+		this.dialogService
+			.open(
+				new PolymorpheusComponent(
+					GraphQLTriggersDialogComponent,
+					this.injector
+				),
+				{data: mock, size: 'm'}
+			)
+			.subscribe();
 	}
 }
