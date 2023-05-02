@@ -40,4 +40,10 @@ export class RestModelApiService {
 			`rest/service/${servicePath}/model/${modelId}`
 		);
 	}
+
+	deleteAllModels(servicePath: string): Observable<void> {
+		return this.httpClient.delete<void>(
+			`rest/service/${servicePath}/models`
+		);
+	}
 }

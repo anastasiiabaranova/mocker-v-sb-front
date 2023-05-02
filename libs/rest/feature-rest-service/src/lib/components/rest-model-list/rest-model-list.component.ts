@@ -20,6 +20,7 @@ export class RestModelListComponent implements OnChanges {
 	@Output() readonly createModel = new EventEmitter<void>();
 	@Output() readonly deleteModel = new EventEmitter<string>();
 	@Output() readonly editModel = new EventEmitter<string>();
+	@Output() readonly deleteAll = new EventEmitter<void>();
 
 	readonly columns = ['name', 'actions'];
 	readonly sizeOptions = [5, 10, 20];

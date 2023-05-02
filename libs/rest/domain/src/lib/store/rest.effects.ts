@@ -299,6 +299,31 @@ export class RestEffects {
 		)
 	);
 
+	deleteAllMocks$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.deleteAllMocks),
+			switchMap(({path}) =>
+				this.mockApiService.deleteAllMocks(path).pipe(
+					map(() => restActions.allMocksDeleted()),
+					tap(() => {
+						this.notificationsFacade.showNotification({
+							content: 'Все шаблоны моков удалены',
+							status: TuiNotification.Success,
+						});
+					}),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось удалить шаблоны моков',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return EMPTY;
+					})
+				)
+			)
+		)
+	);
+
 	createModel$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.createModel),
@@ -352,6 +377,31 @@ export class RestEffects {
 					catchError(() => {
 						this.notificationsFacade.showNotification({
 							label: 'Не удалось удалить модель',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return EMPTY;
+					})
+				)
+			)
+		)
+	);
+
+	deleteAllModels$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.deleteAllModels),
+			switchMap(({path}) =>
+				this.modelApiService.deleteAllModels(path).pipe(
+					map(() => restActions.allModelsDeleted()),
+					tap(() => {
+						this.notificationsFacade.showNotification({
+							content: 'Все модели удалены',
+							status: TuiNotification.Success,
+						});
+					}),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось удалить модели',
 							content: 'Попробуйте еще раз позже',
 							status: TuiNotification.Error,
 						});

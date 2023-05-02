@@ -17,6 +17,15 @@ function deleteMock(service: GraphQLServiceShortDto): GraphQLServiceShortDto {
 	};
 }
 
+function deleteAllMocks(
+	service: GraphQLServiceShortDto
+): GraphQLServiceShortDto {
+	return {
+		...service,
+		mocksCount: 0,
+	};
+}
+
 const initialState: GraphQLState = {
 	dialogLoading: false,
 };
@@ -96,6 +105,13 @@ const graphQLReducer = createReducer(
 			service.id === mock.serviceId ? deleteMock(service) : service
 		),
 		mocks: state.mocks?.filter(({id}) => id !== mock.id),
+	})),
+	on(graphQLActions.allMocksDeleted, (state, {serviceId}) => ({
+		...state,
+		services: state.services?.map(service =>
+			service.id === serviceId ? deleteAllMocks(service) : service
+		),
+		mocks: [],
 	})),
 	on(graphQLActions.dialogRequestFailure, state => ({
 		...state,

@@ -229,6 +229,34 @@ export class GraphQLEffects {
 		)
 	);
 
+	deleteAllMocks$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(graphQLActions.deleteAllMocks),
+			withLatestFrom(this.store$.select(fromGraphQL.getServiceId)),
+			map(([, serviceId]) => serviceId),
+			filter(tuiIsPresent),
+			switchMap(serviceId =>
+				this.apiService.deleteAllMocks(serviceId).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: 'Все моки сервиса удалены',
+							status: TuiNotification.Success,
+						})
+					),
+					map(() => graphQLActions.allMocksDeleted({serviceId})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось удалить моки',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return EMPTY;
+					})
+				)
+			)
+		)
+	);
+
 	constructor(
 		private readonly actions$: Actions,
 		private readonly store$: Store,

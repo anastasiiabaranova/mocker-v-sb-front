@@ -34,6 +34,7 @@ export class RestMockListComponent implements OnChanges {
 	@Output() readonly createMock = new EventEmitter<void>();
 	@Output() readonly deleteMock = new EventEmitter<string>();
 	@Output() readonly editMock = new EventEmitter<string>();
+	@Output() readonly deleteAll = new EventEmitter<void>();
 
 	readonly columns = ['method', 'name', 'path', 'actions'];
 	readonly sizeOptions = [5, 10, 20];

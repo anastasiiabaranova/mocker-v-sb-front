@@ -65,9 +65,14 @@ const deleteMock = createAction(
 	'[GRAPHQL] Delete Mock',
 	props<{mock: GraphQLMockDto}>()
 );
+const deleteAllMocks = createAction('[GRAPHQL] Delete All Mocks');
 const mockDeleted = createAction(
 	'[GRAPHQL] Mock Deleted',
 	props<{mock: GraphQLMockDto}>()
+);
+const allMocksDeleted = createAction(
+	'[GRAPHQL] All Mocks Deleted',
+	props<{serviceId: string}>()
 );
 const dialogRequestFailure = createAction('[GRAPHQL] Dialog Request Failure');
 
@@ -87,6 +92,8 @@ export const graphQLActions = {
 	editMock,
 	mockEdited,
 	deleteMock,
+	allMocksDeleted,
+	deleteAllMocks,
 	mockDeleted,
 	dialogRequestFailure,
 };

@@ -72,6 +72,12 @@ export class GraphQLApiService {
 		return this.httpClient.delete<void>(`graphql/mocks/${id}`);
 	}
 
+	deleteAllMocks(serviceId: string): Observable<void> {
+		return this.httpClient.delete<void>(
+			`graphql/services/${serviceId}/mocks`
+		);
+	}
+
 	getAllTriggers(mockId: string): Observable<ReadonlyArray<TriggerDto>> {
 		return this.httpClient.get<ReadonlyArray<TriggerDto>>(
 			`graphql/mocks/${mockId}/triggers`

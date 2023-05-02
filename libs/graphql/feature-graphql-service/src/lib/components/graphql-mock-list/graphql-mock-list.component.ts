@@ -28,6 +28,7 @@ export class GraphQLMockListComponent implements OnChanges {
 	@Output() readonly createMock = new EventEmitter<void>();
 	@Output() readonly editMock = new EventEmitter<GraphQLMockDto>();
 	@Output() readonly deleteMock = new EventEmitter<GraphQLMockDto>();
+	@Output() readonly deleteAll = new EventEmitter<void>();
 
 	readonly columns = ['name', 'expirationDate', 'enable', 'actions'];
 	readonly sizeOptions = [5, 10, 20];

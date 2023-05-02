@@ -64,5 +64,6 @@
 		[mocks]="mocks$ | async"
 		(createMock)="createMock(service.id!)"
 		(editMock)="editMock($event)"
-		(deleteMock)="deleteMock($event)"></mocker-graphql-mock-list>
+		(deleteMock)="deleteMock($event)"
+		(deleteAll)="deleteAllMocks()"></mocker-graphql-mock-list>
 </ng-container>

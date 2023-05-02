@@ -99,4 +99,8 @@ export class FeatureGraphQLServiceComponent {
 	deleteMock(mock: GraphQLMockDto) {
 		this.facade.deleteMock(mock);
 	}
+
+	deleteAllMocks() {
+		this.facade.deleteAllMocks();
+	}
 }

@@ -84,6 +84,11 @@ const mockDeleted = createAction(
 	'[REST] Mock Deleted',
 	props<{mockId: string}>()
 );
+const deleteAllMocks = createAction(
+	'[REST] Delete All Mocks',
+	props<{path: string}>()
+);
+const allMocksDeleted = createAction('[REST] All Mocks Deleted');
 const createModel = createAction(
 	'[REST] Create Model',
 	props<{path: string; model: RestModelDto}>()
@@ -108,6 +113,11 @@ const modelDeleted = createAction(
 	'[REST] Model Deleted',
 	props<{modelId: string}>()
 );
+const deleteAllModels = createAction(
+	'[REST] Delete All Models',
+	props<{path: string}>()
+);
+const allModelsDeleted = createAction('[REST] All Models Deleted');
 const dialogRequestFailure = createAction('[REST] Dialog Request Failure');
 
 export const restActions = {
@@ -130,6 +140,10 @@ export const restActions = {
 	mockEdited,
 	deleteMock,
 	mockDeleted,
+	deleteAllModels,
+	allModelsDeleted,
+	deleteAllMocks,
+	allMocksDeleted,
 	createModel,
 	modelCreated,
 	editModel,

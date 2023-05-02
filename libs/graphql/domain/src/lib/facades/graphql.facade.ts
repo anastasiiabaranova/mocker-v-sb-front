@@ -66,4 +66,8 @@ export class GraphQLFacade {
 	deleteMock(mock: GraphQLMockDto) {
 		this.store$.dispatch(graphQLActions.deleteMock({mock}));
 	}
+
+	deleteAllMocks() {
+		this.store$.dispatch(graphQLActions.deleteAllMocks());
+	}
 }

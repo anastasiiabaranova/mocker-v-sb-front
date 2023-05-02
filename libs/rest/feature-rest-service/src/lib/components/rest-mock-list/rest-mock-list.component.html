@@ -7,14 +7,15 @@
 		appearance="flat"
 		size="s"
 		(click)="createMock.next()"></button>
-	<!-- <button
+	<button
 		*ngIf="mocks && mocks.length"
 		tuiButton
 		type="button"
 		appearance="flat"
-		size="s">
+		size="s"
+		(click)="deleteAll.next()">
 		Удалить все
-	</button> -->
+	</button>
 </div>
 
 <div class="mock-list">

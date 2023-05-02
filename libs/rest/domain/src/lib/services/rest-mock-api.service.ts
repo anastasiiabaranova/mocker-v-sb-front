@@ -43,4 +43,10 @@ export class RestMockApiService {
 			`rest/service/${servicePath}/mock/${mockId}`
 		);
 	}
+
+	deleteAllMocks(servicePath: string): Observable<void> {
+		return this.httpClient.delete<void>(
+			`rest/service/${servicePath}/mocks`
+		);
+	}
 }

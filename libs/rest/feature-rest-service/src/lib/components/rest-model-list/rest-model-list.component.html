@@ -7,14 +7,15 @@
 		appearance="flat"
 		size="s"
 		(click)="createModel.next()"></button>
-	<!-- <button
+	<button
 		*ngIf="models && models.length"
 		tuiButton
 		type="button"
 		appearance="flat"
-		size="s">
+		size="s"
+		(click)="deleteAll.next()">
 		Удалить все
-	</button> -->
+	</button>
 </div>
 
 <div class="model-list">

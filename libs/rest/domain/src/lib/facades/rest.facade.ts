@@ -72,6 +72,10 @@ export class RestFacade {
 		this.store$.dispatch(restActions.deleteMock({path, mockId}));
 	}
 
+	deleteAllMocks(path: string) {
+		this.store$.dispatch(restActions.deleteAllMocks({path}));
+	}
+
 	createModel(path: string, model: RestModelDto) {
 		this.store$.dispatch(restActions.createModel({path, model}));
 	}
@@ -82,6 +86,10 @@ export class RestFacade {
 
 	deleteModel(path: string, modelId: string) {
 		this.store$.dispatch(restActions.deleteModel({path, modelId}));
+	}
+
+	deleteAllModels(path: string) {
+		this.store$.dispatch(restActions.deleteAllModels({path}));
 	}
 
 	getMock(path: string, mockId: string) {

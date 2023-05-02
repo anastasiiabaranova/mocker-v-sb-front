@@ -100,6 +100,10 @@ export class FeatureRestServiceComponent {
 		this.facade.deleteMock(path, mockId);
 	}
 
+	deleteAllMocks(path: string) {
+		this.facade.deleteAllMocks(path);
+	}
+
 	createModel(path: string) {
 		this.dialogService
 			.open(
@@ -126,5 +130,9 @@ export class FeatureRestServiceComponent {
 
 	deleteModel(path: string, modelId: string) {
 		this.facade.deleteModel(path, modelId);
+	}
+
+	deleteAllModels(path: string) {
+		this.facade.deleteAllModels(path);
 	}
 }

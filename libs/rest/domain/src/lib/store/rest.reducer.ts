@@ -86,9 +86,17 @@ const restReducer = createReducer(
 		...state,
 		models: state.models?.filter(({modelId: id}) => id !== modelId),
 	})),
+	on(restActions.allModelsDeleted, state => ({
+		...state,
+		models: [],
+	})),
 	on(restActions.mockDeleted, (state, {mockId}) => ({
 		...state,
 		mocks: state.mocks?.filter(({mockId: id}) => id !== mockId),
+	})),
+	on(restActions.allMocksDeleted, state => ({
+		...state,
+		mocks: [],
 	})),
 	on(restActions.dialogRequestFailure, state => ({
 		...state,
