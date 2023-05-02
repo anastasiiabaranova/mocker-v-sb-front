@@ -9,6 +9,7 @@ import {
 	RestFacade,
 	RestMockApiService,
 	RestResponseApiService,
+	RestResponseDto,
 } from '@mocker/rest/domain';
 import {
 	AppConfig,
@@ -28,8 +29,10 @@ import {
 import {
 	BehaviorSubject,
 	catchError,
+	combineLatest,
 	EMPTY,
 	filter,
+	Observable,
 	of,
 	switchMap,
 	takeUntil,
@@ -153,6 +156,44 @@ export class ResponsesDialogComponent {
 			});
 	}
 
+	editResponse(servicePath: string, responseId: string) {
+		if (this.dialogShown) {
+			return;
+		}
+		this.dialogShown = true;
+
+		combineLatest([this.mock$, this.getResponse(servicePath, responseId)])
+			.pipe(
+				switchMap(([mock, response]) =>
+					this.dialogService.open<boolean>(
+						new PolymorpheusComponent(
+							CreateResponseDialogComponent,
+							this.injector
+						),
+						{
+							data: {
+								mock,
+								servicePath,
+								response,
+							},
+							size: 'l',
+							closeable: false,
+							dismissible: false,
+						}
+					)
+				),
+				takeUntil(this.destroy$)
+			)
+			.subscribe({
+				next: update => {
+					this.dialogShown = false;
+					if (update) {
+						this.loadResponses$.next();
+					}
+				},
+			});
+	}
+
 	deleteResponse(servicePath: string, responseId: string) {
 		this.responseApiService
 			.deleteResponse(servicePath, this.mockId, responseId)
@@ -167,5 +208,24 @@ export class ResponsesDialogComponent {
 					});
 				},
 			});
+	}
+
+	private getResponse(
+		servicePath: string,
+		responseId: string
+	): Observable<RestResponseDto> {
+		return this.responseApiService
+			.getResponse(servicePath, this.mockId, responseId)
+			.pipe(
+				catchError(() => {
+					this.notificationsFacade.showNotification({
+						label: 'Не удалось загрузить статический ответ',
+						content: 'Попробуйте еще раз позже',
+						status: TuiNotification.Error,
+					});
+
+					return EMPTY;
+				})
+			);
 	}
 }

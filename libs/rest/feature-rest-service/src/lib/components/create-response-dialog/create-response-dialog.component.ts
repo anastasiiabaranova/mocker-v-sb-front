@@ -4,6 +4,7 @@ import {
 	RestResponseApiService,
 	RestMockDto,
 	RestResponseDto,
+	RequestParamDto,
 } from '@mocker/rest/domain';
 import {
 	NotificationsFacade,
@@ -19,11 +20,12 @@ import {
 } from '@taiga-ui/cdk';
 import {TuiDialogContext, TuiNotification} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
-import {BehaviorSubject, takeUntil} from 'rxjs';
+import {BehaviorSubject, Observable, takeUntil} from 'rxjs';
 
 type Context = {
 	mock: RestMockDto;
 	servicePath: string;
+	response?: RestResponseDto;
 };
 
 const NAME_REQUIRED_ERROR = 'Укажите название ответа';
@@ -31,8 +33,13 @@ const STATUS_REQUIRED_ERROR = 'Укажите Status Code ответа';
 const STATUS_INVALID_ERROR = 'Некорректный Status Code';
 const HEADER_VALUE_REQUIRED_ERROR = 'Укажите значение заголовка';
 const PARAM_VALUE_REQUIRED_ERROR = 'Укажите значение параметра';
-const BODY_SYNTAX_ERROR = 'Проверьте синтаксис';
-const BODY_REQUIRED_ERROR = 'Укажите тело ответа';
+
+function findValue(
+	key: string,
+	values?: ReadonlyArray<RequestParamDto>
+): string | null {
+	return values?.find(({name}) => name === key)?.value || null;
+}
 
 @Component({
 	selector: 'mocker-create-response-dialog',
@@ -42,9 +49,12 @@ const BODY_REQUIRED_ERROR = 'Укажите тело ответа';
 })
 export class CreateResponseDialogComponent {
 	readonly form = this.formBuilder.group({
-		name: [null, requiredValidatorFactory(NAME_REQUIRED_ERROR)],
+		name: [
+			this.response?.name || null,
+			requiredValidatorFactory(NAME_REQUIRED_ERROR),
+		],
 		statusCode: [
-			null,
+			this.response?.statusCode || null,
 			[
 				requiredValidatorFactory(STATUS_REQUIRED_ERROR),
 				statusCodeValidatorFactory(STATUS_INVALID_ERROR),
@@ -69,9 +79,9 @@ export class CreateResponseDialogComponent {
 		.controls as FormControl[];
 
 	readonly codeModel = {
-		language: 'json',
-		uri: 'main.json',
-		value: '{}',
+		language: 'txt',
+		uri: 'main.txt',
+		value: this.response?.responseContent || '',
 	};
 
 	readonly schemaError$ = new BehaviorSubject<TuiValidationError | null>(
@@ -91,7 +101,7 @@ export class CreateResponseDialogComponent {
 	secondStepState = 'normal' as 'error' | 'normal' | 'pass';
 	thirdStepState = 'normal' as 'error' | 'normal' | 'pass';
 
-	readonly getSubmitText = () => (this.lastStep ? 'Создать' : 'Далее');
+	readonly getSubmitText = () => (this.lastStep ? this.submitText : 'Далее');
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
@@ -113,11 +123,28 @@ export class CreateResponseDialogComponent {
 		return this.context.data.servicePath;
 	}
 
+	@tuiPure
+	get response(): RestResponseDto | null {
+		return this.context.data.response || null;
+	}
+
+	@tuiPure
+	get headerText() {
+		return this.mock
+			? 'Редактирование статического ответа'
+			: 'Новый статический ответ';
+	}
+
+	@tuiPure
+	get submitText() {
+		return this.mock ? 'Редактировать' : 'Создать';
+	}
+
 	private get requestHeadersControls(): FormArray {
 		return this.formBuilder.array(
-			this.mock.requestHeaders.map(() =>
+			this.mock.requestHeaders.map(name =>
 				this.formBuilder.control(
-					null,
+					findValue(name, this.response?.requestHeaders),
 					requiredValidatorFactory(HEADER_VALUE_REQUIRED_ERROR)
 				)
 			)
@@ -126,9 +153,9 @@ export class CreateResponseDialogComponent {
 
 	private get responseHeadersControls(): FormArray {
 		return this.formBuilder.array(
-			this.mock.responseHeaders.map(() =>
+			this.mock.responseHeaders.map(name =>
 				this.formBuilder.control(
-					null,
+					findValue(name, this.response?.responseHeaders),
 					requiredValidatorFactory(HEADER_VALUE_REQUIRED_ERROR)
 				)
 			)
@@ -137,9 +164,9 @@ export class CreateResponseDialogComponent {
 
 	private get queryParamsControls(): FormArray {
 		return this.formBuilder.array(
-			this.mock.queryParams.map(() =>
+			this.mock.queryParams.map(name =>
 				this.formBuilder.control(
-					null,
+					findValue(name, this.response?.queryParams),
 					requiredValidatorFactory(PARAM_VALUE_REQUIRED_ERROR)
 				)
 			)
@@ -148,33 +175,13 @@ export class CreateResponseDialogComponent {
 
 	private get pathParamsControls(): FormArray {
 		return this.formBuilder.array(
-			this.mock.pathParams.map(() =>
+			this.mock.pathParams.map(name =>
 				this.formBuilder.control(
-					null,
+					findValue(name, this.response?.pathParams),
 					requiredValidatorFactory(PARAM_VALUE_REQUIRED_ERROR)
 				)
 			)
 		);
-	}
-
-	private get validateResponseBody(): string | null {
-		const body = this.codeModel.value;
-
-		if (!body) {
-			this.schemaError$.next(new TuiValidationError(BODY_REQUIRED_ERROR));
-			return null;
-		}
-
-		try {
-			const json = JSON.parse(body);
-
-			this.schemaError$.next(null);
-
-			return JSON.stringify(json);
-		} catch {
-			this.schemaError$.next(new TuiValidationError(BODY_SYNTAX_ERROR));
-			return null;
-		}
 	}
 
 	private get lastStep(): boolean {
@@ -203,9 +210,7 @@ export class CreateResponseDialogComponent {
 			return;
 		}
 
-		const responseContent = this.validateResponseBody;
-
-		if (this.form.invalid || !responseContent) {
+		if (this.form.invalid) {
 			tuiMarkControlAsTouchedAndValidate(this.form);
 			this.notificationsFacade.showNotification({
 				content: 'Исправьте ошибки и попробуйте снова',
@@ -244,7 +249,12 @@ export class CreateResponseDialogComponent {
 			})
 		);
 
+		const responseContent = this.codeModel.value;
+
+		const responseId = this.response?.responseId;
+
 		const response: RestResponseDto = {
+			...(responseId && {responseId}),
 			name,
 			statusCode,
 			responseContent,
@@ -256,14 +266,15 @@ export class CreateResponseDialogComponent {
 
 		this.loading$.next(true);
 
-		this.responseApiService
-			.createResponse(this.servicePath, this.mock.mockId!, response)
+		this.submitResponse(response)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: () => this.closeDialog(true),
 				error: () => {
 					this.notificationsFacade.showNotification({
-						label: 'Не удалось создать статический ответ',
+						label: `Не удалось ${
+							this.response ? 'отредактировать' : 'создать'
+						} статический ответ`,
 						content: 'Попробуйте еще раз позже',
 						status: TuiNotification.Error,
 					});
@@ -282,14 +293,25 @@ export class CreateResponseDialogComponent {
 		this.validateCurrentStep();
 	}
 
+	private submitResponse(response: RestResponseDto): Observable<void> {
+		return this.response
+			? this.responseApiService.editResponse(
+					this.servicePath,
+					this.mock.mockId!,
+					response
+			  )
+			: this.responseApiService.createResponse(
+					this.servicePath,
+					this.mock.mockId!,
+					response
+			  );
+	}
+
 	private recalculateStepsStates() {
 		if (this.step === 0) {
-			const body = this.validateResponseBody;
-
 			this.firstStepState =
 				this.form.controls.name.invalid ||
-				this.form.controls.statusCode.invalid ||
-				!body
+				this.form.controls.statusCode.invalid
 					? 'error'
 					: 'pass';
 			return;

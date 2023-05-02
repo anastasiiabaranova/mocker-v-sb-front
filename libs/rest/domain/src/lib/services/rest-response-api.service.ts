@@ -48,7 +48,7 @@ export class RestResponseApiService {
 		mockId: string,
 		response: RestResponseDto
 	): Observable<void> {
-		return this.httpClient.post<void>(
+		return this.httpClient.put<void>(
 			`rest/service/${servicePath}/mock/${mockId}/response/${response.responseId}`,
 			response
 		);

@@ -34,6 +34,15 @@
 					<button
 						tuiIconButton
 						type="button"
+						icon="tuiIconEdit3"
+						appearance="icon"
+						size="xs"
+						(click)="
+							editResponse(servicePath!, response.responseId)
+						"></button>
+					<button
+						tuiIconButton
+						type="button"
 						icon="tuiIconTrash"
 						appearance="icon"
 						size="xs"
