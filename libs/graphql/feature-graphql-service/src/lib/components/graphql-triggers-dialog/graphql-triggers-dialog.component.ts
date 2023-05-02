@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {
 	GraphQLApiService,
 	GraphQLMockDto,
+	OperarionType,
 	TriggerDto,
 } from '@mocker/graphql/domain';
 import {NotificationsFacade} from '@mocker/shared/utils';
@@ -12,11 +13,11 @@ import {
 	EMPTY,
 	Subject,
 	catchError,
-	of,
 	startWith,
 	switchMap,
 	takeUntil,
 	tap,
+	BehaviorSubject,
 } from 'rxjs';
 
 @Component({
@@ -33,6 +34,25 @@ export class GraphQLTriggersDialogComponent {
 		startWith(null),
 		switchMap(() => this.apiService.getAllTriggers(this.mockId))
 	);
+
+	readonly showTriggerForm$ = new BehaviorSubject<boolean>(false);
+
+	readonly getDisplayedOperation = (operation: OperarionType) => {
+		switch (operation) {
+			case OperarionType.Equal:
+				return '=';
+			case OperarionType.Greater:
+				return '>';
+			case OperarionType.GreaterOrEqual:
+				return '≥';
+			case OperarionType.Less:
+				return '<';
+			case OperarionType.LessOrEqual:
+				return '≤';
+			case OperarionType.Regex:
+				return 'Regex';
+		}
+	};
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
@@ -54,6 +74,33 @@ export class GraphQLTriggersDialogComponent {
 
 	closeDialog() {
 		this.context.completeWith();
+	}
+
+	switchTriggerForm(show: boolean) {
+		this.showTriggerForm$.next(show);
+	}
+
+	createTrigger(trigger: TriggerDto | null) {
+		if (!trigger) {
+			this.showTriggerForm$.next(false);
+			return;
+		}
+
+		this.apiService
+			.createTrigger(trigger)
+			.pipe(
+				tap(() => {
+					this.showTriggerForm$.next(false);
+					this.updateList$.next();
+					this.showTriggerCreatedNotification();
+				}),
+				catchError(() => {
+					this.showTriggerCreateErrorNotification();
+					return EMPTY;
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
 	}
 
 	switchTrigger({id, enable}: TriggerDto) {
@@ -84,6 +131,21 @@ export class GraphQLTriggersDialogComponent {
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	private showTriggerCreatedNotification() {
+		this.notificationsFacade.showNotification({
+			status: TuiNotification.Success,
+			content: 'Триггер успешно создан',
+		});
+	}
+
+	private showTriggerCreateErrorNotification() {
+		this.notificationsFacade.showNotification({
+			status: TuiNotification.Error,
+			label: 'Не удалось создать триггер',
+			content: 'Попробуйте еще раз позже',
+		});
 	}
 
 	private showTriggerSwitchErrorNotification(enable: boolean) {

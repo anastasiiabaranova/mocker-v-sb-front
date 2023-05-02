@@ -1,0 +1,56 @@
+<form class="form" [formGroup]="form">
+	<div class="tui-form__row tui-form__row_multi-fields">
+		<div class="tui-form__multi-field">
+			<tui-input tuiTextfieldSize="s" formControlName="path">
+				Путь
+			</tui-input>
+			<tui-error
+				formControlName="path"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-select
+				class="tui-form__multi-field"
+				tuiTextfieldSize="s"
+				formControlName="operation"
+				[valueContent]="selectedOperationContent">
+				Операция
+				<tui-data-list-wrapper
+					*tuiDataList
+					[items]="operations"
+					[itemContent]="stringifyOperation | tuiStringifyContent">
+				</tui-data-list-wrapper>
+			</tui-select>
+			<tui-error
+				formControlName="operation"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+		<div class="tui-form__multi-field">
+			<tui-input tuiTextfieldSize="s" formControlName="value">
+				Значение
+			</tui-input>
+			<tui-error
+				formControlName="value"
+				[error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+	<tui-toggle class="tui-space_top-2" formControlName="enable"></tui-toggle>
+	<button
+		tuiIconButton
+		type="button"
+		icon="tuiIconCheckLarge"
+		appearance="flat"
+		size="s"
+		(click)="submitTrigger()"></button>
+	<button
+		tuiIconButton
+		type="button"
+		icon="tuiIconCloseLarge"
+		appearance="icon"
+		size="s"
+		(click)="closeForm()"></button>
+</form>
+
+<ng-template #selectedOperationContent let-operation>
+	{{ stringifyOperation(operation) }}
+</ng-template>

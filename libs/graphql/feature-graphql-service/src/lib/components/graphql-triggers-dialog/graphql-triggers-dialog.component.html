@@ -7,7 +7,6 @@
 			<tr class="tui-table__tr tui-table__tr_hover_disabled">
 				<th class="tui-table__th">Путь</th>
 				<th class="tui-table__th">Операция</th>
-				<th class="tui-table__th">Тип значения</th>
 				<th class="tui-table__th">Значение</th>
 				<th class="tui-table__th"></th>
 			</tr>
@@ -20,26 +19,28 @@
 					{{ trigger.path }}
 				</td>
 				<td class="tui-table__td">
-					{{ trigger.operation }}
-				</td>
-				<td class="tui-table__td">
-					{{ trigger.valueType }}
+					<span class="tui-text_body-l">
+						{{
+							trigger.operation
+								| tuiMapper : getDisplayedOperation
+						}}
+					</span>
 				</td>
 				<td class="tui-table__td">
 					{{ trigger.value }}
 				</td>
 				<td class="tui-table__td">
-					<div class="mock-actions">
+					<div class="trigger-actions">
 						<tui-toggle
 							[ngModel]="trigger.enable"
 							(ngModelChange)="switchTrigger(trigger)">
 						</tui-toggle>
-						<button
+						<!-- <button
 							tuiIconButton
 							type="button"
 							icon="tuiIconEdit3"
 							appearance="icon"
-							size="xs"></button>
+							size="xs"></button> -->
 						<button
 							tuiIconButton
 							type="button"
@@ -52,6 +53,25 @@
 			</tr>
 		</tbody>
 	</table>
+	<div
+		*tuiLet="showTriggerForm$ | async as showTriggerForm"
+		class="add-trigger">
+		<button
+			*ngIf="!showTriggerForm"
+			tuiButton
+			type="button"
+			icon="tuiIconPlus"
+			appearance="flat"
+			size="s"
+			(click)="switchTriggerForm(true)">
+			Добавить
+		</button>
+		<mocker-graphql-trigger-form
+			*ngIf="showTriggerForm"
+			[mockId]="mockId"
+			(createTrigger)="createTrigger($event)">
+		</mocker-graphql-trigger-form>
+	</div>
 </div>
 
 <div class="footer">
