@@ -52,6 +52,22 @@ const serviceEdited = createAction(
 	'[REST] Service Edited',
 	props<{path: string; service: RestServiceDto}>()
 );
+const switchProxy = createAction(
+	'[REST] Switch Proxy',
+	props<{path: string; isProxyEnabled: boolean}>()
+);
+const proxySwitched = createAction(
+	'[REST] Proxy Switched',
+	props<{isProxyEnabled: boolean}>()
+);
+const switchHistory = createAction(
+	'[REST] Switch History',
+	props<{path: string; isHistoryEnabled: boolean}>()
+);
+const historySwitched = createAction(
+	'[REST] History Switched',
+	props<{isHistoryEnabled: boolean}>()
+);
 const deleteService = createAction(
 	'[REST] Delete Service',
 	props<{path: string}>()
@@ -132,6 +148,10 @@ export const restActions = {
 	serviceCreated,
 	editService,
 	serviceEdited,
+	switchProxy,
+	proxySwitched,
+	switchHistory,
+	historySwitched,
 	deleteService,
 	serviceDeleted,
 	createMock,

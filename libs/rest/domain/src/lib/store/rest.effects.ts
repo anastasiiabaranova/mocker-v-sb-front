@@ -61,6 +61,8 @@ export class RestEffects {
 							content: 'Попробуйте еще раз позже',
 							status: TuiNotification.Error,
 						});
+						this.router.navigate(['rest-api']);
+
 						return EMPTY;
 					})
 				)
@@ -198,6 +200,84 @@ export class RestEffects {
 						return of(restActions.dialogRequestFailure());
 					})
 				)
+			)
+		)
+	);
+
+	switchProxy$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.switchProxy),
+			switchMap(({path, isProxyEnabled}) =>
+				this.serviceApiService.switchProxy(path, isProxyEnabled).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: `Проксирование ${
+								isProxyEnabled ? 'включено' : 'выключено'
+							}`,
+							status: TuiNotification.Success,
+						})
+					),
+					map(() =>
+						restActions.proxySwitched({
+							isProxyEnabled,
+						})
+					),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: `Не удалось ${
+								isProxyEnabled ? 'включить' : 'выключить'
+							} проксирование`,
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+
+						return of(
+							restActions.proxySwitched({
+								isProxyEnabled: !isProxyEnabled,
+							})
+						);
+					})
+				)
+			)
+		)
+	);
+
+	switchHistory$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(restActions.switchHistory),
+			switchMap(({path, isHistoryEnabled}) =>
+				this.serviceApiService
+					.switchHistory(path, isHistoryEnabled)
+					.pipe(
+						tap(() =>
+							this.notificationsFacade.showNotification({
+								content: `Запись истории ${
+									isHistoryEnabled ? 'включена' : 'выключена'
+								}`,
+								status: TuiNotification.Success,
+							})
+						),
+						map(() =>
+							restActions.historySwitched({
+								isHistoryEnabled,
+							})
+						),
+						catchError(() => {
+							this.notificationsFacade.showNotification({
+								label: `Не удалось ${
+									isHistoryEnabled ? 'включить' : 'выключить'
+								} запись истории`,
+								content: 'Попробуйте еще раз позже',
+								status: TuiNotification.Error,
+							});
+
+							return of(
+								restActions.historySwitched({
+									isHistoryEnabled: !isHistoryEnabled,
+								})
+							);
+						})
+					)
 			)
 		)
 	);

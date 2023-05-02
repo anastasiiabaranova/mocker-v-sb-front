@@ -56,6 +56,16 @@ export class RestFacade {
 		this.store$.dispatch(restActions.editService({path, service}));
 	}
 
+	switchProxy(path: string, isProxyEnabled: boolean) {
+		this.store$.dispatch(restActions.switchProxy({path, isProxyEnabled}));
+	}
+
+	switchHistory(path: string, isHistoryEnabled: boolean) {
+		this.store$.dispatch(
+			restActions.switchHistory({path, isHistoryEnabled})
+		);
+	}
+
 	deleteService(path: string) {
 		this.store$.dispatch(restActions.deleteService({path}));
 	}

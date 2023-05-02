@@ -114,6 +114,15 @@
 	}
 }
 
+.mobile-only {
+	display: none;
+	width: fit-content !important;
+
+	@media @tui-mobile {
+		display: inline;
+	}
+}
+
 .mock-list {
 	margin-top: 24px;
 }

@@ -38,4 +38,24 @@ export class RestServiceApiService {
 	deleteService(servicePath: string): Observable<void> {
 		return this.httpClient.delete<void>(`rest/service/${servicePath}`);
 	}
+
+	switchProxy(
+		servicePath: string,
+		isProxyEnabled: boolean
+	): Observable<void> {
+		return this.httpClient.patch<void>(
+			`rest/service/${servicePath}/proxy`,
+			{isProxyEnabled}
+		);
+	}
+
+	switchHistory(
+		servicePath: string,
+		isHistoryEnabled: boolean
+	): Observable<void> {
+		return this.httpClient.patch<void>(
+			`rest/service/${servicePath}/history`,
+			{isHistoryEnabled}
+		);
+	}
 }

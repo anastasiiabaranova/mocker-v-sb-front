@@ -44,6 +44,20 @@ const restReducer = createReducer(
 		),
 		dialogLoading: false,
 	})),
+	on(restActions.proxySwitched, (state, {isProxyEnabled}) => ({
+		...state,
+		currentService: {
+			...state.currentService!,
+			isProxyEnabled,
+		},
+	})),
+	on(restActions.historySwitched, (state, {isHistoryEnabled}) => ({
+		...state,
+		currentService: {
+			...state.currentService!,
+			isHistoryEnabled,
+		},
+	})),
 	on(restActions.serviceDeleted, (state, {path}) => ({
 		...state,
 		services: state.services?.filter(

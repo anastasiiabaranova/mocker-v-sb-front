@@ -3,7 +3,9 @@ import {
 	Component,
 	Inject,
 	Injector,
+	OnInit,
 } from '@angular/core';
+import {FormBuilder} from '@angular/forms';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {RestFacade, RestServiceDto} from '@mocker/rest/domain';
 import {format} from 'date-fns';
@@ -16,6 +18,8 @@ import {
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {CreateRestServiceDialogComponent} from '@mocker/shared/ui';
+import {TuiDestroyService, tuiIsPresent} from '@taiga-ui/cdk';
+import {filter, map, shareReplay, takeUntil, tap, withLatestFrom} from 'rxjs';
 import {
 	CreateMockDialogComponent,
 	CreateModelDialogComponent,
@@ -26,11 +30,29 @@ import {
 	templateUrl: './feature-rest-service.component.html',
 	styleUrls: ['./feature-rest-service.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [TuiDestroyService],
 })
-export class FeatureRestServiceComponent {
-	readonly service$ = this.facade.currentService$;
+export class FeatureRestServiceComponent implements OnInit {
+	readonly service$ = this.facade.currentService$.pipe(
+		filter(tuiIsPresent),
+		tap(({isProxyEnabled, isHistoryEnabled}) => {
+			this.form.patchValue(
+				{
+					isProxyEnabled,
+					isHistoryEnabled,
+				},
+				{emitEvent: false}
+			);
+		}),
+		shareReplay(1)
+	);
 	readonly mocks$ = this.facade.mocks$;
 	readonly models$ = this.facade.models$;
+
+	readonly form = this.formBuilder.group({
+		isProxyEnabled: [false],
+		isHistoryEnabled: [false],
+	});
 
 	readonly getDate = (expirationTime: number) =>
 		format(new Date(expirationTime), 'dd MMMM yyyy, HH:mm', {locale: ru});
@@ -44,8 +66,34 @@ export class FeatureRestServiceComponent {
 		private readonly facade: RestFacade,
 		private readonly dialogService: TuiDialogService,
 		private readonly injector: Injector,
-		private readonly notificationsFacade: NotificationsFacade
+		private readonly notificationsFacade: NotificationsFacade,
+		private readonly formBuilder: FormBuilder,
+		private readonly destroy$: TuiDestroyService
 	) {}
+
+	ngOnInit() {
+		this.form.controls.isProxyEnabled.valueChanges
+			.pipe(
+				filter(tuiIsPresent),
+				withLatestFrom(this.service$.pipe(map(({path}) => path))),
+				tap(([isProxyEnabled, path]) =>
+					this.facade.switchProxy(path, isProxyEnabled)
+				),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+
+		this.form.controls.isHistoryEnabled.valueChanges
+			.pipe(
+				filter(tuiIsPresent),
+				withLatestFrom(this.service$.pipe(map(({path}) => path))),
+				tap(([isHistoryEnabled, path]) =>
+					this.facade.switchHistory(path, isHistoryEnabled)
+				),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
 	copyTextToClipboard(text: string) {
 		if (this.clipboard.copy(text)) {
