@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
 	display: block;
 }
@@ -12,5 +14,15 @@
 
 	&__field {
 		width: calc(50% - 10px);
+
+		@media @tui-mobile {
+			width: 100%;
+		}
+	}
+}
+
+.buttons {
+	@media @tui-mobile {
+		flex-direction: column-reverse;
 	}
 }

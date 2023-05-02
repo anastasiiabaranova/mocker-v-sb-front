@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 }
@@ -19,13 +21,35 @@
 	border: 1px solid var(--tui-base-03);
 	border-radius: var(--tui-radius-m);
 
+	@media @tui-mobile {
+		padding: 8px;
+	}
+
 	.pagination {
 		width: 100%;
 		padding: 12px 12px 0 12px;
+
+		@media @tui-mobile {
+			padding: 8px 0 0 0;
+		}
 	}
 
 	.table {
 		width: 100%;
+	}
+
+	.model-name {
+		@media @tui-mobile {
+			padding-left: 0;
+
+			& > span {
+				white-space: nowrap;
+				display: block;
+				width: calc(100vw - 144px);
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
 	}
 
 	.model-actions {
@@ -33,6 +57,10 @@
 		align-items: center;
 		justify-content: right;
 		gap: 8px;
+
+		@media @tui-mobile {
+			padding-right: 0;
+		}
 	}
 
 	.no-models {

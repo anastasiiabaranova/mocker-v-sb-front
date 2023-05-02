@@ -1,3 +1,11 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
-    display: block;
+	display: block;
+}
+
+.buttons {
+	@media @tui-mobile {
+		flex-direction: column-reverse;
+	}
 }

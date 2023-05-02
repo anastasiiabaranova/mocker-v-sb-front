@@ -129,7 +129,8 @@
 		</div>
 		<tui-stepper
 			*ngIf="showHeaders || showParams"
-			orientation="vertical"
+			class="stepper"
+			[orientation]="isMobile ? 'horizontal' : 'vertical'"
 			[activeItemIndex]="step">
 			<button tuiStep [stepState]="firstStepState" (click)="goToStep(0)">
 				Ответ

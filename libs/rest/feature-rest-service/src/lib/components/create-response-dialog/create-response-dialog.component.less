@@ -1,7 +1,7 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
 	display: block;
-	height: 50vh;
-	overflow: scroll;
 }
 
 form {
@@ -12,7 +12,14 @@ form {
 	display: grid;
 	grid-template-columns: 3fr 1fr;
 	gap: 24px;
-	height: 70%;
+
+	@media @tui-mobile {
+		grid-template-columns: 1fr;
+
+		.stepper {
+			grid-row: 1;
+		}
+	}
 }
 
 .label {
@@ -23,4 +30,10 @@ form {
 	padding: 12px;
 	border-radius: var(--tui-radius-s);
 	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.buttons {
+	@media @tui-mobile {
+		flex-direction: column-reverse;
+	}
 }

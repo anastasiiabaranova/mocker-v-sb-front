@@ -38,44 +38,48 @@
 						[value]="mock.method"></tui-tag>
 				</td>
 				<td *tuiCell="'name'" tuiTd class="mock-name">
-					{{ mock.name }}
+					<span>{{ mock.name }}</span>
 				</td>
 				<td *tuiCell="'path'" tuiTd class="mock-path">
 					{{ mock.path }}
 				</td>
 				<td *tuiCell="'actions'" tuiTd class="mock-actions">
-					<tui-tooltip
-						*ngIf="mock.description"
-						[content]="mock.description"
-						direction="bottom-right"></tui-tooltip>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconCopy"
-						appearance="icon"
-						size="xs"
-						(click)="copyMockUrlToClipboard(mock.path)"></button>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconList"
-						appearance="icon"
-						size="xs"
-						(click)="showResponses(mock.mockId)"></button>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconEdit3"
-						appearance="icon"
-						size="xs"
-						(click)="editMock.next(mock.mockId)"></button>
-					<button
-						tuiIconButton
-						type="button"
-						icon="tuiIconTrash"
-						appearance="icon"
-						size="xs"
-						(click)="deleteMock.next(mock.mockId)"></button>
+					<div class="action-buttons">
+						<tui-tooltip
+							*ngIf="mock.description"
+							[content]="mock.description"
+							direction="bottom-right"></tui-tooltip>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconCopy"
+							appearance="icon"
+							size="xs"
+							(click)="
+								copyMockUrlToClipboard(mock.path)
+							"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconList"
+							appearance="icon"
+							size="xs"
+							(click)="showResponses(mock.mockId)"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconEdit3"
+							appearance="icon"
+							size="xs"
+							(click)="editMock.next(mock.mockId)"></button>
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconTrash"
+							appearance="icon"
+							size="xs"
+							(click)="deleteMock.next(mock.mockId)"></button>
+					</div>
 				</td>
 			</tr>
 		</tbody>

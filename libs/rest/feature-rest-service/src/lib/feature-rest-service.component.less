@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
 	display: block;
 	width: 100%;
@@ -5,6 +7,28 @@
 	overflow: scroll;
 
 	padding: 2rem min(10vw, 6rem);
+
+	@media @tui-mobile {
+		padding: 24px;
+	}
+
+	@media @tui-tablet {
+		padding: 24px;
+	}
+}
+
+.back-button {
+	display: none;
+
+	&::ng-deep {
+		& > .t-wrapper {
+			padding: 0 !important;
+		}
+	}
+
+	@media @tui-mobile {
+		display: block;
+	}
 }
 
 .header {
@@ -15,14 +39,31 @@
 	.title {
 		flex-grow: 1;
 	}
+
+	.actions {
+		display: flex;
+		gap: 8px;
+	}
+
+	@media @tui-mobile {
+		flex-direction: column-reverse;
+	}
 }
 
 .info {
 	margin-top: 24px;
 
+	@media @tui-mobile {
+		margin-top: 0;
+	}
+
 	tr > td {
 		padding-top: 8px;
 		padding-bottom: 8px;
+
+		@media @tui-mobile {
+			padding: 8px 0 8px 0;
+		}
 	}
 
 	tr:first-child > td {
@@ -45,12 +86,27 @@
 	.row-title {
 		white-space: nowrap;
 		padding-right: 8px;
+
+		@media @tui-mobile {
+			display: none;
+		}
 	}
 
 	.row-data {
 		display: flex;
 		gap: 8px;
 		align-items: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		& > span {
+			@media @tui-mobile {
+				width: calc(100vw - 80px);
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
 	}
 
 	tr:not(:last-child) {

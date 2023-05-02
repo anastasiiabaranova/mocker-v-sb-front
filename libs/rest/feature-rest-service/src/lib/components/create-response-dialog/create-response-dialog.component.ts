@@ -15,6 +15,7 @@ import {
 	tuiMarkControlAsTouchedAndValidate,
 	tuiPure,
 	TuiValidationError,
+	TUI_IS_MOBILE,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext, TuiNotification} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
@@ -95,6 +96,7 @@ export class CreateResponseDialogComponent {
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
 		private readonly context: TuiDialogContext<boolean, Context>,
+		@Inject(TUI_IS_MOBILE) readonly isMobile: boolean,
 		private readonly formBuilder: FormBuilder,
 		private readonly destroy$: TuiDestroyService,
 		private readonly notificationsFacade: NotificationsFacade,

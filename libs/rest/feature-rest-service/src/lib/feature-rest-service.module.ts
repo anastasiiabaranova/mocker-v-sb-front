@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {RestDomainModule} from '@mocker/rest/domain';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {TuiButtonModule} from '@taiga-ui/core';
@@ -15,9 +16,10 @@ import {
 
 @NgModule({
 	imports: [
-		FeatureRestServiceRoutingModule,
-		RestDomainModule,
 		CommonModule,
+		FeatureRestServiceRoutingModule,
+		RouterModule,
+		RestDomainModule,
 		TuiButtonModule,
 		TuiMapperPipeModule,
 		TuiLetModule,

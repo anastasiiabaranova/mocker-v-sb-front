@@ -21,14 +21,14 @@
 	<table tuiTable class="table" [columns]="columns">
 		<thead>
 			<tr tuiThGroup>
-				<th tuiTh>Имя</th>
-				<th tuiTh></th>
+				<th tuiTh class="model-name">Имя</th>
+				<th tuiTh class="model-actions"></th>
 			</tr>
 		</thead>
 		<tbody *ngIf="models" tuiTbody [data]="models">
 			<tr *ngFor="let model of displayedModels" tuiTr>
-				<td *tuiCell="'name'" tuiTd>
-					{{ model.name }}
+				<td *tuiCell="'name'" tuiTd class="model-name">
+					<span>{{ model.name }}</span>
 				</td>
 				<td *tuiCell="'actions'" tuiTd class="model-actions">
 					<tui-tooltip

@@ -1,22 +1,35 @@
+<button
+	tuiButton
+	class="back-button"
+	type="button"
+	appearance="mono"
+	size="s"
+	icon="tuiIconChevronLeft"
+	routerLink="/rest-api">
+	Назад
+</button>
+
 <ng-container *ngIf="service$ | async as service">
 	<div class="header">
 		<span class="title tui-text_body-xl">{{ service.name }}</span>
-		<button
-			tuiButton
-			type="button"
-			appearance="secondary"
-			size="s"
-			(click)="editService(service)">
-			Редактировать
-		</button>
-		<button
-			tuiButton
-			type="button"
-			appearance="secondary"
-			size="s"
-			(click)="deleteService(service.path)">
-			Удалить
-		</button>
+		<div class="actions">
+			<button
+				tuiButton
+				type="button"
+				appearance="secondary"
+				size="s"
+				(click)="editService(service)">
+				Редактировать
+			</button>
+			<button
+				tuiButton
+				type="button"
+				appearance="secondary"
+				size="s"
+				(click)="deleteService(service.path)">
+				Удалить
+			</button>
+		</div>
 	</div>
 
 	<table class="info tui-table">
@@ -25,7 +38,7 @@
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">URL mock-сервиса:</td>
 			<td class="row-data">
-				{{ serviceUrl }}
+				<span>{{ serviceUrl }}</span>
 				<button
 					tuiIconButton
 					type="button"
@@ -39,7 +52,9 @@
 			*ngIf="service.url"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Мокируемый URL:</td>
-			<td class="row-data">{{ service.url }}</td>
+			<td class="row-data">
+				<span>{{ service.url }}</span>
+			</td>
 		</tr>
 
 		<tr
