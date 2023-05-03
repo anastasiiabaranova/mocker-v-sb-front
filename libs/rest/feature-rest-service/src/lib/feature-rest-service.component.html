@@ -1,18 +1,17 @@
-<button
-	tuiButton
-	class="back-button"
-	type="button"
-	appearance="mono"
-	size="s"
-	icon="tuiIconChevronLeft"
-	routerLink="/rest-api">
-	Назад
-</button>
-
 <ng-container *ngIf="service$ | async as service">
 	<div class="header">
 		<span class="title tui-text_body-xl">{{ service.name }}</span>
 		<div class="actions">
+			<button
+				tuiButton
+				class="back-button"
+				type="button"
+				appearance="mono"
+				size="s"
+				icon="tuiIconChevronLeft"
+				routerLink="/rest-api">
+				Назад
+			</button>
 			<button
 				tuiButton
 				type="button"
@@ -94,6 +93,14 @@
 					class="tui-space_top-1"
 					[formControl]="form.controls.isHistoryEnabled">
 				</tui-toggle>
+				<button
+					tuiButton
+					class="histoty-button"
+					type="button"
+					appearance="flat"
+					size="s">
+					Посмотреть
+				</button>
 			</td>
 		</tr>
 	</table>

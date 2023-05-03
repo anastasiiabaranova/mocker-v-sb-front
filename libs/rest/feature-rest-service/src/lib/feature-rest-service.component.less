@@ -19,6 +19,7 @@
 
 .back-button {
 	display: none;
+	margin-right: auto;
 
 	&::ng-deep {
 		& > .t-wrapper {
@@ -27,7 +28,7 @@
 	}
 
 	@media @tui-mobile {
-		display: block;
+		display: inline;
 	}
 }
 
@@ -42,6 +43,7 @@
 
 	.actions {
 		display: flex;
+		align-items: end;
 		gap: 8px;
 	}
 
@@ -107,6 +109,10 @@
 				text-overflow: ellipsis;
 			}
 		}
+
+		& > .histoty-button {
+			margin-left: auto;
+		}
 	}
 
 	tr:not(:last-child) {
@@ -116,7 +122,7 @@
 
 .mobile-only {
 	display: none;
-	width: fit-content !important;
+	width: 104px !important;
 
 	@media @tui-mobile {
 		display: inline;
