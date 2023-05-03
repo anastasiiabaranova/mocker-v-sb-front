@@ -39,7 +39,7 @@ const graphQLReducer = createReducer(
 	on(graphQLActions.setCurrentService, (state, {service}) => ({
 		...state,
 		currentService: service,
-		mocks: service.mocks,
+		mocks: service?.mocks || null,
 	})),
 	on(graphQLActions.setMocks, (state, {mocks}) => ({
 		...state,

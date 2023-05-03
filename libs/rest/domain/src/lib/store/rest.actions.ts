@@ -18,7 +18,7 @@ const setServices = createAction(
 );
 const setCurrentService = createAction(
 	'[REST] Open Service',
-	props<{service: RestServiceDto}>()
+	props<{service: RestServiceDto | null}>()
 );
 const updateMocks = createAction(
 	'[REST] Update Mocks',
@@ -30,11 +30,11 @@ const updateModels = createAction(
 );
 const setMocks = createAction(
 	'[REST] Set Mocks',
-	props<{mocks: ReadonlyArray<RestMockShortDto>}>()
+	props<{mocks: ReadonlyArray<RestMockShortDto> | null}>()
 );
 const setModels = createAction(
 	'[REST] Set Models',
-	props<{models: ReadonlyArray<RestModelShortDto>}>()
+	props<{models: ReadonlyArray<RestModelShortDto> | null}>()
 );
 const createService = createAction(
 	'[REST] Create Service',

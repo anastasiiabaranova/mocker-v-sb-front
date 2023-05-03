@@ -8,7 +8,7 @@ import {
 	withLatestFrom,
 	filter,
 } from 'rxjs/operators';
-import {EMPTY, of} from 'rxjs';
+import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
@@ -46,18 +46,23 @@ export class GraphQLEffects {
 			ofType(ROUTER_NAVIGATED),
 			withLatestFrom(this.store$.select(fromGraphQL.getServiceId)),
 			map(([, id]) => id),
-			filter(tuiIsPresent),
 			switchMap(id =>
-				this.apiService.getService(id).pipe(
-					map(service => graphQLActions.setCurrentService({service})),
-					catchError(() => {
-						this.notificationsFacade.showNotification({
-							label: 'Не удалось открыть сервис',
-							content: 'Попробуйте еще раз позже',
-							status: TuiNotification.Error,
-						});
-						return EMPTY;
-					})
+				iif(
+					() => tuiIsPresent(id),
+					this.apiService.getService(id!).pipe(
+						map(service =>
+							graphQLActions.setCurrentService({service})
+						),
+						catchError(() => {
+							this.notificationsFacade.showNotification({
+								label: 'Не удалось открыть сервис',
+								content: 'Попробуйте еще раз позже',
+								status: TuiNotification.Error,
+							});
+							return EMPTY;
+						})
+					),
+					of(graphQLActions.setCurrentService({service: null}))
 				)
 			)
 		)

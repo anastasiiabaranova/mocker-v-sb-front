@@ -9,7 +9,7 @@ import {
 	filter,
 	mergeMap,
 } from 'rxjs/operators';
-import {EMPTY, of} from 'rxjs';
+import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
@@ -51,20 +51,29 @@ export class RestEffects {
 			ofType(ROUTER_NAVIGATED),
 			withLatestFrom(this.store$.select(fromRest.getServicePath)),
 			map(([, path]) => path),
-			filter(tuiIsPresent),
 			switchMap(path =>
-				this.serviceApiService.getService(path).pipe(
-					map(service => restActions.setCurrentService({service})),
-					catchError(() => {
-						this.notificationsFacade.showNotification({
-							label: 'Не удалось открыть сервис',
-							content: 'Попробуйте еще раз позже',
-							status: TuiNotification.Error,
-						});
-						this.router.navigate(['rest-api']);
+				iif(
+					() => tuiIsPresent(path),
+					this.serviceApiService.getService(path!).pipe(
+						map(service =>
+							restActions.setCurrentService({service})
+						),
+						catchError(() => {
+							this.notificationsFacade.showNotification({
+								label: 'Не удалось открыть сервис',
+								content: 'Попробуйте еще раз позже',
+								status: TuiNotification.Error,
+							});
+							this.router.navigate(['rest-api']);
 
-						return EMPTY;
-					})
+							return EMPTY;
+						})
+					),
+					[
+						restActions.setCurrentService({service: null}),
+						restActions.setMocks({mocks: null}),
+						restActions.setModels({models: null}),
+					]
 				)
 			)
 		)

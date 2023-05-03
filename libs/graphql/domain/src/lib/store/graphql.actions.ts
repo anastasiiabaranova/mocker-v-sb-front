@@ -15,11 +15,11 @@ const setServices = createAction(
 );
 const setCurrentService = createAction(
 	'[GRAPHQL] Set Current Service',
-	props<{service: GraphQLServiceDto}>()
+	props<{service: GraphQLServiceDto | null}>()
 );
 const setMocks = createAction(
 	'[GRAPHQL] Set Mocks',
-	props<{mocks: ReadonlyArray<GraphQLMockDto>}>()
+	props<{mocks: ReadonlyArray<GraphQLMockDto> | null}>()
 );
 const createService = createAction(
 	'[GRAPHQL] Create Service',

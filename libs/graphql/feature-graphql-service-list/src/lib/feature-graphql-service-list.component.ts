@@ -7,10 +7,9 @@ import {
 import {Router} from '@angular/router';
 import {GraphQLFacade} from '@mocker/graphql/domain';
 import {CreateGraphQLServiceDialogComponent} from '@mocker/shared/ui';
-import {tuiIsPresent} from '@taiga-ui/cdk';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {filter, map} from 'rxjs';
+import {map} from 'rxjs';
 
 @Component({
 	selector: 'mocker-feature-graphql-service-list',
@@ -21,8 +20,7 @@ import {filter, map} from 'rxjs';
 export class FeatureGraphQLServiceListComponent implements OnInit {
 	readonly services$ = this.facade.services$;
 	readonly selectedServiceId$ = this.facade.serviceId$.pipe(
-		filter(tuiIsPresent),
-		map(id => +id)
+		map(id => id && +id)
 	);
 
 	readonly skeletons = Array(20);

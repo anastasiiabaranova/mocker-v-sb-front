@@ -1,5 +1,7 @@
 <div class="container">
-	<mocker-feature-graphql-service-list></mocker-feature-graphql-service-list>
+	<mocker-feature-graphql-service-list
+		[ngClass]="{hideMobile: !showServicePlug}">
+	</mocker-feature-graphql-service-list>
 	<router-outlet
 		name="service"
 		(activate)="toggleServicePlug(false)"

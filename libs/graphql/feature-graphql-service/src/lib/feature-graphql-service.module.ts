@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 import {TuiButtonModule} from '@taiga-ui/core';
 import {TuiTableModule} from '@taiga-ui/addon-table';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
@@ -12,6 +13,7 @@ import {GraphQLMockListModule} from './components';
 	imports: [
 		FeatureGraphQLServiceRoutingModule,
 		CommonModule,
+		RouterModule,
 		TuiButtonModule,
 		TuiTableModule,
 		TuiMapperPipeModule,
