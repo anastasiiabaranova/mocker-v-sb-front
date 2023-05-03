@@ -63,6 +63,10 @@ export class GraphQLFacade {
 		this.store$.dispatch(graphQLActions.editMock({mock}));
 	}
 
+	switchMock(mock: GraphQLMockDto) {
+		this.store$.dispatch(graphQLActions.switchMock({mock}));
+	}
+
 	deleteMock(mock: GraphQLMockDto) {
 		this.store$.dispatch(graphQLActions.deleteMock({mock}));
 	}

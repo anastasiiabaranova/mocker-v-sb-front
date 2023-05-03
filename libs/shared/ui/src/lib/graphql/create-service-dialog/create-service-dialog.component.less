@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 }
@@ -14,4 +16,10 @@
 	padding: 12px;
 	border-radius: var(--tui-radius-s);
 	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.buttons {
+	@media @tui-mobile {
+		flex-direction: column-reverse;
+	}
 }

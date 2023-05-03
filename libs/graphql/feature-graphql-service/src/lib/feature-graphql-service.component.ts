@@ -30,7 +30,6 @@ import {CreateMockDialogComponent} from './components';
 })
 export class FeatureGraphQLServiceComponent {
 	readonly service$ = this.facade.currentService$;
-	readonly mocks$ = this.facade.mocks$;
 
 	readonly getDateTime = (expirationDate: string) =>
 		format(new Date(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});

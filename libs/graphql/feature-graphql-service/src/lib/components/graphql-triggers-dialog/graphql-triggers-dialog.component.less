@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 }
@@ -7,9 +9,24 @@
 	margin-bottom: 12px;
 }
 
+.tui-table__tr:last-child .tui-table__td {
+	height: auto;
+	padding-bottom: 0;
+}
+
 .tui-table__td,
 .tui-table__th {
 	padding: 12px;
+
+	@media @tui-mobile {
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			padding-right: 0;
+		}
+	}
 }
 
 .trigger-actions {

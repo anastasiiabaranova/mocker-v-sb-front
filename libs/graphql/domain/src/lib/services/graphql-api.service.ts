@@ -68,6 +68,13 @@ export class GraphQLApiService {
 		return this.httpClient.put<void>(`graphql/mocks/${mock.id}`, mock);
 	}
 
+	switchMock(mockId: string, enable: boolean): Observable<GraphQLMockDto> {
+		return this.httpClient.patch<GraphQLMockDto>(
+			`graphql/mocks/${mockId}`,
+			{enable}
+		);
+	}
+
 	deleteMock(id: string): Observable<void> {
 		return this.httpClient.delete<void>(`graphql/mocks/${id}`);
 	}

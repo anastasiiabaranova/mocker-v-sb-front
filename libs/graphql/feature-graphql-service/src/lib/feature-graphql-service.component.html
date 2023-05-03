@@ -37,7 +37,7 @@
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">URL mock-сервиса:</td>
 			<td class="row-data">
-				{{ serviceUrl }}
+				<span>{{ serviceUrl }}</span>
 				<button
 					tuiIconButton
 					type="button"
@@ -51,7 +51,9 @@
 			*ngIf="service.location"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Мокируемый URL:</td>
-			<td class="row-data">{{ service.location }}</td>
+			<td class="row-data">
+				<span>{{ service.location }}</span>
+			</td>
 		</tr>
 
 		<tr
@@ -73,7 +75,6 @@
 
 	<mocker-graphql-mock-list
 		class="mock-list"
-		[mocks]="mocks$ | async"
 		(createMock)="createMock(service.id!)"
 		(editMock)="editMock($event)"
 		(deleteMock)="deleteMock($event)"

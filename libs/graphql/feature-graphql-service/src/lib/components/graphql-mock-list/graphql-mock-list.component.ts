@@ -3,17 +3,20 @@ import {
 	Component,
 	EventEmitter,
 	Injector,
-	Input,
-	OnChanges,
 	Output,
 } from '@angular/core';
 import {TuiDestroyService} from '@taiga-ui/cdk';
 import {TuiDialogService} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {GraphQLMockDto} from '@mocker/graphql/domain';
+import {GraphQLFacade, GraphQLMockDto} from '@mocker/graphql/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
+import {BehaviorSubject, combineLatest, map} from 'rxjs';
 import {GraphQLTriggersDialogComponent} from '../graphql-triggers-dialog/graphql-triggers-dialog.component';
+
+function sliceArray(mocks: any, page: number, size: number) {
+	return (mocks || []).slice(page * size, page * size + size);
+}
 
 @Component({
 	selector: 'mocker-graphql-mock-list',
@@ -22,21 +25,25 @@ import {GraphQLTriggersDialogComponent} from '../graphql-triggers-dialog/graphql
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [TuiDestroyService],
 })
-export class GraphQLMockListComponent implements OnChanges {
-	@Input() mocks?: ReadonlyArray<GraphQLMockDto> | null;
+export class GraphQLMockListComponent {
+	readonly page$ = new BehaviorSubject<number>(0);
+	readonly size$ = new BehaviorSubject<number>(5);
+
+	readonly mocks$ = this.facade.mocks$;
+
+	readonly displayMocks$ = combineLatest([
+		this.facade.mocks$,
+		this.page$,
+		this.size$,
+	]).pipe(map(([mocks, page, size]) => sliceArray(mocks, page, size)));
 
 	@Output() readonly createMock = new EventEmitter<void>();
 	@Output() readonly editMock = new EventEmitter<GraphQLMockDto>();
 	@Output() readonly deleteMock = new EventEmitter<GraphQLMockDto>();
 	@Output() readonly deleteAll = new EventEmitter<void>();
 
-	readonly columns = ['name', 'expirationDate', 'enable', 'actions'];
+	readonly columns = ['name', 'expirationDate', 'actions'];
 	readonly sizeOptions = [5, 10, 20];
-
-	page = 0;
-	size = 5;
-
-	private _displayedMocks: GraphQLMockDto[] | null = null;
 
 	readonly getDateTime = (expirationDate?: string) =>
 		expirationDate
@@ -45,34 +52,11 @@ export class GraphQLMockListComponent implements OnChanges {
 			  })
 			: '';
 
-	readonly getEnabled = (enabled: boolean) => (enabled ? 'Вкл.' : 'Выкл.');
-
 	constructor(
 		private readonly dialogService: TuiDialogService,
+		private readonly facade: GraphQLFacade,
 		private readonly injector: Injector
 	) {}
-
-	get displayedMocks() {
-		if (!this._displayedMocks) {
-			this._displayedMocks = (this.mocks || []).slice(
-				this.page * this.size,
-				this.page * this.size + this.size
-			);
-		}
-
-		return this._displayedMocks;
-	}
-
-	ngOnChanges(): void {
-		this.updateDisplayedMocks();
-	}
-
-	updateDisplayedMocks() {
-		this._displayedMocks = (this.mocks || []).slice(
-			this.page * this.size,
-			this.page * this.size + this.size
-		);
-	}
 
 	openTriggersFor(mock: GraphQLMockDto) {
 		this.dialogService
@@ -84,5 +68,9 @@ export class GraphQLMockListComponent implements OnChanges {
 				{data: mock, size: 'm'}
 			)
 			.subscribe();
+	}
+
+	switchMock(mock: GraphQLMockDto) {
+		this.facade.switchMock(mock);
 	}
 }

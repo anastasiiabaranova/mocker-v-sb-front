@@ -32,6 +32,7 @@
 				<td class="tui-table__td">
 					<div class="trigger-actions">
 						<tui-toggle
+							class="tui-space_top-1"
 							[ngModel]="trigger.enable"
 							(ngModelChange)="switchTrigger(trigger)">
 						</tui-toggle>
@@ -55,7 +56,7 @@
 	</table>
 	<div
 		*tuiLet="showTriggerForm$ | async as showTriggerForm"
-		class="add-trigger">
+		class="add-trigger tui-space_top-3">
 		<button
 			*ngIf="!showTriggerForm"
 			tuiButton
@@ -87,5 +88,7 @@
 </div>
 
 <ng-template #noTriggers>
-	<span class="no-triggers tui-text_body-l">Нет триггеров</span>
+	<span class="no-triggers tui-text_body-l tui-space_bottom-2">
+		Нет триггеров
+	</span>
 </ng-template>

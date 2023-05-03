@@ -209,6 +209,35 @@ export class GraphQLEffects {
 		)
 	);
 
+	switchMock$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(graphQLActions.switchMock),
+			switchMap(({mock}) =>
+				this.apiService.switchMock(mock.id!, !mock.enable).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: `Мок ${
+								mock.enable ? 'выключен' : 'включен'
+							}`,
+							status: TuiNotification.Success,
+						})
+					),
+					map(mock => graphQLActions.mockEdited({mock})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: `Не удалось ${
+								mock.enable ? 'выключить' : 'включить'
+							} мок`,
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return of(graphQLActions.mockEdited({mock}));
+					})
+				)
+			)
+		)
+	);
+
 	deleteMock$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(graphQLActions.deleteMock),

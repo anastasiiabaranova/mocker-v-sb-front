@@ -61,6 +61,10 @@ const mockEdited = createAction(
 	'[GRAPHQL] Mock Edited',
 	props<{mock: GraphQLMockDto}>()
 );
+const switchMock = createAction(
+	'[GRAPHQL] Switch Mock',
+	props<{mock: GraphQLMockDto}>()
+);
 const deleteMock = createAction(
 	'[GRAPHQL] Delete Mock',
 	props<{mock: GraphQLMockDto}>()
@@ -91,6 +95,7 @@ export const graphQLActions = {
 	mockCreated,
 	editMock,
 	mockEdited,
+	switchMock,
 	deleteMock,
 	allMocksDeleted,
 	deleteAllMocks,
