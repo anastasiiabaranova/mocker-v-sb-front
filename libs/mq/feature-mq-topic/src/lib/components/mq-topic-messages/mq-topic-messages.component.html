@@ -25,8 +25,9 @@
 		<table tuiTable class="table" [columns]="columns">
 			<thead>
 				<tr tuiThGroup>
-					<th tuiTh>key</th>
-					<th tuiTh>content</th>
+					<th tuiTh class="message-key">Ключ</th>
+					<th tuiTh class="message-content">Содержание</th>
+					<th tuiTh class="message-actions"></th>
 				</tr>
 			</thead>
 			<tbody
@@ -34,11 +35,26 @@
 				tuiTbody
 				[data]="messages">
 				<tr *ngFor="let message of displayedMessages" tuiTr>
-					<td *tuiCell="'key'" tuiTd>
-						{{ message.key }}
+					<td *tuiCell="'key'" tuiTd class="message-key">
+						<tui-scrollbar>
+							<div class="value">{{ message.key }}</div>
+						</tui-scrollbar>
 					</td>
-					<td *tuiCell="'content'" tuiTd>
-						{{ message.content }}
+					<td *tuiCell="'content'" tuiTd class="message-content">
+						<tui-scrollbar>
+							<div class="value">{{ message.content }}</div>
+						</tui-scrollbar>
+					</td>
+					<td *tuiCell="'actions'" tuiTd class="message-actions">
+						<button
+							tuiIconButton
+							type="button"
+							icon="tuiIconCopy"
+							appearance="icon"
+							size="xs"
+							(click)="
+								copyMessageToClipboard(message.content)
+							"></button>
 					</td>
 				</tr>
 			</tbody>

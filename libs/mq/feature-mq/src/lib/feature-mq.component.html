@@ -1,5 +1,6 @@
 <div class="container">
-	<mocker-feature-mq-topic-list></mocker-feature-mq-topic-list>
+	<mocker-feature-mq-topic-list [ngClass]="{hideMobile: !showTopicPlug}">
+	</mocker-feature-mq-topic-list>
 	<router-outlet
 		name="topic"
 		(activate)="toggleTopicPlug(false)"

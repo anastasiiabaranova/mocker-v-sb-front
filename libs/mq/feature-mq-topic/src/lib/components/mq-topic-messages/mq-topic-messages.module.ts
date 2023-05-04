@@ -1,6 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {TuiButtonModule, TuiLoaderModule} from '@taiga-ui/core';
+import {
+	TuiButtonModule,
+	TuiLoaderModule,
+	TuiScrollbarModule,
+} from '@taiga-ui/core';
 import {TuiTableModule, TuiTablePaginationModule} from '@taiga-ui/addon-table';
 import {TuiLetModule} from '@taiga-ui/cdk';
 
@@ -17,6 +21,7 @@ import {MessageSendDialogModule} from '../message-send-dialog/message-send-dialo
 		TuiLetModule,
 		MessageSendDialogModule,
 		TuiTablePaginationModule,
+		TuiScrollbarModule,
 	],
 	exports: [MQTopicMessagesComponent],
 })

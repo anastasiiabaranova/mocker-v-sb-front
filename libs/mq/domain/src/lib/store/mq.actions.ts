@@ -12,7 +12,7 @@ const setTopics = createAction(
 );
 const setCurrentTopic = createAction(
 	'[MQ] Set Current Topic',
-	props<{topic: Topic}>()
+	props<{topic: Topic | null}>()
 );
 const createTopic = createAction(
 	'[MQ] Craete Topic',

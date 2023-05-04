@@ -1,12 +1,23 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
 :host {
 	display: block;
 	height: 100%;
+
+	@media @tui-mobile {
+		width: 100%;
+	}
 }
 
 .container {
 	height: 100%;
 	width: 300px;
 	border-right: 1px solid var(--tui-base-03);
+
+	@media @tui-mobile {
+		width: 100%;
+		border-right: none;
+	}
 }
 
 .topics {

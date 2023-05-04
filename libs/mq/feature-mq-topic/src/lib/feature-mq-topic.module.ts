@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {TuiButtonModule} from '@taiga-ui/core';
 import {MQTopicMessagesModule} from './components';
@@ -12,6 +13,7 @@ import {FeatureMQTopicComponent} from './feature-mq-topic.component';
 	imports: [
 		CommonModule,
 		FeatureMQTopicRoutingModule,
+		RouterModule,
 		TuiMapperPipeModule,
 		TuiLetModule,
 		TuiButtonModule,

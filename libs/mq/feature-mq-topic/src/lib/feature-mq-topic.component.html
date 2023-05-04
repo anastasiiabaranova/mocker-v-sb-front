@@ -1,22 +1,26 @@
 <ng-container *ngIf="topic$ | async as topic">
 	<div class="header">
 		<span class="title tui-text_body-xl">{{ topic.topicName }}</span>
-		<!-- <button
-			tuiButton
-			type="button"
-			appearance="secondary"
-			size="s"
-			(click)="editService(service)">
-			Редактировать
-		</button> -->
-		<button
-			tuiButton
-			type="button"
-			appearance="secondary"
-			size="s"
-			(click)="deleteTopic(topic)">
-			Удалить
-		</button>
+		<div class="actions">
+			<button
+				tuiButton
+				class="back-button"
+				type="button"
+				appearance="mono"
+				size="s"
+				icon="tuiIconChevronLeft"
+				routerLink="/mq">
+				Назад
+			</button>
+			<button
+				tuiButton
+				type="button"
+				appearance="secondary"
+				size="s"
+				(click)="deleteTopic(topic)">
+				Удалить
+			</button>
+		</div>
 	</div>
 
 	<table class="info tui-table">
@@ -37,7 +41,7 @@
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Адрес:</td>
 			<td class="row-data">
-				{{ address }}
+				<span>{{ address }}</span>
 				<button
 					tuiIconButton
 					type="button"

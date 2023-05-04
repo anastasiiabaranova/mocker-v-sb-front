@@ -5,8 +5,10 @@ import {
 	Input,
 	OnChanges,
 } from '@angular/core';
+import {Clipboard} from '@angular/cdk/clipboard';
 import {Message, MQFacade, Topic} from '@mocker/mq/domain';
-import {TuiDialogService} from '@taiga-ui/core';
+import {NotificationsFacade} from '@mocker/shared/utils';
+import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {iif, of, Subject, switchMap, tap} from 'rxjs';
 import {MessageSendDialogComponent} from '../message-send-dialog/message-send-dialog.component';
@@ -40,7 +42,7 @@ export class MQTopicMessagesComponent implements OnChanges {
 		})
 	);
 
-	readonly columns = ['key', 'content'];
+	readonly columns = ['key', 'content', 'actions'];
 
 	readonly sizeOptions = [5, 10, 15];
 
@@ -54,6 +56,8 @@ export class MQTopicMessagesComponent implements OnChanges {
 	constructor(
 		private readonly facade: MQFacade,
 		private readonly dialogService: TuiDialogService,
+		private readonly clipboard: Clipboard,
+		private readonly notificationsFacade: NotificationsFacade,
 		private readonly injector: Injector
 	) {}
 
@@ -90,5 +94,14 @@ export class MQTopicMessagesComponent implements OnChanges {
 			this.page * this.size,
 			this.page * this.size + this.size
 		);
+	}
+
+	copyMessageToClipboard(content: string) {
+		if (this.clipboard.copy(content)) {
+			this.notificationsFacade.showNotification({
+				content: 'Сообщение скопировано в буфер обмена',
+				status: TuiNotification.Success,
+			});
+		}
 	}
 }

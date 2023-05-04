@@ -1,14 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {
-	map,
-	catchError,
-	switchMap,
-	tap,
-	withLatestFrom,
-	filter,
-} from 'rxjs/operators';
-import {EMPTY, of} from 'rxjs';
+import {map, catchError, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
@@ -48,21 +41,24 @@ export class MQEffects {
 				this.store$.select(fromMQ.getBrokerType),
 				this.store$.select(fromMQ.getTopicName)
 			),
-			filter(([, brokerType, topicName]) => !!brokerType && !!topicName),
 			switchMap(([, brokerType, topicName]) =>
-				this.apiService
-					.getTopic(brokerType as BrokerType, topicName!)
-					.pipe(
-						map(topic => mqActions.setCurrentTopic({topic})),
-						catchError(() => {
-							this.notificationsFacade.showNotification({
-								label: 'Не удалось открыть топик',
-								content: 'Попробуйте еще раз позже',
-								status: TuiNotification.Error,
-							});
-							return EMPTY;
-						})
-					)
+				iif(
+					() => !!brokerType && !!topicName,
+					this.apiService
+						.getTopic(brokerType as BrokerType, topicName!)
+						.pipe(
+							map(topic => mqActions.setCurrentTopic({topic})),
+							catchError(() => {
+								this.notificationsFacade.showNotification({
+									label: 'Не удалось открыть топик',
+									content: 'Попробуйте еще раз позже',
+									status: TuiNotification.Error,
+								});
+								return EMPTY;
+							})
+						),
+					of(mqActions.setCurrentTopic({topic: null}))
+				)
 			)
 		)
 	);

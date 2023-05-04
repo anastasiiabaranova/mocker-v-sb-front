@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 }
@@ -19,13 +21,36 @@
 	padding: 12px;
 	border: 1px solid var(--tui-base-03);
 	border-radius: var(--tui-radius-m);
-    min-height: 92px;
+	min-height: 92px;
+
+	@media @tui-mobile {
+		padding: 8px;
+	}
 
 	.table {
 		width: 100%;
 
 		& th {
 			width: 50%;
+		}
+
+		.message-key .value,
+		.message-content .value {
+			max-height: 200px;
+		}
+
+		@media @tui-mobile {
+			.message-key {
+				padding-left: 0;
+			}
+
+			.message-content {
+				padding-right: 0;
+			}
+
+			.message-actions {
+				display: none;
+			}
 		}
 	}
 
@@ -34,6 +59,8 @@
 		th {
 			border: none;
 			border-bottom: 1px solid var(--tui-base-03);
+			padding-top: 12px;
+			padding-bottom: 12px;
 		}
 
 		tbody {
@@ -45,9 +72,9 @@
 		}
 	}
 
-    .loader {
-        padding: 8px 12px 8px 12px;
-    }
+	.loader {
+		padding: 8px 12px 8px 12px;
+	}
 
 	.no-messages {
 		padding: 12px;
