@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {GraphQLHistoryShellRoutingModule} from './graphql-history-shell-routing.module';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [GraphQLHistoryShellRoutingModule],
 })
-export class GraphqlHistoryShellModule {}
+export class GraphQLHistoryShellModule {}

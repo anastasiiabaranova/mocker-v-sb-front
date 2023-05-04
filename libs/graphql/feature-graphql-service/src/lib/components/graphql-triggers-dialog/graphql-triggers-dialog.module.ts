@@ -5,7 +5,7 @@ import {TuiToggleModule} from '@taiga-ui/kit';
 import {FormsModule} from '@angular/forms';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {GraphQLTriggersDialogComponent} from './graphql-triggers-dialog.component';
-import {GraphqlTriggerFormModule} from '../graphql-trigger-form/graphql-trigger-form.module';
+import {GraphQLTriggerFormModule} from '../graphql-trigger-form/graphql-trigger-form.module';
 
 @NgModule({
 	declarations: [GraphQLTriggersDialogComponent],
@@ -16,7 +16,7 @@ import {GraphqlTriggerFormModule} from '../graphql-trigger-form/graphql-trigger-
 		TuiToggleModule,
 		TuiMapperPipeModule,
 		TuiLetModule,
-		GraphqlTriggerFormModule,
+		GraphQLTriggerFormModule,
 	],
 	exports: [GraphQLTriggersDialogComponent],
 })

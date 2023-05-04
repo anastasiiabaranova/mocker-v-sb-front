@@ -26,7 +26,7 @@ const PATH_REGEXP = /^(\['.+'\])+$/;
 	styleUrls: ['./graphql-trigger-form.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GraphqlTriggerFormComponent {
+export class GraphQLTriggerFormComponent {
 	@Input() mockId!: string;
 
 	@Output() readonly createTrigger = new EventEmitter<TriggerDto | null>();

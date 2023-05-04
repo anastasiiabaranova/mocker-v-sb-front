@@ -1,1 +1,1 @@
-export * from './lib/graphql-history-feature-graphql-history.module';
+export * from './lib/feature-graphql-history.module';

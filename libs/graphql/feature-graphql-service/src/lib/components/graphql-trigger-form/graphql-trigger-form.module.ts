@@ -15,10 +15,10 @@ import {
 	TuiStringifyContentPipeModule,
 	TuiToggleModule,
 } from '@taiga-ui/kit';
-import {GraphqlTriggerFormComponent} from './graphql-trigger-form.component';
+import {GraphQLTriggerFormComponent} from './graphql-trigger-form.component';
 
 @NgModule({
-	declarations: [GraphqlTriggerFormComponent],
+	declarations: [GraphQLTriggerFormComponent],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
@@ -33,6 +33,6 @@ import {GraphqlTriggerFormComponent} from './graphql-trigger-form.component';
 		TuiStringifyContentPipeModule,
 		TuiToggleModule,
 	],
-	exports: [GraphqlTriggerFormComponent],
+	exports: [GraphQLTriggerFormComponent],
 })
-export class GraphqlTriggerFormModule {}
+export class GraphQLTriggerFormModule {}
