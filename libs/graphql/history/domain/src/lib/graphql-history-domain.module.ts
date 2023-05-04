@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {GraphQLHistoryApiService} from './services';
 
 @NgModule({
-	imports: [CommonModule],
+	providers: [GraphQLHistoryApiService],
 })
 export class GraphQLHistoryDomainModule {}
