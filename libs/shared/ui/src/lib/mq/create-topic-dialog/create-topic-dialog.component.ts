@@ -21,6 +21,7 @@ import {takeUntil} from 'rxjs/operators';
 const NAME_REQUIRED_ERROR = 'Укажите имя топика';
 const NAME_FORMAT_ERROR =
 	'Используйте только латинские буквы, цифры и символы ._-';
+const BROKER_TYPE_REQUIRED_ERROR = 'Выберите тип брокера';
 
 const NAME_PATTERN = /^[a-zA-Z0-9._-]+$/;
 
@@ -40,11 +41,15 @@ export class CreateTopicDialogComponent implements OnInit {
 				patternValidatorFactory(NAME_FORMAT_ERROR, NAME_PATTERN),
 			],
 		],
-		brokerType: [BrokerType.Kafka],
-		messageRetention: [null],
+		brokerType: [
+			null,
+			requiredValidatorFactory(BROKER_TYPE_REQUIRED_ERROR),
+		],
 	});
 
 	readonly loading$ = this.facade.dialogLoading$;
+
+	readonly brokerTypes = [BrokerType.Kafka, BrokerType.Rabbit];
 
 	constructor(
 		@Inject(POLYMORPHEUS_CONTEXT)
@@ -55,8 +60,6 @@ export class CreateTopicDialogComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.form.controls.brokerType.disable();
-
 		this.facade.topicCreated$
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
@@ -72,7 +75,7 @@ export class CreateTopicDialogComponent implements OnInit {
 			return;
 		}
 
-		const topic = this.form.getRawValue() as any;
+		const topic = this.form.value as any;
 
 		this.facade.createTopic(topic);
 	}

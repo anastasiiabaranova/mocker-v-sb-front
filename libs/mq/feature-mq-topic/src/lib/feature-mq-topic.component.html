@@ -30,13 +30,6 @@
 			<td class="row-data">{{ topic.brokerType }}</td>
 		</tr>
 		<tr
-			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
-			<td class="row-title">Время жизни сообщений:</td>
-			<td class="row-data">
-				{{ topic.messageRetention | tuiMapper : getMessageRetention }}
-			</td>
-		</tr>
-		<tr
 			*tuiLet="topic | tuiMapper : getAddress as address"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Адрес:</td>

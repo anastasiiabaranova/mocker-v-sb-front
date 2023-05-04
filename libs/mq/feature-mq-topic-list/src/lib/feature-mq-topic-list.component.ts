@@ -46,7 +46,8 @@ export class FeatureMqTopicListComponent implements OnInit {
 				new PolymorpheusComponent(
 					CreateTopicDialogComponent,
 					this.injector
-				)
+				),
+				{size: 's'}
 			)
 			.subscribe();
 	}

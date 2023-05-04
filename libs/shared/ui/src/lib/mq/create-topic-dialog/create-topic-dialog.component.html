@@ -2,31 +2,23 @@
 	<h3 class="tui-form__header tui-form__header_margin-top_none">
 		Новый топик
 	</h3>
-	<div class="tui-form__row tui-form__row_multi-fields">
-		<div class="tui-form__multi-field">
-			<tui-input formControlName="topicName" tuiTextfieldSize="m">
-				Имя
-			</tui-input>
-			<tui-error
-				formControlName="topicName"
-				[error]="[] | tuiFieldError | async"></tui-error>
-		</div>
-		<div class="tui-form__multi-field">
-			<tui-select
-				formControlName="brokerType"
-				tuiTextfieldSize="m"
-				[readOnly]="true">
-				Брокер
-			</tui-select>
-		</div>
+	<div class="tui-form__row">
+		<tui-input formControlName="topicName" tuiTextfieldSize="m">
+			Имя
+		</tui-input>
+		<tui-error
+			formControlName="topicName"
+			[error]="[] | tuiFieldError | async"></tui-error>
 	</div>
-	<div class="tui-form__row tui-form__row_half-width">
-		<tui-input-number
-			formControlName="messageRetention"
-			tuiTextfieldSize="m"
-			[min]="0">
-			Время жизни сообщений, мс
-		</tui-input-number>
+	<div class="tui-form__row">
+		<tui-select formControlName="brokerType" tuiTextfieldSize="m">
+			Брокер
+			<tui-data-list-wrapper *tuiDataList [items]="brokerTypes">
+			</tui-data-list-wrapper>
+		</tui-select>
+		<tui-error
+			formControlName="brokerType"
+			[error]="[] | tuiFieldError | async"></tui-error>
 	</div>
 
 	<div class="buttons tui-form__buttons tui-form__buttons_align_end">
