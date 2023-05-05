@@ -2,9 +2,7 @@
 	<ng-container *tuiLet="pageSize$ | async as pageSize">
 		<ng-container *tuiLet="totalItems$ | async as totalItems">
 			<tui-table-pagination
-				*ngIf="
-					page !== null && pageSize !== null && totalItems !== null
-				"
+				*ngIf="page !== null && pageSize !== null && totalItems"
 				[total]="totalItems"
 				[items]="sizeOptions"
 				[page]="page"
@@ -17,7 +15,7 @@
 </ng-container>
 
 <div *ngIf="history$ | async as history" class="container">
-	<tui-scrollbar>
+	<tui-scrollbar *ngIf="history.length; else noHistory">
 		<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
 			<thead>
 				<tr tuiThGroup>
@@ -118,3 +116,7 @@
 		</table>
 	</tui-scrollbar>
 </div>
+
+<ng-template #noHistory>
+	<div class="no-history tui-text_h5">Не нашли вызовов</div>
+</ng-template>

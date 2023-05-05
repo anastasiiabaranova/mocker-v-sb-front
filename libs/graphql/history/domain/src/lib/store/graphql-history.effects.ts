@@ -6,8 +6,8 @@ import {
 	switchMap,
 	withLatestFrom,
 	filter,
-	startWith,
 	mergeMap,
+	debounceTime,
 } from 'rxjs/operators';
 import {combineLatest, EMPTY} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
@@ -31,24 +31,27 @@ function removeEmptyFields(
 
 @Injectable()
 export class GraphQLHistoryEffects {
+	private readonly navigatedToHistory$ = this.actions$.pipe(
+		ofType(ROUTER_NAVIGATED),
+		map(({payload: {routerState}}) => routerState as any),
+		map(({url}) => url),
+		filter(url => url.startsWith('/graphql-history'))
+	);
+
+	resetState$ = createEffect(() =>
+		this.navigatedToHistory$.pipe(
+			map(() => graphQLHistoryActions.resetState())
+		)
+	);
+
 	loadHistory$ = createEffect(() =>
 		combineLatest([
-			this.actions$.pipe(ofType(ROUTER_NAVIGATED)),
-			this.actions$.pipe(
-				ofType(graphQLHistoryActions.changePage),
-				map(({page}) => page),
-				startWith(0)
-			),
-			this.actions$.pipe(
-				ofType(graphQLHistoryActions.changePageSize),
-				map(({pageSize}) => pageSize),
-				startWith(10)
-			),
-			this.actions$.pipe(
-				ofType(graphQLHistoryActions.changeTimeRange),
-				startWith({} as any)
-			),
+			this.navigatedToHistory$,
+			this.store$.select(fromGraphQLHistory.getPage),
+			this.store$.select(fromGraphQLHistory.getPageSize),
+			this.store$.select(fromGraphQLHistory.getTimeRange),
 		]).pipe(
+			debounceTime(0),
 			map(([, page, pageSize, {from, to}]) => ({
 				page,
 				pageSize,

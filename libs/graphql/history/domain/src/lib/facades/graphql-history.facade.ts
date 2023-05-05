@@ -11,16 +11,18 @@ export class GraphQLHistoryFacade {
 	readonly history$ = this.store$.select(fromGraphQLHistory.getHistory);
 
 	readonly page$ = this.store$
-		.select(fromGraphQLHistory.getPaging)
-		.pipe(map(paging => (tuiIsPresent(paging) ? paging.page : null)));
+		.select(fromGraphQLHistory.getPage)
+		.pipe(map(page => (tuiIsPresent(page) ? page : null)));
 
 	readonly pageSize$ = this.store$
-		.select(fromGraphQLHistory.getPaging)
-		.pipe(map(paging => (tuiIsPresent(paging) ? paging.pageSize : null)));
+		.select(fromGraphQLHistory.getPageSize)
+		.pipe(map(pageSize => (tuiIsPresent(pageSize) ? pageSize : null)));
 
 	readonly totalItems$ = this.store$
-		.select(fromGraphQLHistory.getPaging)
-		.pipe(map(paging => (tuiIsPresent(paging) ? paging.totalItems : null)));
+		.select(fromGraphQLHistory.getTotalItems)
+		.pipe(
+			map(totalItems => (tuiIsPresent(totalItems) ? totalItems : null))
+		);
 
 	constructor(private readonly store$: Store) {}
 

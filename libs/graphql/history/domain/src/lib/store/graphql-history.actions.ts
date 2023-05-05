@@ -21,6 +21,7 @@ const setPaging = createAction(
 	'[GRAPHQL] Set Paging',
 	props<{paging: GraphQLHistoryPagingDto}>()
 );
+const resetState = createAction('[GRAPHQL] Reset State');
 
 export const graphQLHistoryActions = {
 	changePage,
@@ -28,4 +29,5 @@ export const graphQLHistoryActions = {
 	changeTimeRange,
 	setHistory,
 	setPaging,
+	resetState,
 };

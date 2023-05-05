@@ -4,7 +4,10 @@
 		<div class="title tui-text_h5">МОКЕР В СБ</div>
 	</div>
 
-	<tui-tabs *ngIf="email" class="services">
+	<tui-tabs
+		*ngIf="email"
+		class="services"
+		[(activeItemIndex)]="activeTabIndex">
 		<a tuiTab routerLink="/rest-api" routerLinkActive> REST API </a>
 		<a tuiTab routerLink="/graphql" routerLinkActive> GraphQL </a>
 		<a tuiTab routerLink="/mq" routerLinkActive> MQ </a>

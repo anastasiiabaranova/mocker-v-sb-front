@@ -12,11 +12,26 @@ const graphQLHistoryFeature = createFeatureSelector<GraphQLHistoryState>(
 );
 
 const getServiceId = selectRouteParam('id');
-const getPaging = createSelector(graphQLHistoryFeature, ({paging}) => paging);
+const getPage = createSelector(graphQLHistoryFeature, ({page}) => page);
+const getPageSize = createSelector(
+	graphQLHistoryFeature,
+	({pageSize}) => pageSize
+);
+const getTotalItems = createSelector(
+	graphQLHistoryFeature,
+	({totalItems}) => totalItems
+);
+const getTimeRange = createSelector(
+	graphQLHistoryFeature,
+	({timeRange}) => timeRange
+);
 const getHistory = createSelector(graphQLHistoryFeature, ({items}) => items);
 
 export const fromGraphQLHistory = {
 	getServiceId,
-	getPaging,
+	getPage,
+	getPageSize,
+	getTotalItems,
+	getTimeRange,
 	getHistory,
 };
