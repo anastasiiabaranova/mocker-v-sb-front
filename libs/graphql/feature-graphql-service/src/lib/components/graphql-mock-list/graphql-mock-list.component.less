@@ -34,7 +34,7 @@
 	}
 
 	& th.mock-date {
-		width: 150px;
+		min-width: 150px;
 	}
 
 	& th.mock-actions {
@@ -57,6 +57,27 @@
 		}
 	}
 
+	& .mock-name {
+		& > span {
+			display: block;
+			width: calc(100vw - 830px);
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+
+	@media @tui-tablet {
+		& .mock-date {
+			display: none;
+		}
+
+		& .mock-name {
+			& > span {
+				width: calc(100vw - 536px);
+			}
+		}
+	}
+
 	@media @tui-mobile {
 		& .mock-date {
 			display: none;
@@ -66,10 +87,7 @@
 			padding-left: 0;
 
 			& > span {
-				display: block;
 				width: calc(100vw - 220px);
-				overflow: hidden;
-				text-overflow: ellipsis;
 			}
 		}
 

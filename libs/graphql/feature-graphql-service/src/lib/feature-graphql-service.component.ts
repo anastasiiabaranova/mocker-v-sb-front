@@ -3,8 +3,10 @@ import {
 	Component,
 	Inject,
 	Injector,
+	OnInit,
 } from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
+import {FormBuilder} from '@angular/forms';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {
 	GraphQLFacade,
@@ -21,15 +23,28 @@ import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
 import {CreateMockDialogComponent} from './components';
+import {filter, map, shareReplay, takeUntil, tap, withLatestFrom} from 'rxjs';
+import {TuiDestroyService, tuiIsPresent} from '@taiga-ui/cdk';
 
 @Component({
 	selector: 'mocker-feature-graphql-service',
 	templateUrl: './feature-graphql-service.component.html',
 	styleUrls: ['./feature-graphql-service.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [TuiDestroyService],
 })
-export class FeatureGraphQLServiceComponent {
-	readonly service$ = this.facade.currentService$;
+export class FeatureGraphQLServiceComponent implements OnInit {
+	readonly service$ = this.facade.currentService$.pipe(
+		filter(tuiIsPresent),
+		tap(({storeHistory}) => {
+			this.form.patchValue({storeHistory}, {emitEvent: false});
+		}),
+		shareReplay(1)
+	);
+
+	readonly form = this.formBuilder.group({
+		storeHistory: [false],
+	});
 
 	readonly getDateTime = (expirationDate: string) =>
 		format(new Date(expirationDate), 'dd MMMM yyyy, HH:mm', {locale: ru});
@@ -43,8 +58,21 @@ export class FeatureGraphQLServiceComponent {
 		private readonly facade: GraphQLFacade,
 		private readonly notificationsFacade: NotificationsFacade,
 		private readonly dialogService: TuiDialogService,
-		private readonly injector: Injector
+		private readonly formBuilder: FormBuilder,
+		private readonly injector: Injector,
+		private readonly destroy$: TuiDestroyService
 	) {}
+
+	ngOnInit(): void {
+		this.form.controls.storeHistory.valueChanges
+			.pipe(
+				filter(tuiIsPresent),
+				withLatestFrom(this.service$.pipe(map(({id}) => id))),
+				tap(([enable, id]) => this.facade.switchHistory(id!, enable)),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
 	copyTextToClipboard(text: string) {
 		if (this.clipboard.copy(text)) {

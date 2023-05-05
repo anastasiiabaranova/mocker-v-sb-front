@@ -37,6 +37,14 @@ const serviceEdited = createAction(
 	'[GRAPHQL] Service Edited',
 	props<{service: GraphQLServiceDto}>()
 );
+const switchHistory = createAction(
+	'[GRAPHQL] Switch History',
+	props<{id: string; enable: boolean}>()
+);
+const historySwitched = createAction(
+	'[GRAPHQL] History Switched',
+	props<{enable: boolean}>()
+);
 const deleteService = createAction(
 	'[GRAPHQL] Delete Service',
 	props<{id: string}>()
@@ -89,6 +97,8 @@ export const graphQLActions = {
 	serviceCreated,
 	editService,
 	serviceEdited,
+	switchHistory,
+	historySwitched,
 	deleteService,
 	serviceDeleted,
 	createMock,

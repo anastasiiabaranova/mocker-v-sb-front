@@ -39,6 +39,9 @@
 
 	.title {
 		flex-grow: 1;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.actions {
@@ -102,11 +105,17 @@
 		text-overflow: ellipsis;
 
 		& > span {
+			width: calc(100vw - 665px);
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+
+			@media @tui-tablet {
+				width: calc(100vw - 520px);
+			}
+
 			@media @tui-mobile {
 				width: calc(100vw - 80px);
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
 			}
 		}
 

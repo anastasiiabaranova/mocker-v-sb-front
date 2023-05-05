@@ -10,4 +10,5 @@ export type GraphQLServiceDto = Readonly<{
 	useDefaultMock?: boolean;
 	schema?: string;
 	mocks?: ReadonlyArray<GraphQLMockDto>;
+	storeHistory: boolean;
 }>;

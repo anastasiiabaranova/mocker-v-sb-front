@@ -44,6 +44,13 @@ export class GraphQLApiService {
 		);
 	}
 
+	switchHistory(id: string, enable: boolean): Observable<GraphQLServiceDto> {
+		return this.httpClient.patch<GraphQLServiceDto>(
+			`graphql/services/${id}/history`,
+			{enable}
+		);
+	}
+
 	deleteService(id: string): Observable<void> {
 		return this.httpClient.delete<void>(`graphql/services/${id}`);
 	}

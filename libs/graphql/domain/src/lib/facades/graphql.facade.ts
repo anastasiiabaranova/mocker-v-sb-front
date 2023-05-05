@@ -51,6 +51,10 @@ export class GraphQLFacade {
 		this.store$.dispatch(graphQLActions.editService({service}));
 	}
 
+	switchHistory(id: string, enable: boolean) {
+		this.store$.dispatch(graphQLActions.switchHistory({id, enable}));
+	}
+
 	deleteService(id: string) {
 		this.store$.dispatch(graphQLActions.deleteService({id}));
 	}

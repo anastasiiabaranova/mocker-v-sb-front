@@ -55,7 +55,6 @@
 				<span>{{ service.location }}</span>
 			</td>
 		</tr>
-
 		<tr
 			*ngIf="service.expirationDate"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
@@ -64,12 +63,31 @@
 				{{ service.expirationDate | tuiMapper : getDateTime }}
 			</td>
 		</tr>
-
 		<tr
 			*ngIf="service.delay"
 			class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
 			<td class="row-title">Задержка:</td>
 			<td class="row-data">{{ service.delay }} сек</td>
+		</tr>
+		<tr
+			class="tui-table__tr tui-table__tr_border_none tui-table__tr_hover_disabled">
+			<td class="row-title">История:</td>
+			<td class="row-data">
+				<span class="mobile-only">История:</span>
+				<tui-toggle
+					class="tui-space_top-1"
+					[formControl]="form.controls.storeHistory">
+				</tui-toggle>
+				<button
+					tuiButton
+					class="histoty-button"
+					type="button"
+					appearance="flat"
+					size="s"
+					[routerLink]="['/graphql-history', service.id]">
+					Посмотреть
+				</button>
+			</td>
 		</tr>
 	</table>
 

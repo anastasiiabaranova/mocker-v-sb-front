@@ -126,6 +126,38 @@ export class GraphQLEffects {
 		)
 	);
 
+	switchHistory$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(graphQLActions.switchHistory),
+			switchMap(({id, enable}) =>
+				this.apiService.switchHistory(id, enable).pipe(
+					tap(() =>
+						this.notificationsFacade.showNotification({
+							content: `Запись истории ${
+								enable ? 'включена' : 'выключена'
+							}`,
+							status: TuiNotification.Success,
+						})
+					),
+					map(() => graphQLActions.historySwitched({enable})),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: `Не удалось ${
+								enable ? 'включить' : 'выключить'
+							} запись истории`,
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+
+						return of(
+							graphQLActions.historySwitched({enable: !enable})
+						);
+					})
+				)
+			)
+		)
+	);
+
 	deleteService$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(graphQLActions.deleteService),

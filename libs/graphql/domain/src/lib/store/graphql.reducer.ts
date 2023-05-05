@@ -74,6 +74,13 @@ const graphQLReducer = createReducer(
 		),
 		dialogLoading: false,
 	})),
+	on(graphQLActions.historySwitched, (state, {enable}) => ({
+		...state,
+		currentService: {
+			...state.currentService!,
+			storeHistory: enable,
+		},
+	})),
 	on(graphQLActions.serviceDeleted, (state, {id}) => ({
 		...state,
 		services: state.services?.filter(({id: serviceId}) => serviceId !== id),
