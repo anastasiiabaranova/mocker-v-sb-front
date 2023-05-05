@@ -1,1 +1,52 @@
-<p>feature-graphql-history works!</p>
+<div class="container">
+	<button
+		*ngIf="serviceId$ | async as serviceId"
+		tuiButton
+		class="back-button"
+		type="button"
+		appearance="mono"
+		size="s"
+		icon="tuiIconChevronLeft"
+		[routerLink]="['/graphql', serviceId]">
+		Назад
+	</button>
+
+	<form class="tui-space_top-4" [formGroup]="form">
+		<div class="tui-form__row tui-form__row_multi-fields">
+			<div class="form-field tui-form__multi-field">
+				<tui-select tuiTextfieldSize="m" formControlName="range">
+					Период
+					<tui-data-list-wrapper *tuiDataList [items]="rangeOptions">
+					</tui-data-list-wrapper>
+				</tui-select>
+				<tui-error
+					formControlName="range"
+					[error]="[] | tuiFieldError | async"></tui-error>
+			</div>
+			<tui-input-date-time
+				*ngIf="showCustomRange$ | async"
+				tuiTextfieldSize="m"
+				formControlName="from"
+				class="form-field tui-form__multi-field"
+				[tuiTextfieldCleaner]="true">
+				Начало
+			</tui-input-date-time>
+			<tui-input-date-time
+				*ngIf="showCustomRange$ | async"
+				tuiTextfieldSize="m"
+				formControlName="to"
+				class="form-field tui-form__multi-field"
+				[tuiTextfieldCleaner]="true">
+				Конец
+			</tui-input-date-time>
+			<button
+				class="search-button"
+				tuiButton
+				type="button"
+				size="m"
+				(click)="searchByDate()">
+				Найти
+			</button>
+		</div>
+	</form>
+</div>

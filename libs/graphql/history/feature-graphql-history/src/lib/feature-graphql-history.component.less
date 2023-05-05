@@ -1,3 +1,40 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
+}
+
+.container {
+	padding: 24px;
+}
+
+.back-button {
+	&::ng-deep {
+		& > .t-wrapper {
+			padding: 0 !important;
+		}
+	}
+}
+
+.tui-form__row {
+	@media @tui-mobile {
+		justify-content: flex-end;
+	}
+}
+
+.form-field {
+	max-width: 200px;
+
+	@media @tui-mobile {
+		max-width: unset;
+	}
+}
+
+.search-button {
+	margin-left: 20px;
+
+	@media @tui-mobile {
+		margin-left: 0;
+		margin-top: 16px;
+	}
 }

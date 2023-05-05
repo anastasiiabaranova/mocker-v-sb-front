@@ -11,7 +11,7 @@ const changePageSize = createAction(
 );
 const changeTimeRange = createAction(
 	'[GRAPHQL] Change Time Range',
-	props<{from: string; to: string}>()
+	props<{from?: string; to?: string}>()
 );
 const setHistory = createAction(
 	'[GRAPHQL] Set History',

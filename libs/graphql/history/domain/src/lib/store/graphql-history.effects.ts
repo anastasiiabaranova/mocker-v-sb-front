@@ -12,18 +12,22 @@ import {
 import {combineLatest, EMPTY} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
+import {tuiIsPresent} from '@taiga-ui/cdk';
 import {Store} from '@ngrx/store';
 import {ROUTER_NAVIGATED} from '@ngrx/router-store';
 
 import {GraphQLHistoryApiService} from '../services';
 import {graphQLHistoryActions} from './graphql-history.actions';
 import {fromGraphQLHistory} from './graphql-history.selectors';
-import {tuiIsPresent} from '@taiga-ui/cdk';
+import {GraphQLHistoryParamsDto} from '../dtos';
 
-const DEFAULT_TIME_RANGE = {
-	from: undefined,
-	to: undefined,
-};
+function removeEmptyFields(
+	params: GraphQLHistoryParamsDto
+): GraphQLHistoryParamsDto {
+	return Object.fromEntries(
+		Object.entries(params).filter(([, value]) => tuiIsPresent(value))
+	);
+}
 
 @Injectable()
 export class GraphQLHistoryEffects {
@@ -42,7 +46,7 @@ export class GraphQLHistoryEffects {
 			),
 			this.actions$.pipe(
 				ofType(graphQLHistoryActions.changeTimeRange),
-				startWith(DEFAULT_TIME_RANGE)
+				startWith({} as any)
 			),
 		]).pipe(
 			map(([, page, pageSize, {from, to}]) => ({
@@ -51,6 +55,7 @@ export class GraphQLHistoryEffects {
 				from,
 				to,
 			})),
+			map(removeEmptyFields),
 			withLatestFrom(
 				this.store$
 					.select(fromGraphQLHistory.getServiceId)
