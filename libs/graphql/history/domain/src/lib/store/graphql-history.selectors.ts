@@ -25,6 +25,10 @@ const getTimeRange = createSelector(
 	graphQLHistoryFeature,
 	({timeRange}) => timeRange
 );
+const getSortingOrder = createSelector(
+	graphQLHistoryFeature,
+	({sortingOrder}) => sortingOrder
+);
 const getHistory = createSelector(graphQLHistoryFeature, ({items}) => items);
 const getLoading = createSelector(
 	graphQLHistoryFeature,
@@ -37,6 +41,7 @@ export const fromGraphQLHistory = {
 	getPageSize,
 	getTotalItems,
 	getTimeRange,
+	getSortingOrder,
 	getHistory,
 	getLoading,
 };

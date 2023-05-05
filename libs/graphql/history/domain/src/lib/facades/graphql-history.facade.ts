@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {tuiIsPresent} from '@taiga-ui/cdk';
 import {map} from 'rxjs';
+import {SortingOrder} from '../enums';
 import {fromGraphQLHistory, graphQLHistoryActions} from '../store';
 
 @Injectable()
@@ -24,6 +25,10 @@ export class GraphQLHistoryFacade {
 			map(totalItems => (tuiIsPresent(totalItems) ? totalItems : null))
 		);
 
+	readonly sortingOrder$ = this.store$.select(
+		fromGraphQLHistory.getSortingOrder
+	);
+
 	readonly loading$ = this.store$.select(fromGraphQLHistory.getLoading);
 
 	constructor(private readonly store$: Store) {}
@@ -38,5 +43,11 @@ export class GraphQLHistoryFacade {
 
 	changePageSize(pageSize: number) {
 		this.store$.dispatch(graphQLHistoryActions.changePageSize({pageSize}));
+	}
+
+	changeSortingOrder(sortingOrder: SortingOrder) {
+		this.store$.dispatch(
+			graphQLHistoryActions.changeSortingOrder({sortingOrder})
+		);
 	}
 }

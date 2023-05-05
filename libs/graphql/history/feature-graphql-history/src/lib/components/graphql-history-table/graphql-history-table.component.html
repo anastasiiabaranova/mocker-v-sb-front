@@ -27,7 +27,14 @@
 </tui-loader>
 
 <ng-template #table let-history>
-	<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
+	<table
+		*tuiLet="sortingOrder$ | async as sortingOrder"
+		tuiTable
+		class="table tui-space_bottom-3"
+		[tuiSortBy]="!!sortingOrder ? 'createdAt' : null"
+		[columns]="columns"
+		[direction]="sortingOrder | tuiMapper : getSortingOrder"
+		(directionChange)="changeSortingOrder(sortingOrder)">
 		<thead>
 			<tr tuiThGroup>
 				<th tuiTh>
@@ -42,7 +49,7 @@
 						"
 						(click)="expandAllRows(history)"></button>
 				</th>
-				<th *tuiHead="'createdAt'" tuiTh [sorter]="null">Время</th>
+				<th *tuiHead="'createdAt'" tuiTh tuiSortable>Время</th>
 				<th *tuiHead="'redirected'" tuiTh [sorter]="null">Редирект</th>
 				<th *tuiHead="'request'" tuiTh [sorter]="null">Запрос</th>
 				<th *tuiHead="'response'" tuiTh [sorter]="null">Ответ</th>

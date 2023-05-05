@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {
 	GraphQLHistoryFacade,
 	GraphQLHistoryItemDto,
+	SortingOrder,
 } from '@mocker/graphql/history/domain';
 import {format} from 'date-fns';
 import {tap} from 'rxjs';
@@ -22,6 +23,7 @@ export class GraphQLHistoryTableComponent {
 	readonly pageSize$ = this.facade.pageSize$;
 	readonly totalItems$ = this.facade.totalItems$;
 	readonly loading$ = this.facade.loading$;
+	readonly sortingOrder$ = this.facade.sortingOrder$;
 
 	readonly columns = [
 		'expand',
@@ -44,6 +46,9 @@ export class GraphQLHistoryTableComponent {
 
 	readonly getExpandedIcon = (expanded: boolean) =>
 		expanded ? 'tuiIconMinusSquare' : 'tuiIconPlusSquare';
+
+	readonly getSortingOrder = (sortingOrder?: SortingOrder | null) =>
+		sortingOrder === SortingOrder.Asc ? 1 : -1;
 
 	constructor(private readonly facade: GraphQLHistoryFacade) {}
 
@@ -71,5 +76,14 @@ export class GraphQLHistoryTableComponent {
 
 	changePageSize(pageSize: number) {
 		this.facade.changePageSize(pageSize);
+	}
+
+	changeSortingOrder(currentDirestion?: SortingOrder | null) {
+		const sortingOrder =
+			currentDirestion === SortingOrder.Asc
+				? SortingOrder.Desc
+				: SortingOrder.Asc;
+
+		this.facade.changeSortingOrder(sortingOrder);
 	}
 }

@@ -50,13 +50,15 @@ export class GraphQLHistoryEffects {
 			this.store$.select(fromGraphQLHistory.getPage),
 			this.store$.select(fromGraphQLHistory.getPageSize),
 			this.store$.select(fromGraphQLHistory.getTimeRange),
+			this.store$.select(fromGraphQLHistory.getSortingOrder),
 		]).pipe(
 			debounceTime(0),
-			map(([, page, pageSize, {from, to}]) => ({
+			map(([, page, pageSize, {from, to}, sortingOrder]) => ({
 				page,
 				pageSize,
 				from,
 				to,
+				sortingOrder,
 			})),
 			map(removeEmptyFields),
 			withLatestFrom(

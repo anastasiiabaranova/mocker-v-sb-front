@@ -28,6 +28,11 @@ const graphQLReducer = createReducer(
 		timeRange,
 		loading: true,
 	})),
+	on(graphQLHistoryActions.changeSortingOrder, (state, {sortingOrder}) => ({
+		...state,
+		sortingOrder,
+		loading: true,
+	})),
 	on(graphQLHistoryActions.setPaging, (state, {paging}) => ({
 		...state,
 		...paging,

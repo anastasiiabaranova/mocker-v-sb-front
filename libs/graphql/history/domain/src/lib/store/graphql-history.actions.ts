@@ -1,5 +1,6 @@
 import {createAction, props} from '@ngrx/store';
 import {GraphQLHistoryItemDto, GraphQLHistoryPagingDto} from '../dtos';
+import {SortingOrder} from '../enums';
 
 const changePage = createAction(
 	'[GRAPHQL] Change Page',
@@ -12,6 +13,10 @@ const changePageSize = createAction(
 const changeTimeRange = createAction(
 	'[GRAPHQL] Change Time Range',
 	props<{from?: string; to?: string}>()
+);
+const changeSortingOrder = createAction(
+	'[GRAPHQL] Change Sorting Order',
+	props<{sortingOrder: SortingOrder}>()
 );
 const setHistory = createAction(
 	'[GRAPHQL] Set History',
@@ -28,6 +33,7 @@ export const graphQLHistoryActions = {
 	changePage,
 	changePageSize,
 	changeTimeRange,
+	changeSortingOrder,
 	setHistory,
 	setPaging,
 	historyLoadFailure,
