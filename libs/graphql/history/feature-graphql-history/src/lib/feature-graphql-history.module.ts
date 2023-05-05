@@ -18,6 +18,7 @@ import {CommonModule} from '@angular/common';
 
 import {FeatureGraphQLHistoryComponent} from './feature-graphql-history.component';
 import {FeatureGraphQLHistoryRoutingModule} from './feature-graphql-history-routing.module';
+import {GraphQLHistoryTableModule} from './components';
 
 @NgModule({
 	declarations: [FeatureGraphQLHistoryComponent],
@@ -35,6 +36,7 @@ import {FeatureGraphQLHistoryRoutingModule} from './feature-graphql-history-rout
 		TuiDataListWrapperModule,
 		TuiErrorModule,
 		TuiFieldErrorPipeModule,
+		GraphQLHistoryTableModule,
 	],
 	exports: [FeatureGraphQLHistoryComponent],
 })

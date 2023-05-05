@@ -1,0 +1,49 @@
+<div *ngIf="history$ | async as history" class="container">
+	<tui-scrollbar>
+		<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
+			<thead>
+				<tr tuiThGroup>
+					<th *tuiHead="'createdAt'" tuiTh>Время</th>
+					<th *tuiHead="'redirected'" tuiTh>Редирект</th>
+					<th *tuiHead="'request'" tuiTh>Запрос</th>
+					<th *tuiHead="'response'" tuiTh>Ответ</th>
+					<th *tuiHead="'isError'" tuiTh>Ошибка</th>
+				</tr>
+			</thead>
+			<tbody tuiTbody [data]="history">
+				<tr *ngFor="let item of history" tuiTr>
+					<td *tuiCell="'createdAt'" tuiTd class="history-date">
+						<span class="history-date__data">{{
+							item.createdAt | tuiMapper : formatDate
+						}}</span>
+					</td>
+					<td *tuiCell="'redirected'" tuiTd class="history-redirect">
+						<tui-svg
+							*ngIf="item.redirected"
+							class="history-redirect__data"
+							src="tuiIconCheck"></tui-svg>
+					</td>
+					<td *tuiCell="'request'" tuiTd class="history-request">
+						<span class="history-request__data">
+							{{ item.request }}
+						</span>
+					</td>
+					<td *tuiCell="'response'" tuiTd class="history-response">
+						<span class="history-response__data">
+							{{ item.response }}
+						</span>
+					</td>
+					<td
+						*tuiCell="'isError'"
+						tuiTd
+						class="history-error history-error_data">
+						<tui-svg
+							*ngIf="item.isError"
+							class="history-error__data"
+							src="tuiIconCheck"></tui-svg>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</tui-scrollbar>
+</div>

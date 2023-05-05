@@ -1,0 +1,40 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+:host {
+	display: block;
+}
+
+td,
+th {
+	border-color: transparent;
+}
+
+tbody {
+	border-color: transparent;
+}
+
+tr:nth-child(odd) td {
+	background: var(--tui-base-02);
+}
+
+.history-date {
+	&__data {
+		white-space: nowrap;
+	}
+}
+
+.history-redirect {
+	text-align: center;
+
+	&__data::ng-deep svg {
+		color: var(--tui-info-fill);
+	}
+}
+
+.history-error {
+	text-align: center;
+
+	&__data::ng-deep svg {
+		color: var(--tui-error-fill);
+	}
+}

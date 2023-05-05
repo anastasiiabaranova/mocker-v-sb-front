@@ -59,10 +59,6 @@ const REQUIRED_RANGE_ERROR = 'Укажите период';
 })
 export class FeatureGraphQLHistoryComponent {
 	readonly serviceId$ = this.facade.serviceId$;
-	readonly history$ = this.facade.history$;
-	readonly page$ = this.facade.page$;
-	readonly pageSize$ = this.facade.pageSize$;
-	readonly totalItems$ = this.facade.totalItems$;
 
 	readonly form = this.formBuilder.group({
 		range: [null, requiredValidatorFactory(REQUIRED_RANGE_ERROR)],
