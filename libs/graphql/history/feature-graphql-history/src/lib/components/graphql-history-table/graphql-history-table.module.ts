@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TuiTableModule} from '@taiga-ui/addon-table';
-import {TuiPaginationModule} from '@taiga-ui/kit';
+import {TuiTableModule, TuiTablePaginationModule} from '@taiga-ui/addon-table';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {
 	TuiButtonModule,
@@ -17,7 +16,7 @@ import {GraphQLHistoryTableComponent} from './graphql-history-table.component';
 	imports: [
 		CommonModule,
 		TuiTableModule,
-		TuiPaginationModule,
+		TuiTablePaginationModule,
 		TuiMapperPipeModule,
 		TuiSvgModule,
 		TuiScrollbarModule,

@@ -33,6 +33,8 @@ export class GraphQLHistoryTableComponent {
 
 	expandedRows: number[] = [];
 
+	readonly sizeOptions = [10, 20, 30, 50];
+
 	readonly formatDate = (date: string) =>
 		format(new Date(date), 'dd.MM.yy HH.mm');
 
@@ -60,5 +62,13 @@ export class GraphQLHistoryTableComponent {
 		}
 
 		this.expandedRows = history.map(({id}) => id);
+	}
+
+	changePage(page: number) {
+		this.facade.changePage(page);
+	}
+
+	changePageSize(pageSize: number) {
+		this.facade.changePageSize(pageSize);
 	}
 }

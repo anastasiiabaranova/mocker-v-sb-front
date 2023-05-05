@@ -1,3 +1,21 @@
+<ng-container *tuiLet="page$ | async as page">
+	<ng-container *tuiLet="pageSize$ | async as pageSize">
+		<ng-container *tuiLet="totalItems$ | async as totalItems">
+			<tui-table-pagination
+				*ngIf="
+					page !== null && pageSize !== null && totalItems !== null
+				"
+				[total]="totalItems"
+				[items]="sizeOptions"
+				[page]="page"
+				[size]="pageSize"
+				(pageChange)="changePage($event)"
+				(sizeChange)="changePageSize($event)">
+			</tui-table-pagination>
+		</ng-container>
+	</ng-container>
+</ng-container>
+
 <div *ngIf="history$ | async as history" class="container">
 	<tui-scrollbar>
 		<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
@@ -15,11 +33,13 @@
 							"
 							(click)="expandAllRows(history)"></button>
 					</th>
-					<th *tuiHead="'createdAt'" tuiTh>Время</th>
-					<th *tuiHead="'redirected'" tuiTh>Редирект</th>
-					<th *tuiHead="'request'" tuiTh>Запрос</th>
-					<th *tuiHead="'response'" tuiTh>Ответ</th>
-					<th *tuiHead="'isError'" tuiTh>Ошибка</th>
+					<th *tuiHead="'createdAt'" tuiTh [sorter]="null">Время</th>
+					<th *tuiHead="'redirected'" tuiTh [sorter]="null">
+						Редирект
+					</th>
+					<th *tuiHead="'request'" tuiTh [sorter]="null">Запрос</th>
+					<th *tuiHead="'response'" tuiTh [sorter]="null">Ответ</th>
+					<th *tuiHead="'isError'" tuiTh [sorter]="null">Ошибка</th>
 				</tr>
 			</thead>
 			<tbody tuiTbody [data]="history">
