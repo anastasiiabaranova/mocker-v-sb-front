@@ -9,7 +9,7 @@ import {
 	mergeMap,
 	debounceTime,
 } from 'rxjs/operators';
-import {combineLatest, EMPTY} from 'rxjs';
+import {combineLatest, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {tuiIsPresent} from '@taiga-ui/cdk';
@@ -65,20 +65,21 @@ export class GraphQLHistoryEffects {
 					.pipe(filter(tuiIsPresent))
 			),
 			switchMap(([params, serviceId]) =>
-				this.apiService.getHistory(serviceId, params)
-			),
-			mergeMap(({paging, items}) => [
-				graphQLHistoryActions.setPaging({paging}),
-				graphQLHistoryActions.setHistory({items}),
-			]),
-			catchError(() => {
-				this.notificationsFacade.showNotification({
-					label: 'Не удалось загрузить историю',
-					content: 'Попробуйте еще раз позже',
-					status: TuiNotification.Error,
-				});
-				return EMPTY;
-			})
+				this.apiService.getHistory(serviceId, params).pipe(
+					mergeMap(({paging, items}) => [
+						graphQLHistoryActions.setPaging({paging}),
+						graphQLHistoryActions.setHistory({items}),
+					]),
+					catchError(() => {
+						this.notificationsFacade.showNotification({
+							label: 'Не удалось загрузить историю',
+							content: 'Попробуйте еще раз позже',
+							status: TuiNotification.Error,
+						});
+						return of(graphQLHistoryActions.historyLoadFailure());
+					})
+				)
+			)
 		)
 	);
 

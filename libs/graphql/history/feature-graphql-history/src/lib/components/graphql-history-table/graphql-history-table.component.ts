@@ -21,6 +21,7 @@ export class GraphQLHistoryTableComponent {
 	readonly page$ = this.facade.page$;
 	readonly pageSize$ = this.facade.pageSize$;
 	readonly totalItems$ = this.facade.totalItems$;
+	readonly loading$ = this.facade.loading$;
 
 	readonly columns = [
 		'expand',

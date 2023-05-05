@@ -6,5 +6,6 @@ export interface GraphQLHistoryState {
 	page: number;
 	pageSize: number;
 	timeRange: {from?: string; to?: string};
-	items: ReadonlyArray<GraphQLHistoryItemDto> | null;
+	items?: ReadonlyArray<GraphQLHistoryItemDto> | null;
+	loading: boolean;
 }

@@ -24,6 +24,8 @@ export class GraphQLHistoryFacade {
 			map(totalItems => (tuiIsPresent(totalItems) ? totalItems : null))
 		);
 
+	readonly loading$ = this.store$.select(fromGraphQLHistory.getLoading);
+
 	constructor(private readonly store$: Store) {}
 
 	searchByDate(from?: string, to?: string) {

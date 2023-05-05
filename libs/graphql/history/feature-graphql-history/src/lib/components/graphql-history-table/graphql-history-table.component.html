@@ -14,109 +14,116 @@
 	</ng-container>
 </ng-container>
 
-<div *ngIf="history$ | async as history" class="container">
-	<tui-scrollbar *ngIf="history.length; else noHistory">
-		<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
-			<thead>
-				<tr tuiThGroup>
-					<th tuiTh>
+<tui-loader [overlay]="true" [showLoader]="!!(loading$ | async)">
+	<div *tuiLet="history$ | async as history" class="container">
+		<ng-container *ngIf="history !== undefined; else skeleton">
+			<tui-scrollbar *ngIf="history && history.length; else noHistory">
+				<ng-container
+					*ngTemplateOutlet="table; context: {$implicit: history}">
+				</ng-container>
+			</tui-scrollbar>
+		</ng-container>
+	</div>
+</tui-loader>
+
+<ng-template #table let-history>
+	<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
+		<thead>
+			<tr tuiThGroup>
+				<th tuiTh>
+					<button
+						tuiIconButton
+						type="button"
+						appearance="icon"
+						size="xs"
+						[icon]="
+							expandedRows.length === history.length
+								| tuiMapper : getExpandedIcon
+						"
+						(click)="expandAllRows(history)"></button>
+				</th>
+				<th *tuiHead="'createdAt'" tuiTh [sorter]="null">Время</th>
+				<th *tuiHead="'redirected'" tuiTh [sorter]="null">Редирект</th>
+				<th *tuiHead="'request'" tuiTh [sorter]="null">Запрос</th>
+				<th *tuiHead="'response'" tuiTh [sorter]="null">Ответ</th>
+				<th *tuiHead="'isError'" tuiTh [sorter]="null">Ошибка</th>
+			</tr>
+		</thead>
+		<tbody tuiTbody [data]="history">
+			<tr *ngFor="let item of history" tuiTr>
+				<ng-container
+					*tuiLet="
+						expandedRows
+							| tuiMapper : getExpanded : item.id as expanded
+					">
+					<td *tuiCell="'expand'" tuiTd class="history-expand">
 						<button
 							tuiIconButton
 							type="button"
 							appearance="icon"
 							size="xs"
-							[icon]="
-								expandedRows.length === history.length
-									| tuiMapper : getExpandedIcon
-							"
-							(click)="expandAllRows(history)"></button>
-					</th>
-					<th *tuiHead="'createdAt'" tuiTh [sorter]="null">Время</th>
-					<th *tuiHead="'redirected'" tuiTh [sorter]="null">
-						Редирект
-					</th>
-					<th *tuiHead="'request'" tuiTh [sorter]="null">Запрос</th>
-					<th *tuiHead="'response'" tuiTh [sorter]="null">Ответ</th>
-					<th *tuiHead="'isError'" tuiTh [sorter]="null">Ошибка</th>
-				</tr>
-			</thead>
-			<tbody tuiTbody [data]="history">
-				<tr *ngFor="let item of history" tuiTr>
-					<ng-container
-						*tuiLet="
-							expandedRows
-								| tuiMapper : getExpanded : item.id as expanded
-						">
-						<td *tuiCell="'expand'" tuiTd class="history-expand">
-							<button
-								tuiIconButton
-								type="button"
-								appearance="icon"
-								size="xs"
-								[icon]="expanded | tuiMapper : getExpandedIcon"
-								(click)="expandRow(item.id, expanded)"></button>
-						</td>
-						<td *tuiCell="'createdAt'" tuiTd class="history-date">
-							<span class="history-date__data">
-								{{ item.createdAt | tuiMapper : formatDate }}
-							</span>
-						</td>
-						<td
-							*tuiCell="'redirected'"
-							tuiTd
-							class="history-redirect">
-							<tui-svg
-								*ngIf="item.redirected"
-								class="history-redirect__data"
-								src="tuiIconCheck"></tui-svg>
-						</td>
-						<td *tuiCell="'request'" tuiTd class="history-request">
-							<div
-								class="history-request__data preview"
-								[class.preview_expanded]="expanded">
-								{{ item.request }}
-							</div>
-							<tui-expand [expanded]="expanded">
-								<ng-template tuiExpandContent>
-									<div class="full-content">
-										{{ item.request }}
-									</div>
-								</ng-template>
-							</tui-expand>
-						</td>
-						<td
-							*tuiCell="'response'"
-							tuiTd
-							class="history-response">
-							<div
-								class="history-response__data preview"
-								[class.preview_expanded]="expanded">
-								{{ item.response }}
-							</div>
-							<tui-expand [expanded]="expanded">
-								<ng-template tuiExpandContent>
-									<div class="full-content">
-										{{ item.response }}
-									</div>
-								</ng-template>
-							</tui-expand>
-						</td>
-						<td
-							*tuiCell="'isError'"
-							tuiTd
-							class="history-error history-error_data">
-							<tui-svg
-								*ngIf="item.isError"
-								class="history-error__data"
-								src="tuiIconCheck"></tui-svg>
-						</td>
-					</ng-container>
-				</tr>
-			</tbody>
-		</table>
-	</tui-scrollbar>
-</div>
+							[icon]="expanded | tuiMapper : getExpandedIcon"
+							(click)="expandRow(item.id, expanded)"></button>
+					</td>
+					<td *tuiCell="'createdAt'" tuiTd class="history-date">
+						<span class="history-date__data">
+							{{ item.createdAt | tuiMapper : formatDate }}
+						</span>
+					</td>
+					<td *tuiCell="'redirected'" tuiTd class="history-redirect">
+						<tui-svg
+							*ngIf="item.redirected"
+							class="history-redirect__data"
+							src="tuiIconCheck"></tui-svg>
+					</td>
+					<td *tuiCell="'request'" tuiTd class="history-request">
+						<div
+							class="history-request__data preview"
+							[class.preview_expanded]="expanded">
+							{{ item.request }}
+						</div>
+						<tui-expand [expanded]="expanded">
+							<ng-template tuiExpandContent>
+								<div class="full-content">
+									{{ item.request }}
+								</div>
+							</ng-template>
+						</tui-expand>
+					</td>
+					<td *tuiCell="'response'" tuiTd class="history-response">
+						<div
+							class="history-response__data preview"
+							[class.preview_expanded]="expanded">
+							{{ item.response }}
+						</div>
+						<tui-expand [expanded]="expanded">
+							<ng-template tuiExpandContent>
+								<div class="full-content">
+									{{ item.response }}
+								</div>
+							</ng-template>
+						</tui-expand>
+					</td>
+					<td
+						*tuiCell="'isError'"
+						tuiTd
+						class="history-error history-error_data">
+						<tui-svg
+							*ngIf="item.isError"
+							class="history-error__data"
+							src="tuiIconCheck"></tui-svg>
+					</td>
+				</ng-container>
+			</tr>
+		</tbody>
+	</table>
+</ng-template>
 
 <ng-template #noHistory>
 	<div class="no-history tui-text_h5">Не нашли вызовов</div>
+</ng-template>
+
+<ng-template #skeleton>
+	<mocker-graphql-history-table-skeleton>
+	</mocker-graphql-history-table-skeleton>
 </ng-template>

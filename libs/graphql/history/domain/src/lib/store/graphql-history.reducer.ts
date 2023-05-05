@@ -8,7 +8,7 @@ const initialState: GraphQLHistoryState = {
 	page: 0,
 	pageSize: 10,
 	timeRange: {},
-	items: null,
+	loading: false,
 };
 
 const graphQLReducer = createReducer(
@@ -16,14 +16,17 @@ const graphQLReducer = createReducer(
 	on(graphQLHistoryActions.changePage, (state, {page}) => ({
 		...state,
 		page,
+		loading: true,
 	})),
 	on(graphQLHistoryActions.changePageSize, (state, {pageSize}) => ({
 		...state,
 		pageSize,
+		loading: true,
 	})),
 	on(graphQLHistoryActions.changeTimeRange, (state, timeRange) => ({
 		...state,
 		timeRange,
+		loading: true,
 	})),
 	on(graphQLHistoryActions.setPaging, (state, {paging}) => ({
 		...state,
@@ -32,6 +35,12 @@ const graphQLReducer = createReducer(
 	on(graphQLHistoryActions.setHistory, (state, {items}) => ({
 		...state,
 		items,
+		loading: false,
+	})),
+	on(graphQLHistoryActions.historyLoadFailure, state => ({
+		...state,
+		items: state.items || null,
+		loading: false,
 	})),
 	on(graphQLHistoryActions.resetState, () => initialState)
 );

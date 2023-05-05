@@ -26,6 +26,10 @@ const getTimeRange = createSelector(
 	({timeRange}) => timeRange
 );
 const getHistory = createSelector(graphQLHistoryFeature, ({items}) => items);
+const getLoading = createSelector(
+	graphQLHistoryFeature,
+	({loading}) => loading
+);
 
 export const fromGraphQLHistory = {
 	getServiceId,
@@ -34,4 +38,5 @@ export const fromGraphQLHistory = {
 	getTotalItems,
 	getTimeRange,
 	getHistory,
+	getLoading,
 };

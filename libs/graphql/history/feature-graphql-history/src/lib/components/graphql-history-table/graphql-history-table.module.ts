@@ -5,11 +5,13 @@ import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {
 	TuiButtonModule,
 	TuiExpandModule,
+	TuiLoaderModule,
 	TuiScrollbarModule,
 	TuiSvgModule,
 } from '@taiga-ui/core';
 
 import {GraphQLHistoryTableComponent} from './graphql-history-table.component';
+import {GraphQLHistoryTableSkeletonModule} from '../graphql-history-table-skeleton/graphql-history-table-skeleton.module';
 
 @NgModule({
 	declarations: [GraphQLHistoryTableComponent],
@@ -23,6 +25,8 @@ import {GraphQLHistoryTableComponent} from './graphql-history-table.component';
 		TuiLetModule,
 		TuiButtonModule,
 		TuiExpandModule,
+		TuiLoaderModule,
+		GraphQLHistoryTableSkeletonModule,
 	],
 	exports: [GraphQLHistoryTableComponent],
 })
