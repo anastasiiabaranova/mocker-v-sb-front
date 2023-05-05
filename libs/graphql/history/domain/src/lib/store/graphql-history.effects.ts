@@ -29,6 +29,27 @@ function removeEmptyFields(
 	);
 }
 
+function toParams([
+	,
+	page,
+	pageSize,
+	from,
+	to,
+	redirected,
+	isError,
+	sortingOrder,
+]: any[]): GraphQLHistoryParamsDto {
+	return {
+		page,
+		pageSize,
+		from,
+		to,
+		redirected,
+		isError,
+		sortingOrder,
+	};
+}
+
 @Injectable()
 export class GraphQLHistoryEffects {
 	private readonly navigatedToHistory$ = this.actions$.pipe(
@@ -49,17 +70,14 @@ export class GraphQLHistoryEffects {
 			this.navigatedToHistory$,
 			this.store$.select(fromGraphQLHistory.getPage),
 			this.store$.select(fromGraphQLHistory.getPageSize),
-			this.store$.select(fromGraphQLHistory.getTimeRange),
+			this.store$.select(fromGraphQLHistory.getFrom),
+			this.store$.select(fromGraphQLHistory.getTo),
+			this.store$.select(fromGraphQLHistory.getRedirected),
+			this.store$.select(fromGraphQLHistory.getIsError),
 			this.store$.select(fromGraphQLHistory.getSortingOrder),
 		]).pipe(
 			debounceTime(0),
-			map(([, page, pageSize, {from, to}, sortingOrder]) => ({
-				page,
-				pageSize,
-				from,
-				to,
-				sortingOrder,
-			})),
+			map(toParams),
 			map(removeEmptyFields),
 			withLatestFrom(
 				this.store$

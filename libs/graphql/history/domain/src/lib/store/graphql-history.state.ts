@@ -6,7 +6,10 @@ export interface GraphQLHistoryState {
 	totalPages: number | null;
 	page: number;
 	pageSize: number;
-	timeRange: {from?: string; to?: string};
+	from?: string;
+	to?: string;
+	isError?: boolean;
+	redirected?: boolean;
 	sortingOrder?: SortingOrder;
 	items?: ReadonlyArray<GraphQLHistoryItemDto> | null;
 	loading: boolean;

@@ -21,9 +21,15 @@ const getTotalItems = createSelector(
 	graphQLHistoryFeature,
 	({totalItems}) => totalItems
 );
-const getTimeRange = createSelector(
+const getFrom = createSelector(graphQLHistoryFeature, ({from}) => from);
+const getTo = createSelector(graphQLHistoryFeature, ({to}) => to);
+const getRedirected = createSelector(
 	graphQLHistoryFeature,
-	({timeRange}) => timeRange
+	({redirected}) => redirected
+);
+const getIsError = createSelector(
+	graphQLHistoryFeature,
+	({isError}) => isError
 );
 const getSortingOrder = createSelector(
 	graphQLHistoryFeature,
@@ -40,7 +46,10 @@ export const fromGraphQLHistory = {
 	getPage,
 	getPageSize,
 	getTotalItems,
-	getTimeRange,
+	getFrom,
+	getTo,
+	getRedirected,
+	getIsError,
 	getSortingOrder,
 	getHistory,
 	getLoading,

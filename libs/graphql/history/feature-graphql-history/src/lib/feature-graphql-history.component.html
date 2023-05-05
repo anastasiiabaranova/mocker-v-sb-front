@@ -11,21 +11,35 @@
 		Назад
 	</button>
 
-	<form class="tui-space_top-4" [formGroup]="form">
+	<button
+		*tuiLet="showForm$ | async as showForm"
+		tuiButton
+		appearance="icon"
+		size="s"
+		icon="tuiIconFilter"
+		class="filters-button tui-space_top-5"
+		(click)="showForm$.next(!showForm)">
+		Фильтры
+	</button>
+
+	<form
+		*ngIf="showForm$ | async"
+		class="tui-space_top-4"
+		[formGroup]="form"
+		@tuiHeightCollapse
+		@tuiFadeIn>
 		<div class="tui-form__row tui-form__row_multi-fields">
-			<div class="form-field tui-form__multi-field">
-				<tui-select tuiTextfieldSize="m" formControlName="range">
-					Период
-					<tui-data-list-wrapper *tuiDataList [items]="rangeOptions">
-					</tui-data-list-wrapper>
-				</tui-select>
-				<tui-error
-					formControlName="range"
-					[error]="[] | tuiFieldError | async"></tui-error>
-			</div>
+			<tui-select
+				class="form-field tui-form__multi-field"
+				tuiTextfieldSize="s"
+				formControlName="range">
+				Период
+				<tui-data-list-wrapper *tuiDataList [items]="rangeOptions">
+				</tui-data-list-wrapper>
+			</tui-select>
 			<tui-input-date-time
 				*ngIf="showCustomRange$ | async"
-				tuiTextfieldSize="m"
+				tuiTextfieldSize="s"
 				formControlName="from"
 				class="form-field tui-form__multi-field"
 				[tuiTextfieldCleaner]="true">
@@ -33,18 +47,74 @@
 			</tui-input-date-time>
 			<tui-input-date-time
 				*ngIf="showCustomRange$ | async"
-				tuiTextfieldSize="m"
+				tuiTextfieldSize="s"
 				formControlName="to"
 				class="form-field tui-form__multi-field"
 				[tuiTextfieldCleaner]="true">
 				Конец
 			</tui-input-date-time>
+		</div>
+		<div
+			tuiGroup
+			class="tui-form__row form-redirected"
+			[orientation]="isMobile ? 'vertical' : 'horizontal'"
+			[collapsed]="true">
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="redirected"
+				size="s"
+				[item]="null">
+				Все
+			</tui-radio-block>
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="redirected"
+				size="s"
+				[item]="true">
+				Только редирект
+			</tui-radio-block>
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="redirected"
+				size="s"
+				[item]="false">
+				Только моки
+			</tui-radio-block>
+		</div>
+		<div
+			tuiGroup
+			class="tui-form__row form-error"
+			[orientation]="isMobile ? 'vertical' : 'horizontal'"
+			[collapsed]="true">
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="isError"
+				size="s"
+				[item]="null">
+				Все
+			</tui-radio-block>
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="isError"
+				size="s"
+				[item]="false">
+				Только успешные
+			</tui-radio-block>
+			<tui-radio-block
+				contentAlign="right"
+				formControlName="isError"
+				size="s"
+				[item]="true">
+				Только ошибки
+			</tui-radio-block>
+		</div>
+		<div class="tui-form__row">
 			<button
-				class="search-button"
+				class="tui-form__button"
 				tuiButton
 				type="button"
-				size="m"
-				(click)="searchByDate()">
+				size="s"
+				(click)="searchHistory()">
 				Найти
 			</button>
 		</div>

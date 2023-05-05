@@ -16,6 +16,16 @@
 	}
 }
 
+.filters-button {
+	display: block;
+
+	&::ng-deep {
+		& > .t-wrapper {
+			padding: 0 !important;
+		}
+	}
+}
+
 .tui-form__row {
 	@media @tui-mobile {
 		justify-content: flex-end;
@@ -30,11 +40,12 @@
 	}
 }
 
-.search-button {
-	margin-left: 20px;
+.form-redirected,
+.form-error {
+	max-width: 640px;
 
 	@media @tui-mobile {
-		margin-left: 0;
-		margin-top: 16px;
+		max-width: unset;
+		width: 100%;
 	}
 }

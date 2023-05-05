@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {tuiIsPresent} from '@taiga-ui/cdk';
 import {map} from 'rxjs';
+import {GraphQLHistoryParamsDto} from '../dtos';
 import {SortingOrder} from '../enums';
 import {fromGraphQLHistory, graphQLHistoryActions} from '../store';
 
@@ -33,8 +34,8 @@ export class GraphQLHistoryFacade {
 
 	constructor(private readonly store$: Store) {}
 
-	searchByDate(from?: string, to?: string) {
-		this.store$.dispatch(graphQLHistoryActions.changeTimeRange({from, to}));
+	searchHistory(params: GraphQLHistoryParamsDto) {
+		this.store$.dispatch(graphQLHistoryActions.searchHistory({params}));
 	}
 
 	changePage(page: number) {

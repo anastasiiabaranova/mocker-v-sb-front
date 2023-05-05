@@ -2,19 +2,20 @@ import {NgModule} from '@angular/core';
 import {GraphQLHistoryDomainModule} from '@mocker/graphql/history/domain';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
 import {
 	TuiDataListWrapperModule,
-	TuiFieldErrorPipeModule,
 	TuiInputDateTimeModule,
+	TuiRadioBlockModule,
 	TuiSelectModule,
 } from '@taiga-ui/kit';
 import {
 	TuiButtonModule,
 	TuiDataListModule,
-	TuiErrorModule,
+	TuiGroupModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
-import {CommonModule} from '@angular/common';
+import {TuiLetModule} from '@taiga-ui/cdk';
 
 import {FeatureGraphQLHistoryComponent} from './feature-graphql-history.component';
 import {FeatureGraphQLHistoryRoutingModule} from './feature-graphql-history-routing.module';
@@ -34,8 +35,9 @@ import {GraphQLHistoryTableModule} from './components';
 		TuiSelectModule,
 		TuiDataListModule,
 		TuiDataListWrapperModule,
-		TuiErrorModule,
-		TuiFieldErrorPipeModule,
+		TuiRadioBlockModule,
+		TuiGroupModule,
+		TuiLetModule,
 		GraphQLHistoryTableModule,
 	],
 	exports: [FeatureGraphQLHistoryComponent],

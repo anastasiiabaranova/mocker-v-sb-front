@@ -1,13 +1,25 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {GraphQLHistoryState} from './graphql-history.state';
 import {graphQLHistoryActions} from './graphql-history.actions';
+import {GraphQLHistoryParamsDto} from '../dtos';
+
+function searchChanged(
+	state: GraphQLHistoryState,
+	params: GraphQLHistoryParamsDto
+): boolean {
+	return (
+		params.from !== state.from ||
+		params.to !== state.to ||
+		params.redirected !== state.redirected ||
+		params.isError !== state.isError
+	);
+}
 
 const initialState: GraphQLHistoryState = {
 	totalItems: null,
 	totalPages: null,
 	page: 0,
 	pageSize: 10,
-	timeRange: {},
 	loading: false,
 };
 
@@ -16,22 +28,22 @@ const graphQLReducer = createReducer(
 	on(graphQLHistoryActions.changePage, (state, {page}) => ({
 		...state,
 		page,
-		loading: true,
+		loading: state.page !== page,
 	})),
 	on(graphQLHistoryActions.changePageSize, (state, {pageSize}) => ({
 		...state,
 		pageSize,
-		loading: true,
+		loading: state.pageSize !== pageSize,
 	})),
-	on(graphQLHistoryActions.changeTimeRange, (state, timeRange) => ({
+	on(graphQLHistoryActions.searchHistory, (state, {params}) => ({
 		...state,
-		timeRange,
-		loading: true,
+		...params,
+		loading: searchChanged(state, params),
 	})),
 	on(graphQLHistoryActions.changeSortingOrder, (state, {sortingOrder}) => ({
 		...state,
 		sortingOrder,
-		loading: true,
+		loading: state.sortingOrder !== sortingOrder,
 	})),
 	on(graphQLHistoryActions.setPaging, (state, {paging}) => ({
 		...state,

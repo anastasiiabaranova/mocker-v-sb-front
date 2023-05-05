@@ -1,14 +1,10 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {GraphQLHistoryFacade} from '@mocker/graphql/history/domain';
-import {map, shareReplay, tap} from 'rxjs';
+import {BehaviorSubject, map, shareReplay, tap} from 'rxjs';
 import {startOfToday, subMonths, subWeeks} from 'date-fns';
-import {requiredValidatorFactory} from '@mocker/shared/utils';
-import {
-	TuiDay,
-	tuiMarkControlAsTouchedAndValidate,
-	TuiTime,
-} from '@taiga-ui/cdk';
+import {TuiDay, TuiTime, TUI_IS_MOBILE} from '@taiga-ui/cdk';
+import {tuiFadeIn, tuiHeightCollapse} from '@taiga-ui/core';
 
 type TimeRange = {from?: string; to?: string};
 
@@ -49,21 +45,24 @@ function tuiDateToIsoString(
 	return undefined;
 }
 
-const REQUIRED_RANGE_ERROR = 'Укажите период';
-
 @Component({
 	selector: 'mocker-feature-graphql-history',
 	templateUrl: './feature-graphql-history.component.html',
 	styleUrls: ['./feature-graphql-history.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [tuiHeightCollapse, tuiFadeIn],
 })
 export class FeatureGraphQLHistoryComponent {
 	readonly serviceId$ = this.facade.serviceId$;
 
+	readonly showForm$ = new BehaviorSubject<boolean>(false);
+
 	readonly form = this.formBuilder.group({
-		range: [null, requiredValidatorFactory(REQUIRED_RANGE_ERROR)],
+		range: [null],
 		from: [null],
 		to: [null],
+		redirected: [null],
+		isError: [null],
 	});
 
 	readonly rangeOptions = [
@@ -87,19 +86,17 @@ export class FeatureGraphQLHistoryComponent {
 	);
 
 	constructor(
+		@Inject(TUI_IS_MOBILE) readonly isMobile: boolean,
 		private readonly formBuilder: FormBuilder,
 		private readonly facade: GraphQLHistoryFacade
 	) {}
 
-	searchByDate() {
-		if (this.form.invalid) {
-			tuiMarkControlAsTouchedAndValidate(this.form);
-			return;
-		}
-
+	searchHistory() {
 		const {from, to} = this.getTimeRange();
+		const {redirected, isError} = this.form.value as any;
 
-		this.facade.searchByDate(from, to);
+		this.facade.searchHistory({from, to, redirected, isError});
+		this.showForm$.next(false);
 	}
 
 	private getTimeRange(): TimeRange {
