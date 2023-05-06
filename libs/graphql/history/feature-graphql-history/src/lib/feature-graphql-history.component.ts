@@ -32,15 +32,15 @@ function tuiDateToIsoString(
 	time: TuiTime | null
 ): string | undefined {
 	if (date) {
-		const expirationTime = date.toLocalNativeDate();
+		const result = date.toLocalNativeDate();
 
 		if (time) {
-			expirationTime.setHours(time.hours);
-			expirationTime.setMinutes(time.minutes);
-			expirationTime.setSeconds(time.seconds);
+			result.setHours(time.hours);
+			result.setMinutes(time.minutes);
+			result.setSeconds(time.seconds);
 		}
 
-		return expirationTime.toISOString();
+		return result.toISOString();
 	}
 
 	return undefined;

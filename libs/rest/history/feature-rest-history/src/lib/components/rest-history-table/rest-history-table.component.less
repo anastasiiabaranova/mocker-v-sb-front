@@ -1,0 +1,87 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+:host {
+	display: block;
+}
+
+.table {
+	width: 100%;
+}
+
+td,
+th {
+	border-color: transparent;
+}
+
+td {
+	vertical-align: top;
+	height: auto;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+tbody {
+	border-color: transparent;
+}
+
+tr:nth-child(odd) td {
+	background: var(--tui-base-02);
+}
+
+.history-expand {
+	width: 50px;
+}
+
+.history-date {
+	width: 140px;
+
+	&__data {
+		white-space: nowrap;
+	}
+}
+
+.history-redirect {
+	width: 110px;
+	text-align: center;
+
+	&__data::ng-deep svg {
+		color: var(--tui-info-fill);
+	}
+}
+
+.history-error {
+	width: 110px;
+	text-align: center;
+
+	&__data::ng-deep svg {
+		color: var(--tui-error-fill);
+	}
+}
+
+.preview {
+	display: -webkit-box;
+	line-clamp: 1;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	&_expanded {
+		display: block;
+		line-height: 20px;
+		overflow: hidden;
+		text-overflow: unset;
+	}
+}
+
+.full-content {
+	margin-top: -20px;
+
+	&::first-line {
+		visibility: hidden;
+	}
+}
+
+.no-history {
+	color: var(--tui-text-03);
+}

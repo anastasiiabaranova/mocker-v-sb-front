@@ -28,7 +28,7 @@ export class AuthEffects {
 								'redirect'
 							] || '';
 
-						this.router.navigate([redirect]);
+						this.router.navigateByUrl(decodeURIComponent(redirect));
 					}),
 					map(({email}) => authActions.loginSuccess({email})),
 					catchError(({status}) => {

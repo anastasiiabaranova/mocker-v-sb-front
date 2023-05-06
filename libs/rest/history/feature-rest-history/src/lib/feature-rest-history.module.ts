@@ -14,6 +14,7 @@ import {
 	TuiInputModule,
 	TuiSelectModule,
 } from '@taiga-ui/kit';
+import {RestHistoryTableModule} from './components';
 import {FeatureRestHistoryRoutingModule} from './feature-rest-history-routing.module';
 import {FeatureRestHistoryComponent} from './feature-rest-history.component';
 
@@ -32,6 +33,7 @@ import {FeatureRestHistoryComponent} from './feature-rest-history.component';
 		TuiDataListModule,
 		TuiInputDateTimeModule,
 		TuiTextfieldControllerModule,
+		RestHistoryTableModule,
 	],
 	exports: [FeatureRestHistoryComponent],
 })

@@ -1,0 +1,64 @@
+<tui-loader [overlay]="true" [showLoader]="!!(loading$ | async)">
+	<div *tuiLet="history$ | async as history" class="container">
+		<ng-container *ngIf="history !== undefined; else skeleton">
+			<tui-scrollbar *ngIf="history && history.length; else noHistory">
+				<ng-container
+					*ngTemplateOutlet="table; context: {$implicit: history}">
+				</ng-container>
+			</tui-scrollbar>
+		</ng-container>
+	</div>
+</tui-loader>
+
+<ng-template #table let-history>
+	<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
+		<thead>
+			<tr tuiThGroup>
+				<th tuiTh>Время</th>
+				<th tuiTh>Метод</th>
+				<th tuiTh>Status Code</th>
+				<th tuiTh>Запрос</th>
+				<th tuiTh>URL ответа</th>
+				<th tuiTh>Формирование</th>
+				<th tuiTh>Ответ</th>
+			</tr>
+		</thead>
+		<tbody tuiTbody [data]="history">
+			<tr *ngFor="let item of history" tuiTr>
+				<ng-container>
+					<td *tuiCell="'responseTime'" tuiTd class="history-date">
+						<span class="history-date__data">
+							{{ item.responseTime | tuiMapper : formatDate }}
+						</span>
+					</td>
+					<td *tuiCell="'method'" tuiTd>
+						{{ item.method }}
+					</td>
+					<td *tuiCell="'statusCode'" tuiTd>
+						{{ item.statusCode }}
+					</td>
+					<td *tuiCell="'queryUrl'" tuiTd>
+						{{ item.queryUrl }}
+					</td>
+					<td *tuiCell="'responseUrl'" tuiTd>
+						{{ item.responseUrl }}
+					</td>
+					<td *tuiCell="'responseSource'" tuiTd>
+						{{ item.responseSource }}
+					</td>
+					<td *tuiCell="'response'" tuiTd>
+						{{ item.response }}
+					</td>
+				</ng-container>
+			</tr>
+		</tbody>
+	</table>
+</ng-template>
+
+<ng-template #noHistory>
+	<div class="no-history tui-text_h5">Не нашли вызовов</div>
+</ng-template>
+
+<ng-template #skeleton>
+	<mocker-rest-history-table-skeleton> </mocker-rest-history-table-skeleton>
+</ng-template>

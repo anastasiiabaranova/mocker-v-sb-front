@@ -26,7 +26,7 @@ function getMonth(): number {
 	return subMonths(startOfToday(), 1).getTime();
 }
 
-function tuiDateToIsoString(
+function tuiDateToTimestamp(
 	date: TuiDay | null,
 	time: TuiTime | null
 ): number | undefined {
@@ -114,8 +114,8 @@ export class FeatureRestHistoryComponent {
 			(this.form.controls.to.value as any) || [];
 
 		return {
-			from: tuiDateToIsoString(fromDate, fromTime),
-			to: tuiDateToIsoString(toDate, toTime),
+			from: tuiDateToTimestamp(fromDate, fromTime),
+			to: tuiDateToTimestamp(toDate, toTime),
 		};
 	}
 }
