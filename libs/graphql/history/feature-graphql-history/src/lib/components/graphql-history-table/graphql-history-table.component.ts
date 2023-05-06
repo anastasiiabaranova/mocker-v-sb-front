@@ -39,7 +39,7 @@ export class GraphQLHistoryTableComponent {
 	readonly sizeOptions = [10, 20, 30, 50];
 
 	readonly formatDate = (date: string) =>
-		format(new Date(date), 'dd.MM.yy HH.mm');
+		format(new Date(date), 'dd.MM.yy HH:mm:ss');
 
 	readonly getExpanded = (expandedRows: number[], id: number) =>
 		expandedRows.includes(id);

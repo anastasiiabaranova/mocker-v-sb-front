@@ -37,6 +37,7 @@ function tuiDateToIsoString(
 		if (time) {
 			expirationTime.setHours(time.hours);
 			expirationTime.setMinutes(time.minutes);
+			expirationTime.setSeconds(time.seconds);
 		}
 
 		return expirationTime.toISOString();
