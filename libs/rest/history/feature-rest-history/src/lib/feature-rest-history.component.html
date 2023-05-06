@@ -1,1 +1,63 @@
-<p>feature-rest-history works!</p>
+<div class="container">
+	<button
+		*ngIf="servicePath$ | async as servicePath"
+		tuiButton
+		class="back-button"
+		type="button"
+		appearance="mono"
+		size="s"
+		icon="tuiIconChevronLeft"
+		[routerLink]="['/rest-api', servicePath]">
+		Назад
+	</button>
+
+	<form class="tui-space_top-4" [formGroup]="form">
+		<tui-input
+			class="tui-form__row form-search"
+			formControlName="search"
+			tuiTextfieldSize="m">
+			Поиск
+		</tui-input>
+		<div class="tui-form__row tui-form__row_multi-fields">
+			<tui-select
+				class="form-field tui-form__multi-field"
+				tuiTextfieldSize="m"
+				formControlName="range">
+				Период
+				<tui-data-list-wrapper *tuiDataList [items]="rangeOptions">
+				</tui-data-list-wrapper>
+			</tui-select>
+			<tui-input-date-time
+				*ngIf="showCustomRange$ | async"
+				tuiTextfieldSize="m"
+				formControlName="from"
+				class="form-field tui-form__multi-field"
+				timeMode="HH:MM:SS"
+				[tuiTextfieldCleaner]="true">
+				Начало
+			</tui-input-date-time>
+			<tui-input-date-time
+				*ngIf="showCustomRange$ | async"
+				tuiTextfieldSize="m"
+				formControlName="to"
+				class="form-field tui-form__multi-field"
+				timeMode="HH:MM:SS"
+				[tuiTextfieldCleaner]="true">
+				Конец
+			</tui-input-date-time>
+		</div>
+		<div class="tui-form__row">
+			<button
+				class="tui-form__button"
+				tuiButton
+				type="button"
+				size="m"
+				(click)="searchHistory()">
+				Найти
+			</button>
+		</div>
+	</form>
+
+	<!-- <mocker-rest-history-table class="tui-space_top-5">
+	</mocker-rest-history-table> -->
+</div>

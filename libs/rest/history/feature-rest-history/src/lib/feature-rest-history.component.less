@@ -1,3 +1,35 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
+}
+
+.container {
+	padding: 24px;
+}
+
+.back-button {
+	&::ng-deep {
+		& > .t-wrapper {
+			padding: 0 !important;
+		}
+	}
+}
+
+.tui-form__row {
+	@media @tui-mobile {
+		justify-content: flex-end;
+	}
+}
+
+.form-search {
+	max-width: 720px;
+}
+
+.form-field {
+	max-width: 226.666px;
+
+	@media @tui-mobile {
+		max-width: unset;
+	}
 }
