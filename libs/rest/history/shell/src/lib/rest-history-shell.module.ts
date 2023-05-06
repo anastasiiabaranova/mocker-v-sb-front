@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {RestHistoryShellRoutingModule} from './rest-history-shell-routing.module';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [RestHistoryShellRoutingModule],
 })
 export class RestHistoryShellModule {}

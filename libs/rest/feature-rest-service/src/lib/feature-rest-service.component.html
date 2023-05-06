@@ -98,7 +98,9 @@
 					class="histoty-button"
 					type="button"
 					appearance="flat"
-					size="s">
+					size="s"
+					[routerLink]="['/rest-api-history', service.id]"
+					[queryParams]="{path: service.path}">
 					Посмотреть
 				</button>
 			</td>
