@@ -23,7 +23,7 @@ const initialState: GraphQLHistoryState = {
 	loading: false,
 };
 
-const graphQLReducer = createReducer(
+const graphQLHistoryReducer = createReducer(
 	initialState,
 	on(graphQLHistoryActions.changePage, (state, {page}) => ({
 		...state,
@@ -66,5 +66,5 @@ export function reducer(
 	state: GraphQLHistoryState | undefined,
 	action: Action
 ) {
-	return graphQLReducer(state, action);
+	return graphQLHistoryReducer(state, action);
 }

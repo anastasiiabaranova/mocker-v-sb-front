@@ -1,7 +1,10 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {RestHistoryStoreModule} from './store';
+import {RestHistoryFacade} from './facades';
+import {RestHistoryApiService} from './services';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [RestHistoryStoreModule],
+	providers: [RestHistoryApiService, RestHistoryFacade],
 })
 export class RestHistoryDomainModule {}

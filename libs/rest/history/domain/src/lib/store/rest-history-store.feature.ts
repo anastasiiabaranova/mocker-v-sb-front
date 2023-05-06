@@ -1,0 +1,1 @@
+export const REST_HISTORY_FEATURE = 'REST_HISTORY';
