@@ -115,7 +115,8 @@ const restReducer = createReducer(
 	on(restActions.dialogRequestFailure, state => ({
 		...state,
 		dialogLoading: false,
-	}))
+	})),
+	on(restActions.resetState, () => initialState)
 );
 
 export function reducer(state: RestState | undefined, action: Action) {

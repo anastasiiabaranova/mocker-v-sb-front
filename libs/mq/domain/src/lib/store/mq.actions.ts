@@ -36,6 +36,7 @@ const sendMessages = createAction(
 );
 const messagesSent = createAction('[MQ] Messages Sent');
 const dialogRequestFailure = createAction('[MQ] Dialog Request Failure');
+const resetState = createAction('[MQ] Reset State');
 
 export const mqActions = {
 	loadTopics,
@@ -48,4 +49,5 @@ export const mqActions = {
 	sendMessages,
 	messagesSent,
 	dialogRequestFailure,
+	resetState,
 };

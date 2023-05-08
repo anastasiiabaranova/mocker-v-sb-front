@@ -1,11 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {map, catchError, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {
+	map,
+	catchError,
+	switchMap,
+	tap,
+	withLatestFrom,
+	filter,
+} from 'rxjs/operators';
 import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
-import {ROUTER_NAVIGATED} from '@ngrx/router-store';
+import {ROUTER_NAVIGATED, ROUTER_REQUEST} from '@ngrx/router-store';
 import {Router} from '@angular/router';
 
 import {fromMQ} from './mq.selectors';
@@ -15,6 +22,29 @@ import {BrokerType} from '../enums';
 
 @Injectable()
 export class MQEffects {
+	private readonly navigatedToMQ$ = this.actions$.pipe(
+		ofType(ROUTER_NAVIGATED),
+		map(({payload: {routerState}}) => routerState as any),
+		map(({url}) => url),
+		filter(url => url.split('/')[1] === 'mq')
+	);
+
+	private readonly navigatedFromMQ$ = this.actions$.pipe(
+		ofType(ROUTER_REQUEST),
+		map(({payload: {routerState, event}}: any) => [
+			routerState.url,
+			event.url,
+		]),
+		filter(
+			([prevUrl, nextUrl]) =>
+				prevUrl.split('/')[1] === 'mq' && nextUrl.split('/')[1] !== 'mq'
+		)
+	);
+
+	resetState$ = createEffect(() =>
+		this.navigatedFromMQ$.pipe(map(() => mqActions.resetState()))
+	);
+
 	loadTopics$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(mqActions.loadTopics),
@@ -35,8 +65,7 @@ export class MQEffects {
 	);
 
 	openTopic$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(ROUTER_NAVIGATED),
+		this.navigatedToMQ$.pipe(
 			withLatestFrom(
 				this.store$.select(fromMQ.getBrokerType),
 				this.store$.select(fromMQ.getTopicName)

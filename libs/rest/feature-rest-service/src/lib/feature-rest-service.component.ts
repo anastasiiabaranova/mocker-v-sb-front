@@ -113,6 +113,7 @@ export class FeatureRestServiceComponent implements OnInit {
 				),
 				{data: service}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -129,6 +130,7 @@ export class FeatureRestServiceComponent implements OnInit {
 				),
 				{data: {path}, size: 'l'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -141,6 +143,7 @@ export class FeatureRestServiceComponent implements OnInit {
 				),
 				{data: {path, mockId}, size: 'l'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -161,6 +164,7 @@ export class FeatureRestServiceComponent implements OnInit {
 				),
 				{data: {path}}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -173,6 +177,7 @@ export class FeatureRestServiceComponent implements OnInit {
 				),
 				{data: {path, modelId}}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 

@@ -9,8 +9,9 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import {Message, MQFacade, Topic} from '@mocker/mq/domain';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
+import {TuiDestroyService} from '@taiga-ui/cdk';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {iif, of, Subject, switchMap, tap} from 'rxjs';
+import {iif, of, Subject, switchMap, takeUntil, tap} from 'rxjs';
 import {MessageSendDialogComponent} from '../message-send-dialog/message-send-dialog.component';
 
 @Component({
@@ -18,6 +19,7 @@ import {MessageSendDialogComponent} from '../message-send-dialog/message-send-di
 	templateUrl: './mq-topic-messages.component.html',
 	styleUrls: ['./mq-topic-messages.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [TuiDestroyService],
 })
 export class MQTopicMessagesComponent implements OnChanges {
 	@Input() topic!: Topic;
@@ -58,7 +60,8 @@ export class MQTopicMessagesComponent implements OnChanges {
 		private readonly dialogService: TuiDialogService,
 		private readonly clipboard: Clipboard,
 		private readonly notificationsFacade: NotificationsFacade,
-		private readonly injector: Injector
+		private readonly injector: Injector,
+		private readonly destroy$: TuiDestroyService
 	) {}
 
 	get displayedMessages(): Message[] {
@@ -78,6 +81,7 @@ export class MQTopicMessagesComponent implements OnChanges {
 				),
 				{data: this.topic, size: 's'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 

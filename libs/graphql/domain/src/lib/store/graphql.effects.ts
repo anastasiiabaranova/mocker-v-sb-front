@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
 	map,
@@ -11,17 +12,40 @@ import {
 import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
+import {tuiIsPresent} from '@taiga-ui/cdk';
 import {Store} from '@ngrx/store';
-import {ROUTER_NAVIGATED} from '@ngrx/router-store';
+import {ROUTER_NAVIGATED, ROUTER_REQUEST} from '@ngrx/router-store';
 
 import {GraphQLApiService} from '../services';
 import {graphQLActions} from './graphql.actions';
-import {Router} from '@angular/router';
 import {fromGraphQL} from './graphql.selectors';
-import {tuiIsPresent} from '@taiga-ui/cdk';
 
 @Injectable()
 export class GraphQLEffects {
+	private readonly navigatedToGraphql$ = this.actions$.pipe(
+		ofType(ROUTER_NAVIGATED),
+		map(({payload: {routerState}}) => routerState as any),
+		map(({url}) => url),
+		filter(url => url.split('/')[1] === 'graphql')
+	);
+
+	private readonly navigatedFromGraphql$ = this.actions$.pipe(
+		ofType(ROUTER_REQUEST),
+		map(({payload: {routerState, event}}: any) => [
+			routerState.url,
+			event.url,
+		]),
+		filter(
+			([prevUrl, nextUrl]) =>
+				prevUrl.split('/')[1] === 'graphql' &&
+				nextUrl.split('/')[1] !== 'graphql'
+		)
+	);
+
+	resetState$ = createEffect(() =>
+		this.navigatedFromGraphql$.pipe(map(() => graphQLActions.resetState()))
+	);
+
 	loadServices$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(graphQLActions.loadServices),
@@ -42,8 +66,7 @@ export class GraphQLEffects {
 	);
 
 	openService$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(ROUTER_NAVIGATED),
+		this.navigatedToGraphql$.pipe(
 			withLatestFrom(this.store$.select(fromGraphQL.getServiceId)),
 			map(([, id]) => id),
 			switchMap(id =>

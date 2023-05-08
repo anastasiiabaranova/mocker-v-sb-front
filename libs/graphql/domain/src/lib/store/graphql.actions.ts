@@ -87,6 +87,7 @@ const allMocksDeleted = createAction(
 	props<{serviceId: string}>()
 );
 const dialogRequestFailure = createAction('[GRAPHQL] Dialog Request Failure');
+const resetState = createAction('[GRAPHQL] Reset State');
 
 export const graphQLActions = {
 	loadServices,
@@ -111,4 +112,5 @@ export const graphQLActions = {
 	deleteAllMocks,
 	mockDeleted,
 	dialogRequestFailure,
+	resetState,
 };

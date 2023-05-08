@@ -92,6 +92,7 @@ export class FeatureGraphQLServiceComponent implements OnInit {
 				),
 				{data: service, size: 'l'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -108,6 +109,7 @@ export class FeatureGraphQLServiceComponent implements OnInit {
 				),
 				{data: serviceId, size: 'l'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 
@@ -120,6 +122,7 @@ export class FeatureGraphQLServiceComponent implements OnInit {
 				),
 				{data: mock, size: 'l'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 

@@ -11,7 +11,7 @@ import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {GraphQLFacade, GraphQLMockDto} from '@mocker/graphql/domain';
 import {format} from 'date-fns';
 import {ru} from 'date-fns/locale';
-import {BehaviorSubject, combineLatest, map} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, takeUntil} from 'rxjs';
 import {GraphQLTriggersDialogComponent} from '../graphql-triggers-dialog/graphql-triggers-dialog.component';
 
 function sliceArray(mocks: any, page: number, size: number) {
@@ -55,7 +55,8 @@ export class GraphQLMockListComponent {
 	constructor(
 		private readonly dialogService: TuiDialogService,
 		private readonly facade: GraphQLFacade,
-		private readonly injector: Injector
+		private readonly injector: Injector,
+		private readonly destroy$: TuiDestroyService
 	) {}
 
 	openTriggersFor(mock: GraphQLMockDto) {
@@ -67,6 +68,7 @@ export class GraphQLMockListComponent {
 				),
 				{data: mock, size: 'm'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 

@@ -15,6 +15,7 @@ import {GraphQLShellModule} from '@mocker/graphql/shell';
 import {MQShellModule} from '@mocker/mq/shell';
 import {AuthShellModule} from '@mocker/auth/api';
 import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
 import {CodeEditorModule} from '@ngstack/code-editor';
@@ -31,6 +32,7 @@ import {CoreModule} from './core';
 		StoreModule.forRoot({
 			router: routerReducer,
 		}),
+		StoreDevtoolsModule.instrument({}),
 		EffectsModule.forRoot([]),
 		StoreRouterConnectingModule.forRoot(),
 		CodeEditorModule.forRoot({

@@ -125,7 +125,8 @@ const graphQLReducer = createReducer(
 	on(graphQLActions.dialogRequestFailure, state => ({
 		...state,
 		dialogLoading: false,
-	}))
+	})),
+	on(graphQLActions.resetState, () => initialState)
 );
 
 export function reducer(state: GraphQLState | undefined, action: Action) {

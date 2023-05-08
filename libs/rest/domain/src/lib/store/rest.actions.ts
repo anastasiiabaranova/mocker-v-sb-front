@@ -135,6 +135,7 @@ const deleteAllModels = createAction(
 );
 const allModelsDeleted = createAction('[REST] All Models Deleted');
 const dialogRequestFailure = createAction('[REST] Dialog Request Failure');
+const resetState = createAction('[REST] Reset State');
 
 export const restActions = {
 	loadServices,
@@ -171,4 +172,5 @@ export const restActions = {
 	deleteModel,
 	modelDeleted,
 	dialogRequestFailure,
+	resetState,
 };

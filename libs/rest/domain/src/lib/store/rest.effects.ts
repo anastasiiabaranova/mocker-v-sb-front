@@ -13,7 +13,7 @@ import {EMPTY, iif, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 import {Store} from '@ngrx/store';
-import {ROUTER_NAVIGATED} from '@ngrx/router-store';
+import {ROUTER_NAVIGATED, ROUTER_REQUEST} from '@ngrx/router-store';
 
 import {
 	RestMockApiService,
@@ -27,6 +27,30 @@ import {tuiIsPresent} from '@taiga-ui/cdk';
 
 @Injectable()
 export class RestEffects {
+	private readonly navigatedToRest$ = this.actions$.pipe(
+		ofType(ROUTER_NAVIGATED),
+		map(({payload: {routerState}}) => routerState as any),
+		map(({url}) => url),
+		filter(url => url.split('/')[1] === 'rest-api')
+	);
+
+	private readonly navigatedFromRest$ = this.actions$.pipe(
+		ofType(ROUTER_REQUEST),
+		map(({payload: {routerState, event}}: any) => [
+			routerState.url,
+			event.url,
+		]),
+		filter(
+			([prevUrl, nextUrl]) =>
+				prevUrl.split('/')[1] === 'rest-api' &&
+				nextUrl.split('/')[1] !== 'rest-api'
+		)
+	);
+
+	resetState$ = createEffect(() =>
+		this.navigatedFromRest$.pipe(map(() => restActions.resetState()))
+	);
+
 	loadServices$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(restActions.loadServices),
@@ -47,8 +71,7 @@ export class RestEffects {
 	);
 
 	openService$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(ROUTER_NAVIGATED),
+		this.navigatedToRest$.pipe(
 			withLatestFrom(this.store$.select(fromRest.getServicePath)),
 			map(([, path]) => path),
 			switchMap(path =>

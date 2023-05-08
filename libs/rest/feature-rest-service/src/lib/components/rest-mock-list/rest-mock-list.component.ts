@@ -19,6 +19,7 @@ import {
 	ENVIRONMENT,
 	NotificationsFacade,
 } from '@mocker/shared/utils';
+import {takeUntil} from 'rxjs';
 
 @Component({
 	selector: 'mocker-rest-mock-list',
@@ -52,7 +53,8 @@ export class RestMockListComponent implements OnChanges {
 		private readonly dialogService: TuiDialogService,
 		private readonly injector: Injector,
 		private readonly clipboard: Clipboard,
-		private readonly notificationsFacade: NotificationsFacade
+		private readonly notificationsFacade: NotificationsFacade,
+		private readonly destroy$: TuiDestroyService
 	) {}
 
 	get displayedMocks() {
@@ -97,6 +99,7 @@ export class RestMockListComponent implements OnChanges {
 				),
 				{data: mockId, size: 'm'}
 			)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe();
 	}
 }

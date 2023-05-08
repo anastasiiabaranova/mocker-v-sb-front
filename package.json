@@ -34,6 +34,7 @@
 		"@ngrx/entity": "^15.3.0",
 		"@ngrx/router-store": "^15.3.0",
 		"@ngrx/store": "^15.3.0",
+		"@ngrx/store-devtools": "^15.4.0",
 		"@ngstack/code-editor": "^5.0.0",
 		"@nrwl/angular": "^15.8.5",
 		"@taiga-ui/addon-table": "^3.20.0",

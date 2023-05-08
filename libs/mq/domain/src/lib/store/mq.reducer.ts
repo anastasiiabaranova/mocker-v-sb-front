@@ -43,7 +43,8 @@ const mqReducer = createReducer(
 	on(mqActions.dialogRequestFailure, state => ({
 		...state,
 		dialogLoading: false,
-	}))
+	})),
+	on(mqActions.resetState, () => initialState)
 );
 
 export function reducer(state: MQState | undefined, action: Action) {
