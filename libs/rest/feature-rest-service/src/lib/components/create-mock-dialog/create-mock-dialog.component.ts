@@ -33,7 +33,8 @@ const PATH_REQUIRED_ERROR = 'Укажите путь шаблона мока';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
 const PATH_PARAMS_ERROR = 'Параметры пути не совпадают';
 
-const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+(\/.*)?$/;
+const PATH_PATTERN =
+	/^\/?(?![_-])[a-zA-Z0-9_-]+(?<![_-])(\/(((?![_-])[a-zA-Z0-9_-]+(?<![_-]))|(\{(?![_-])[a-zA-Z0-9_-]+(?<![_-])\})))*$/;
 const PATH_PARAM_PATTERN = /\{[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+\}/g;
 
 @Component({
@@ -55,7 +56,6 @@ export class CreateMockDialogComponent implements OnInit {
 			],
 		],
 		method: ['GET'],
-		// requestModel: [null],
 		responseModel: [null],
 		requestHeaders: [[] as string[]],
 		responseHeaders: [[] as string[]],
@@ -189,9 +189,7 @@ export class CreateMockDialogComponent implements OnInit {
 		const {
 			name,
 			description,
-			path,
 			method,
-			// requestModel,
 			responseModel,
 			requestHeaders,
 			responseHeaders,
@@ -199,12 +197,14 @@ export class CreateMockDialogComponent implements OnInit {
 			pathParams,
 		} = this.form.value as any;
 
+		const formPath = this.form.value.path as any;
+		const path = formPath.startsWith('/') ? formPath.slice(1) : formPath;
+
 		const mock: RestMockDto = {
 			name,
 			description,
 			path,
 			method,
-			// requestModelId: requestModel?.modelId,
 			responseModelId: responseModel?.modelId,
 			requestHeaders,
 			responseHeaders,
@@ -221,20 +221,14 @@ export class CreateMockDialogComponent implements OnInit {
 			return;
 		}
 
-		const {
-			name,
-			description,
-			method,
-			// requestModel,
-			responseModel,
-		} = this.form.value as any;
+		const {name, description, method, responseModel} = this.form
+			.value as any;
 
 		const mock: Partial<RestMockDto> = {
 			mockId: this.mockId!,
 			name,
 			description,
 			method,
-			// requestModelId: requestModel?.modelId,
 			responseModelId: responseModel?.modelId,
 		};
 

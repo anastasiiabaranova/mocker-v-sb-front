@@ -34,7 +34,7 @@ const PATH_FORBIDDEN_ERROR = 'Запрещенный путь';
 const DESCRIPTION_LENGTH_ERROR = 'Используйте до 128 символов';
 const URL_FORMAT_ERROR = 'Некорректный формат URL';
 
-const PATH_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$/;
+const PATH_PATTERN = /^\/?(?![_-])[a-zA-Z0-9_-]+(?<![_-])$/;
 const FORBIDDEN_PATH = 'service';
 
 @Component({
@@ -151,9 +151,10 @@ export class CreateServiceDialogComponent implements OnInit {
 		}
 
 		const initialValue = this.service || {};
+		const path = this.form.value.path?.replace('/', '');
 		const service = Object.assign(
 			{...initialValue},
-			this.form.value
+			{...this.form.value, path}
 		) as any;
 
 		const [date, time] = this.form.value.expirationTime || [];
