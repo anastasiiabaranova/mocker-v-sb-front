@@ -13,6 +13,10 @@ th {
 	border-color: transparent;
 }
 
+th {
+	white-space: nowrap;
+}
+
 td {
 	vertical-align: top;
 	height: auto;
@@ -29,33 +33,48 @@ tr:nth-child(odd) td {
 }
 
 .history-expand {
+	min-width: 50px;
 	width: 50px;
 }
 
 .history-date {
+	max-width: 140px;
 	width: 140px;
+}
 
-	&__data {
-		white-space: nowrap;
+.history-method {
+	max-width: 75px;
+	width: 75px;
+}
+
+.history-status {
+	max-width: 105px;
+	width: 105px;
+}
+
+.history-date,
+.history-source {
+	white-space: nowrap;
+}
+
+.history-url {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 225px;
+
+	&_expanded {
+		white-space: normal;
 	}
 }
 
-.history-redirect {
-	width: 110px;
-	text-align: center;
-
-	&__data::ng-deep svg {
-		color: var(--tui-info-fill);
-	}
+.history-source {
+	max-width: 150px;
+	width: 150px;
 }
 
-.history-error {
-	width: 110px;
-	text-align: center;
-
-	&__data::ng-deep svg {
-		color: var(--tui-error-fill);
-	}
+.history-response {
+	max-width: max(calc(100vw - 940px), 372px);
 }
 
 .preview {

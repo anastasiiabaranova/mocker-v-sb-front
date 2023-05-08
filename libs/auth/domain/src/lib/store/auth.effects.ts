@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {map, catchError, switchMap, tap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
 
@@ -84,10 +84,17 @@ export class AuthEffects {
 				map(() => this.tokensStorageService.refreshToken!),
 				switchMap(refreshToken =>
 					this.apiService.logout({refreshToken}).pipe(
-						catchError(() => of({})),
 						tap(() => {
 							this.tokensStorageService.clearTokens();
 							this.router.navigate(['login']);
+						}),
+						catchError(() => {
+							this.notificationsFacade.showNotification({
+								label: 'Не удалось выйти',
+								content: 'Попробуйте еще раз позже',
+								status: TuiNotification.Error,
+							});
+							return EMPTY;
 						})
 					)
 				)

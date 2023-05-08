@@ -1,4 +1,4 @@
 export enum BrokerType {
 	Kafka = 'KAFKA',
-	Rabbit = 'RABBIT',
+	Rabbit = 'RABBITMQ',
 }

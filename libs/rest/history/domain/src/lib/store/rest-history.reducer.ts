@@ -37,6 +37,7 @@ const restHistoryReducer = createReducer(
 	on(restHistoryActions.searchHistory, (state, {params}) => ({
 		...state,
 		...params,
+		page: 0,
 		loading: searchChanged(state, params),
 	})),
 	on(restHistoryActions.setPaging, (state, {paging}) => ({

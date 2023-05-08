@@ -50,9 +50,12 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 
 		return this.authFacade.refresh(refreshToken).pipe(
 			concatMap(() => next.handle(req)),
-			catchError(() => {
-				this.navigateToLogin();
-				return EMPTY;
+			catchError((error: HttpErrorResponse) => {
+				if (error.status === 401) {
+					this.navigateToLogin();
+					return EMPTY;
+				}
+				return throwError(() => error);
 			})
 		);
 	}

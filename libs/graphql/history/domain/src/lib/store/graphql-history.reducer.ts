@@ -38,6 +38,7 @@ const graphQLHistoryReducer = createReducer(
 	on(graphQLHistoryActions.searchHistory, (state, {params}) => ({
 		...state,
 		...params,
+		page: 0,
 		loading: searchChanged(state, params),
 	})),
 	on(graphQLHistoryActions.changeSortingOrder, (state, {sortingOrder}) => ({
