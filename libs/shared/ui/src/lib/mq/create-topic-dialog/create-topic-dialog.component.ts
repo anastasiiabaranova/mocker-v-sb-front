@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {
+	maxLengthValidatorFactory,
 	patternValidatorFactory,
 	requiredValidatorFactory,
 } from '@mocker/shared/utils';
@@ -19,6 +20,7 @@ import {BrokerType, MQFacade, Topic} from '@mocker/mq/domain';
 import {takeUntil} from 'rxjs/operators';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя топика';
+const NAME_LENGTH_ERROR = 'Имя топика — до 249 символов';
 const NAME_FORMAT_ERROR =
 	'Используйте только латинские буквы, цифры и символы ._-';
 const BROKER_TYPE_REQUIRED_ERROR = 'Выберите тип брокера';
@@ -39,6 +41,7 @@ export class CreateTopicDialogComponent implements OnInit {
 			[
 				requiredValidatorFactory(NAME_REQUIRED_ERROR),
 				patternValidatorFactory(NAME_FORMAT_ERROR, NAME_PATTERN),
+				maxLengthValidatorFactory(NAME_LENGTH_ERROR, 249),
 			],
 		],
 		brokerType: [

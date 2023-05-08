@@ -22,10 +22,14 @@
 
 <ng-container *tuiLet="messages$ | async as messages">
 	<div *ngIf="messages || messagesLoading" class="message-list">
-		<table tuiTable class="table" [columns]="columns">
+		<table
+			*tuiLet="topic | tuiMapper : getShowKey as showKey"
+			tuiTable
+			class="table"
+			[columns]="topic | tuiMapper : getColumns">
 			<thead>
 				<tr tuiThGroup>
-					<th tuiTh class="message-key">Ключ</th>
+					<th *ngIf="showKey" tuiTh class="message-key">Ключ</th>
 					<th tuiTh class="message-content">Содержание</th>
 					<th tuiTh class="message-actions"></th>
 				</tr>
@@ -35,11 +39,13 @@
 				tuiTbody
 				[data]="messages">
 				<tr *ngFor="let message of displayedMessages" tuiTr>
-					<td *tuiCell="'key'" tuiTd class="message-key">
-						<tui-scrollbar>
-							<div class="value">{{ message.key }}</div>
-						</tui-scrollbar>
-					</td>
+					<ng-container *ngIf="showKey">
+						<td *tuiCell="'key'" tuiTd class="message-key">
+							<tui-scrollbar>
+								<div class="value">{{ message.key }}</div>
+							</tui-scrollbar>
+						</td>
+					</ng-container>
 					<td *tuiCell="'content'" tuiTd class="message-content">
 						<tui-scrollbar>
 							<div class="value">{{ message.content }}</div>

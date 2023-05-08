@@ -5,7 +5,7 @@ import {
 	OnInit,
 } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MQFacade, TopicShort} from '@mocker/mq/domain';
+import {BrokerType, MQFacade, TopicShort} from '@mocker/mq/domain';
 import {requiredValidatorFactory} from '@mocker/shared/utils';
 import {
 	TuiDestroyService,
@@ -28,7 +28,10 @@ const CONTENT_REQUIRED_ERROR = 'Укажите содержание сообще
 })
 export class MessageSendDialogComponent implements OnInit {
 	readonly form = this.formBuilder.group({
-		key: [null, requiredValidatorFactory(KEY_REQUIRED_ERROR)],
+		key: [
+			null,
+			this.withKey ? requiredValidatorFactory(KEY_REQUIRED_ERROR) : [],
+		],
 		content: [null, requiredValidatorFactory(CONTENT_REQUIRED_ERROR)],
 		repeat: [null],
 	});
@@ -48,10 +51,19 @@ export class MessageSendDialogComponent implements OnInit {
 		return this.context.data;
 	}
 
+	@tuiPure
+	get withKey(): boolean {
+		return this.topic.brokerType === BrokerType.Kafka;
+	}
+
 	ngOnInit(): void {
 		this.facade.messagesSent$
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(() => this.closeDialog());
+
+		if (!this.withKey) {
+			this.form.controls.key.disable();
+		}
 	}
 
 	closeDialog() {

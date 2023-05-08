@@ -2,7 +2,7 @@
 	<h3 class="tui-form__header tui-form__header_margin-top_none">
 		Новое сообщение в топик<br />{{ topic.topicName }}
 	</h3>
-	<div class="tui-form__row">
+	<div *ngIf="withKey" class="tui-form__row">
 		<div>
 			<tui-input formControlName="key" tuiTextfieldSize="m">
 				key
@@ -17,6 +17,7 @@
 			<tui-text-area
 				formControlName="content"
 				tuiTextfieldSize="m"
+				[rows]="8"
 				[expandable]="true">
 				Значение
 			</tui-text-area>

@@ -6,7 +6,7 @@ import {
 	TuiScrollbarModule,
 } from '@taiga-ui/core';
 import {TuiTableModule, TuiTablePaginationModule} from '@taiga-ui/addon-table';
-import {TuiLetModule} from '@taiga-ui/cdk';
+import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 
 import {MQTopicMessagesComponent} from './mq-topic-messages.component';
 import {MessageSendDialogModule} from '../message-send-dialog/message-send-dialog.module';
@@ -19,6 +19,7 @@ import {MessageSendDialogModule} from '../message-send-dialog/message-send-dialo
 		TuiTableModule,
 		TuiLoaderModule,
 		TuiLetModule,
+		TuiMapperPipeModule,
 		MessageSendDialogModule,
 		TuiTablePaginationModule,
 		TuiScrollbarModule,

@@ -30,13 +30,23 @@
 	.table {
 		width: 100%;
 
-		& th {
+		& th:first-child.message-content {
+			width: 100%;
+		}
+
+		.message-key,
+		.message-content {
 			width: 50%;
 		}
 
 		.message-key .value,
 		.message-content .value {
 			max-height: 200px;
+		}
+
+		.message-actions {
+			max-width: 50px;
+			width: 50px;
 		}
 
 		@media @tui-mobile {

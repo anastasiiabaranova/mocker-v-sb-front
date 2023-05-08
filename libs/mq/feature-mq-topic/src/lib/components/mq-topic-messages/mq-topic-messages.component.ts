@@ -6,12 +6,12 @@ import {
 	OnChanges,
 } from '@angular/core';
 import {Clipboard} from '@angular/cdk/clipboard';
-import {Message, MQFacade, Topic} from '@mocker/mq/domain';
+import {BrokerType, Message, MQFacade, Topic} from '@mocker/mq/domain';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiDialogService, TuiNotification} from '@taiga-ui/core';
 import {TuiDestroyService} from '@taiga-ui/cdk';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
-import {iif, of, Subject, switchMap, takeUntil, tap} from 'rxjs';
+import {catchError, iif, of, Subject, switchMap, takeUntil, tap} from 'rxjs';
 import {MessageSendDialogComponent} from '../message-send-dialog/message-send-dialog.component';
 
 @Component({
@@ -31,10 +31,9 @@ export class MQTopicMessagesComponent implements OnChanges {
 		switchMap(read =>
 			iif(
 				() => read,
-				this.facade.readMessages(
-					this.topic.brokerType,
-					this.topic.topicName
-				),
+				this.facade
+					.readMessages(this.topic.brokerType, this.topic.topicName)
+					.pipe(catchError(() => of([]))),
 				of(null)
 			)
 		),
@@ -54,6 +53,14 @@ export class MQTopicMessagesComponent implements OnChanges {
 	size = 5;
 
 	private _displayedMessages: Message[] | null = null;
+
+	readonly getShowKey = (topic: Topic) =>
+		topic.brokerType === BrokerType.Kafka;
+
+	readonly getColumns = (topic: Topic) =>
+		topic.brokerType === BrokerType.Kafka
+			? this.columns
+			: this.columns.slice(1);
 
 	constructor(
 		private readonly facade: MQFacade,
