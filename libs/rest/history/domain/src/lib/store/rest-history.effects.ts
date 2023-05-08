@@ -34,8 +34,20 @@ function toParams([
 	from,
 	to,
 	search,
+	statusCodes,
+	responseSources,
+	requestMethods,
 ]: any[]): RestHistoryParamsDto {
-	return {page, pageSize, from, to, search};
+	return {
+		page,
+		pageSize,
+		from,
+		to,
+		search,
+		statusCodes,
+		responseSources,
+		requestMethods,
+	};
 }
 
 @Injectable()
@@ -61,6 +73,9 @@ export class RestHistoryEffects {
 			this.store$.select(fromRestHistory.getFrom),
 			this.store$.select(fromRestHistory.getTo),
 			this.store$.select(fromRestHistory.getSearch),
+			this.store$.select(fromRestHistory.getStatusCodes),
+			this.store$.select(fromRestHistory.getResponseSources),
+			this.store$.select(fromRestHistory.getRequestMethods),
 		]).pipe(
 			debounceTime(0),
 			map(toParams),

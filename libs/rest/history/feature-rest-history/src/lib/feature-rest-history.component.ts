@@ -1,9 +1,15 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {RestHistoryFacade} from '@mocker/rest/history/domain';
-import {map, shareReplay, tap} from 'rxjs';
+import {
+	RestHistoryFacade,
+	RestMethod,
+	RestResponseSource,
+} from '@mocker/rest/history/domain';
+import {BehaviorSubject, map, shareReplay, tap} from 'rxjs';
 import {startOfToday, subMonths, subWeeks} from 'date-fns';
 import {TuiDay, TuiTime} from '@taiga-ui/cdk';
+import {tuiFadeIn, tuiHeightCollapse} from '@taiga-ui/core';
+import {ALLOWED_CODES} from '@mocker/shared/utils';
 
 type TimeRange = {from?: number; to?: number};
 
@@ -45,11 +51,23 @@ function tuiDateToTimestamp(
 	return undefined;
 }
 
+function stringifyResponseSource(responseSource: RestResponseSource): string {
+	switch (responseSource) {
+		case RestResponseSource.MockTemplate:
+			return 'Шаблон';
+		case RestResponseSource.ProxiedResponse:
+			return 'Реальный сервис';
+		case RestResponseSource.StaticResponse:
+			return 'Статический ответ';
+	}
+}
+
 @Component({
 	selector: 'mocker-feature-rest-history',
 	templateUrl: './feature-rest-history.component.html',
 	styleUrls: ['./feature-rest-history.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [tuiHeightCollapse, tuiFadeIn],
 })
 export class FeatureRestHistoryComponent {
 	readonly servicePath$ = this.facade.servicePath$;
@@ -59,14 +77,10 @@ export class FeatureRestHistoryComponent {
 		from: [null],
 		to: [null],
 		search: [null],
+		statusCodes: [null],
+		responseSources: [null],
+		requestMethods: [null],
 	});
-
-	readonly rangeOptions = [
-		RangeOption.Today,
-		RangeOption.Week,
-		RangeOption.Month,
-		RangeOption.Custom,
-	];
 
 	readonly showCustomRange$ = this.form.controls.range.valueChanges.pipe(
 		map(value => value === RangeOption.Custom),
@@ -81,6 +95,34 @@ export class FeatureRestHistoryComponent {
 		shareReplay(1)
 	);
 
+	readonly showForm$ = new BehaviorSubject<boolean>(false);
+	readonly filtered$ = new BehaviorSubject<boolean>(false);
+
+	readonly rangeOptions = [
+		RangeOption.Today,
+		RangeOption.Week,
+		RangeOption.Month,
+		RangeOption.Custom,
+	];
+
+	readonly statusCodes = ALLOWED_CODES.map(code => `${code} `);
+
+	readonly methods = [
+		RestMethod.Get,
+		RestMethod.Post,
+		RestMethod.Put,
+		RestMethod.Patch,
+		RestMethod.Delete,
+	];
+
+	readonly responseSources = [
+		RestResponseSource.MockTemplate,
+		RestResponseSource.StaticResponse,
+		RestResponseSource.ProxiedResponse,
+	];
+
+	readonly stringifySource = stringifyResponseSource;
+
 	constructor(
 		private readonly formBuilder: FormBuilder,
 		private readonly facade: RestHistoryFacade
@@ -90,7 +132,39 @@ export class FeatureRestHistoryComponent {
 		const {from, to} = this.getTimeRange();
 		const {search} = this.form.value as any;
 
-		this.facade.searchHistory({from, to, search});
+		console.log(this.form.value);
+
+		let {statusCodes, responseSources, requestMethods} = this.form
+			.value as any;
+
+		statusCodes = statusCodes?.map((code: string) => code.trim()).join(',');
+		responseSources = responseSources?.join(',');
+		requestMethods = requestMethods?.join(',');
+
+		this.facade.searchHistory({
+			from,
+			to,
+			search,
+			statusCodes,
+			responseSources,
+			requestMethods,
+		});
+
+		this.filtered$.next(this.filtered());
+		this.showForm$.next(false);
+	}
+
+	resetFilters() {
+		this.form.setValue({
+			range: null,
+			from: null,
+			to: null,
+			search: null,
+			statusCodes: null,
+			responseSources: null,
+			requestMethods: null,
+		});
+		this.searchHistory();
 	}
 
 	private getTimeRange(): TimeRange {
@@ -117,5 +191,27 @@ export class FeatureRestHistoryComponent {
 			from: tuiDateToTimestamp(fromDate, fromTime),
 			to: tuiDateToTimestamp(toDate, toTime),
 		};
+	}
+
+	private filtered(): boolean {
+		const {
+			range,
+			from,
+			to,
+			search,
+			statusCodes,
+			responseSources,
+			requestMethods,
+		} = this.form.value;
+
+		return (
+			range !== null ||
+			from !== null ||
+			to !== null ||
+			search !== null ||
+			statusCodes !== null ||
+			responseSources !== null ||
+			requestMethods !== null
+		);
 	}
 }

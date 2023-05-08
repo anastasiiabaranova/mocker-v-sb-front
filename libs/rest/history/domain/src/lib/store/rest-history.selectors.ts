@@ -24,6 +24,18 @@ const getTotalItems = createSelector(
 const getFrom = createSelector(restHistoryFeature, ({from}) => from);
 const getTo = createSelector(restHistoryFeature, ({to}) => to);
 const getSearch = createSelector(restHistoryFeature, ({search}) => search);
+const getStatusCodes = createSelector(
+	restHistoryFeature,
+	({statusCodes}) => statusCodes
+);
+const getResponseSources = createSelector(
+	restHistoryFeature,
+	({responseSources}) => responseSources
+);
+const getRequestMethods = createSelector(
+	restHistoryFeature,
+	({requestMethods}) => requestMethods
+);
 const getHistory = createSelector(restHistoryFeature, ({items}) => items);
 const getLoading = createSelector(restHistoryFeature, ({loading}) => loading);
 
@@ -36,6 +48,9 @@ export const fromRestHistory = {
 	getFrom,
 	getTo,
 	getSearch,
+	getStatusCodes,
+	getResponseSources,
+	getRequestMethods,
 	getHistory,
 	getLoading,
 };

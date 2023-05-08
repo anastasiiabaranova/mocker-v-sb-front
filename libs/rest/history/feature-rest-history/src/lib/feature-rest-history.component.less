@@ -16,6 +16,21 @@
 	}
 }
 
+.filters-button {
+	display: flex;
+	align-items: center;
+
+	tui-badge {
+		background-color: var(--tui-base-01);
+	}
+
+	button::ng-deep {
+		& > .t-wrapper {
+			padding: 0 !important;
+		}
+	}
+}
+
 .tui-form__row {
 	@media @tui-mobile {
 		justify-content: flex-end;
@@ -31,5 +46,18 @@
 
 	@media @tui-mobile {
 		max-width: unset;
+	}
+}
+
+.form-buttons {
+	display: flex;
+	justify-content: flex-start;
+
+	@media @tui-mobile {
+		flex-direction: column;
+
+		& > button {
+			width: 100%;
+		}
 	}
 }

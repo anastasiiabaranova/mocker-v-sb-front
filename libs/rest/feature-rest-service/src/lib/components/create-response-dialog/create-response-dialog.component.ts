@@ -130,14 +130,14 @@ export class CreateResponseDialogComponent {
 
 	@tuiPure
 	get headerText() {
-		return this.mock
+		return this.response
 			? 'Редактирование статического ответа'
 			: 'Новый статический ответ';
 	}
 
 	@tuiPure
 	get submitText() {
-		return this.mock ? 'Редактировать' : 'Создать';
+		return this.response ? 'Редактировать' : 'Создать';
 	}
 
 	private get requestHeadersControls(): FormArray {
