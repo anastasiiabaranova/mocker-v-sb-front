@@ -11,16 +11,19 @@
 		Назад
 	</button>
 
-	<button
-		*tuiLet="showForm$ | async as showForm"
-		tuiButton
-		appearance="icon"
-		size="s"
-		icon="tuiIconFilter"
-		class="filters-button tui-space_top-5"
-		(click)="showForm$.next(!showForm)">
-		Фильтры
-	</button>
+	<div class="filters-button tui-space_top-5">
+		<button
+			*tuiLet="showForm$ | async as showForm"
+			tuiButton
+			appearance="icon"
+			size="s"
+			icon="tuiIconFilter"
+			(click)="showForm$.next(!showForm)">
+			Фильтры
+		</button>
+		<tui-badge *ngIf="filtered$ | async" status="error" size="xs">
+		</tui-badge>
+	</div>
 
 	<form
 		*ngIf="showForm$ | async"
@@ -32,7 +35,8 @@
 			<tui-select
 				class="form-field tui-form__multi-field"
 				tuiTextfieldSize="s"
-				formControlName="range">
+				formControlName="range"
+				[tuiTextfieldCleaner]="true">
 				Период
 				<tui-data-list-wrapper *tuiDataList [items]="rangeOptions">
 				</tui-data-list-wrapper>
@@ -110,7 +114,7 @@
 				Только ошибки
 			</tui-radio-block>
 		</div>
-		<div class="tui-form__row">
+		<div class="form-buttons tui-form__row">
 			<button
 				class="tui-form__button"
 				tuiButton
@@ -118,6 +122,15 @@
 				size="s"
 				(click)="searchHistory()">
 				Найти
+			</button>
+			<button
+				class="tui-form__button"
+				tuiButton
+				appearance="flat"
+				type="button"
+				size="s"
+				(click)="resetFilters()">
+				Сбросить
 			</button>
 		</div>
 	</form>

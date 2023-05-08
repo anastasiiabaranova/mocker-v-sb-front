@@ -17,7 +17,12 @@
 }
 
 .filters-button {
-	display: block;
+	display: flex;
+	align-items: center;
+
+	tui-badge {
+		background-color: var(--tui-base-01);
+	}
 
 	&::ng-deep {
 		& > .t-wrapper {
@@ -47,5 +52,18 @@
 	@media @tui-mobile {
 		max-width: unset;
 		width: 100%;
+	}
+}
+
+.form-buttons {
+	display: flex;
+	justify-content: flex-start;
+
+	@media @tui-mobile {
+		flex-direction: column;
+
+		& > button {
+			width: 100%;
+		}
 	}
 }

@@ -57,6 +57,7 @@ export class FeatureGraphQLHistoryComponent {
 	readonly serviceId$ = this.facade.serviceId$;
 
 	readonly showForm$ = new BehaviorSubject<boolean>(false);
+	readonly filtered$ = new BehaviorSubject<boolean>(false);
 
 	readonly form = this.formBuilder.group({
 		range: [null],
@@ -97,7 +98,20 @@ export class FeatureGraphQLHistoryComponent {
 		const {redirected, isError} = this.form.value as any;
 
 		this.facade.searchHistory({from, to, redirected, isError});
+
+		this.filtered$.next(this.filtered());
 		this.showForm$.next(false);
+	}
+
+	resetFilters() {
+		this.form.setValue({
+			range: null,
+			from: null,
+			to: null,
+			redirected: null,
+			isError: null,
+		});
+		this.searchHistory();
 	}
 
 	private getTimeRange(): TimeRange {
@@ -124,5 +138,17 @@ export class FeatureGraphQLHistoryComponent {
 			from: tuiDateToIsoString(fromDate, fromTime),
 			to: tuiDateToIsoString(toDate, toTime),
 		};
+	}
+
+	private filtered(): boolean {
+		const {range, from, to, redirected, isError} = this.form.value;
+
+		return (
+			range !== null ||
+			from !== null ||
+			to !== null ||
+			redirected !== null ||
+			isError !== null
+		);
 	}
 }

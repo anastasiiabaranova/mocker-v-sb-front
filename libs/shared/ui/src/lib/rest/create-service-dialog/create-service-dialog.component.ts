@@ -154,7 +154,7 @@ export class CreateServiceDialogComponent implements OnInit {
 		const path = this.form.value.path?.replace('/', '');
 		const service = Object.assign(
 			{...initialValue},
-			{...this.form.value, path}
+			{...this.form.value, path, isHistoryEnabled: false}
 		) as any;
 
 		const [date, time] = this.form.value.expirationTime || [];
