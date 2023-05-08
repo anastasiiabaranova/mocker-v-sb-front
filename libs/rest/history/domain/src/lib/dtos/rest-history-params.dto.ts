@@ -6,8 +6,8 @@ export type RestHistoryParamsDto = Readonly<{
 	from?: number;
 	to?: number;
 	search?: string;
-	statusCodes?: string;
-	responseSources?: string;
-	requestMethods?: string;
+	statusCodes?: string[];
+	responseSources?: string[];
+	requestMethods?: string[];
 	timeSort?: RestSortingOrder;
 }>;

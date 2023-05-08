@@ -130,16 +130,12 @@ export class FeatureRestHistoryComponent {
 
 	searchHistory() {
 		const {from, to} = this.getTimeRange();
-		const {search} = this.form.value as any;
-
-		console.log(this.form.value);
-
-		let {statusCodes, responseSources, requestMethods} = this.form
+		const {search, responseSources, requestMethods} = this.form
 			.value as any;
 
-		statusCodes = statusCodes?.map((code: string) => code.trim()).join(',');
-		responseSources = responseSources?.join(',');
-		requestMethods = requestMethods?.join(',');
+		const statusCodes = (this.form.value as any).statusCodes?.map(
+			(code: string) => code.trim()
+		);
 
 		this.facade.searchHistory({
 			from,
