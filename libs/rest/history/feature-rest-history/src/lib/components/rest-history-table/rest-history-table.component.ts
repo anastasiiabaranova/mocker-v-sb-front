@@ -41,7 +41,6 @@ export class RestHistoryTableComponent {
 		'method',
 		'statusCode',
 		'queryUrl',
-		'responseUrl',
 		'responseSource',
 		'response',
 	];

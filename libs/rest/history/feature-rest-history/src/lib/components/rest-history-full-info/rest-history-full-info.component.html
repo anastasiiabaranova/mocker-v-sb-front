@@ -1,0 +1,118 @@
+<div class="container">
+	<div class="row row_general">
+		<div class="title">Время:</div>
+		<div>{{ item.responseTime | tuiMapper : formatDate }}</div>
+	</div>
+	<div class="row row_general tui-space_top-2">
+		<div class="title">URL запроса:</div>
+		<div>{{ item.queryUrl | tuiMapper : getUrl }}</div>
+	</div>
+	<div *ngIf="item.queryUrl !== item.responseUrl" class="row row_general">
+		<div class="title">URL после проксирования:</div>
+		<div>{{ item.responseUrl }}</div>
+	</div>
+	<div class="row row_general tui-space_top-2">
+		<div class="title">Метод:</div>
+		<div>{{ item.method }}</div>
+	</div>
+	<div class="row row_general tui-space_top-2">
+		<div class="title">Код ответа:</div>
+		<div>{{ item.statusCode }}</div>
+	</div>
+	<div class="row row_general tui-space_top-2">
+		<div class="title">Источник ответа:</div>
+		<div>{{ item.responseSource | tuiMapper : getSource }}</div>
+	</div>
+	<div
+		*ngIf="item.requestHeaders.length"
+		class="row row_expandable tui-space_top-2">
+		<ng-container *tuiLet="showRequestHeaders$ | async as show">
+			<div class="title">
+				<button
+					tuiIconButton
+					type="button"
+					icon="tuiIconChevronRight"
+					appearance="mono"
+					size="s"
+					shape="rounded"
+					class="expand"
+					[class.expand_open]="show"
+					(click)="showRequestHeaders$.next(!show)"></button>
+				<span>Заголовки запроса</span>
+				<span *ngIf="!show">
+					&nbsp;({{ item.responseHeaders.length }})
+				</span>
+			</div>
+			<tui-expand [expanded]="show">
+				<ng-template tuiExpandContent>
+					<div>
+						<div
+							*ngFor="let header of item.requestHeaders"
+							class="header">
+							<pre>{{ header.name }}:</pre>
+							<pre>{{ header.value }}</pre>
+						</div>
+					</div>
+				</ng-template>
+			</tui-expand>
+		</ng-container>
+	</div>
+	<div
+		*ngIf="item.responseHeaders.length"
+		class="row row_expandable tui-space_top-2">
+		<ng-container *tuiLet="showResponseHeaders$ | async as show">
+			<div class="title">
+				<button
+					tuiIconButton
+					type="button"
+					icon="tuiIconChevronRight"
+					appearance="mono"
+					size="xs"
+					shape="rounded"
+					class="expand"
+					[class.expand_open]="show"
+					(click)="showResponseHeaders$.next(!show)"></button>
+				<span>Заголовки ответа</span>
+				<span *ngIf="!show">
+					&nbsp;({{ item.responseHeaders.length }})
+				</span>
+			</div>
+			<tui-expand [expanded]="show">
+				<ng-template tuiExpandContent>
+					<div>
+						<div
+							*ngFor="let header of item.responseHeaders"
+							class="header">
+							<pre>{{ header.name }}:</pre>
+							<pre>{{ header.value }}</pre>
+						</div>
+					</div>
+				</ng-template>
+			</tui-expand>
+		</ng-container>
+	</div>
+	<div class="row row_expandable tui-space_top-2">
+		<ng-container *tuiLet="showResponse$ | async as show">
+			<div class="title">
+				<button
+					tuiIconButton
+					type="button"
+					icon="tuiIconChevronRight"
+					appearance="mono"
+					size="xs"
+					shape="rounded"
+					class="expand"
+					[class.expand_open]="show"
+					(click)="showResponse$.next(!show)"></button>
+				Ответ
+			</div>
+			<tui-expand [expanded]="show">
+				<ng-template tuiExpandContent>
+					<div class="response">
+						<pre>{{ item.response }}</pre>
+					</div>
+				</ng-template>
+			</tui-expand>
+		</ng-container>
+	</div>
+</div>

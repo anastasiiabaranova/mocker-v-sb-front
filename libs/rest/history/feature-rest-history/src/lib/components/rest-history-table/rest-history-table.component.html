@@ -27,10 +27,11 @@
 </tui-loader>
 
 <ng-template #table let-history>
-	<table tuiTable class="table tui-space_bottom-3" [columns]="columns">
+	<table class="table tui-table tui-space_bottom-3">
 		<thead>
-			<tr tuiThGroup>
-				<th tuiTh class="history-expand">
+			<tr
+				class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+				<th class="history-expand tui-table__th">
 					<button
 						tuiIconButton
 						type="button"
@@ -42,76 +43,68 @@
 						"
 						(click)="expandAllRows(history)"></button>
 				</th>
-				<th tuiTh class="history-date">Время</th>
-				<th tuiTh class="history-method">Метод</th>
-				<th tuiTh class="history-status">Код ответа</th>
-				<th tuiTh>Запрос</th>
-				<th tuiTh>URL ответа</th>
-				<th tuiTh>Источник</th>
-				<th tuiTh>Ответ</th>
+				<th class="history-date tui-table__th">Время</th>
+				<th class="history-method tui-table__th">Метод</th>
+				<th class="history-status tui-table__th">Код ответа</th>
+				<th class="history-url tui-table__th">Путь запроса</th>
+				<th class="history-source tui-table__th">Источник</th>
+				<th class="history-response tui-table__th">Ответ</th>
 			</tr>
 		</thead>
-		<tbody tuiTbody [data]="history">
-			<tr *ngFor="let item of history" tuiTr>
+		<tbody>
+			<ng-container *ngFor="let item of history">
 				<ng-container
 					*tuiLet="
 						expandedRows
 							| tuiMapper : getExpanded : item.id as expanded
 					">
-					<td *tuiCell="'expand'" tuiTd class="history-expand">
-						<button
-							tuiIconButton
-							type="button"
-							appearance="icon"
-							size="xs"
-							[icon]="expanded | tuiMapper : getExpandedIcon"
-							(click)="expandRow(item.id, expanded)"></button>
-					</td>
-					<td *tuiCell="'responseTime'" tuiTd class="history-date">
-						{{ item.responseTime | tuiMapper : formatDate }}
-					</td>
-					<td *tuiCell="'method'" tuiTd class="history-method">
-						{{ item.method }}
-					</td>
-					<td *tuiCell="'statusCode'" tuiTd class="history-status">
-						{{ item.statusCode }}
-					</td>
-					<td
-						*tuiCell="'queryUrl'"
-						tuiTd
-						class="history-url"
-						[class.history-url_expanded]="expanded">
-						{{ item.queryUrl }}
-					</td>
-					<td
-						*tuiCell="'responseUrl'"
-						tuiTd
-						class="history-url"
-						[class.history-url_expanded]="expanded">
-						{{ item.responseUrl }}
-					</td>
-					<td
-						*tuiCell="'responseSource'"
-						tuiTd
-						class="history-source">
-						{{ item.responseSource | tuiMapper : getSource }}
-					</td>
-					<td *tuiCell="'response'" tuiTd class="history-response">
-						<div
-							class="preview"
-							[class.preview_expanded]="expanded">
-							{{ item.response }}
-						</div>
-						<tui-expand [expanded]="expanded">
-							<ng-template tuiExpandContent>
-								<div class="full-content">
-									{{ item.response }}
-								</div>
-							</ng-template>
-						</tui-expand>
-					</td>
+					<tr
+						class="table-row tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+						<td class="history-expand tui-table__td">
+							<button
+								tuiIconButton
+								type="button"
+								appearance="icon"
+								size="xs"
+								[icon]="expanded | tuiMapper : getExpandedIcon"
+								(click)="expandRow(item.id, expanded)"></button>
+						</td>
+						<td class="history-date tui-table__td">
+							{{ item.responseTime | tuiMapper : formatDate }}
+						</td>
+						<td class="history-method tui-table__td">
+							{{ item.method }}
+						</td>
+						<td class="history-status tui-table__td">
+							{{ item.statusCode }}
+						</td>
+						<td class="history-url tui-table__td">
+							{{ item.queryUrl }}
+						</td>
+						<td class="history-source tui-table__td">
+							{{ item.responseSource | tuiMapper : getSource }}
+						</td>
+						<td class="history-response tui-table__td">
+							<div class="preview">
+								<code>{{ item.response }}</code>
+							</div>
+						</td>
+					</tr>
+					<tr
+						class="expanded-row tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
+						<td class="tui-table__td"></td>
+						<td class="tui-table__td" [colSpan]="6">
+							<tui-expand [expanded]="expanded">
+								<ng-template tuiExpandContent>
+									<mocker-rest-history-full-info
+										[item]="item">
+									</mocker-rest-history-full-info>
+								</ng-template>
+							</tui-expand>
+						</td>
+					</tr>
 				</ng-container>
-			</tr>
+			</ng-container>
 		</tbody>
 	</table>
 </ng-template>

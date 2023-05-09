@@ -1,0 +1,71 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+:host {
+	display: block;
+	padding: 16px;
+	padding-top: 0;
+}
+
+.row {
+	&_general {
+		display: flex;
+		gap: 8px;
+
+		.title {
+			font-weight: bold;
+			white-space: nowrap;
+		}
+	}
+
+	&_expandable {
+		.title {
+			display: flex;
+			align-items: center;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+	}
+}
+
+.expand {
+	.transition(transform);
+	margin-left: -24px;
+
+	&_open {
+		transform: rotate(90deg);
+	}
+
+	::ng-deep {
+		.t-wrapper {
+			background: none;
+		}
+	}
+}
+
+pre {
+	margin: 0;
+}
+
+.header {
+	margin-left: 20px;
+
+	& pre {
+		display: inline;
+
+		&:first-child {
+			font-weight: bolder;
+		}
+
+		&:nth-child(2) {
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+		}
+	}
+}
+
+.response {
+	margin-left: 20px;
+}

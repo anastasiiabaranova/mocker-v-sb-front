@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TuiTableModule, TuiTablePaginationModule} from '@taiga-ui/addon-table';
+import {TuiTablePaginationModule} from '@taiga-ui/addon-table';
 import {TuiLetModule, TuiMapperPipeModule} from '@taiga-ui/cdk';
 import {
 	TuiButtonModule,
@@ -12,12 +12,12 @@ import {
 
 import {RestHistoryTableComponent} from './rest-history-table.component';
 import {RestHistoryTableSkeletonModule} from '../rest-history-table-skeleton/rest-history-table-skeleton.module';
+import {RestHistoryFullInfoModule} from '../rest-history-full-info/rest-history-full-info.module';
 
 @NgModule({
 	declarations: [RestHistoryTableComponent],
 	imports: [
 		CommonModule,
-		TuiTableModule,
 		TuiTablePaginationModule,
 		TuiMapperPipeModule,
 		TuiSvgModule,
@@ -27,6 +27,7 @@ import {RestHistoryTableSkeletonModule} from '../rest-history-table-skeleton/res
 		TuiExpandModule,
 		TuiLoaderModule,
 		RestHistoryTableSkeletonModule,
+		RestHistoryFullInfoModule,
 	],
 	exports: [RestHistoryTableComponent],
 })

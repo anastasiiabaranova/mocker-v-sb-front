@@ -8,6 +8,7 @@ export type RestHistoryItemDto = Readonly<{
 	responseUrl: string;
 	responseSource: RestResponseSource;
 	statusCode: number;
+	requestHeaders: ReadonlyArray<RestHeaderDto>;
 	responseHeaders: ReadonlyArray<RestHeaderDto>;
 	responseTime: number;
 	response: string;
