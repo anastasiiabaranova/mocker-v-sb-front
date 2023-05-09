@@ -12,7 +12,7 @@ export interface RestHistoryState {
 	statusCodes?: string[];
 	responseSources?: string[];
 	requestMethods?: string[];
-	timeSort?: RestSortingOrder;
+	sortingOrder?: RestSortingOrder;
 	items?: ReadonlyArray<RestHistoryItemDto> | null;
 	loading: boolean;
 }

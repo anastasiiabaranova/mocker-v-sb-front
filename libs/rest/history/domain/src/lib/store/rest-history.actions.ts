@@ -4,6 +4,7 @@ import {
 	RestHistoryPagingDto,
 	RestHistoryParamsDto,
 } from '../dtos';
+import {RestSortingOrder} from '../enums';
 
 const changePage = createAction(
 	'[REST_HISTORY] Change Page',
@@ -16,6 +17,10 @@ const changePageSize = createAction(
 const searchHistory = createAction(
 	'[REST_HISTORY] Search History',
 	props<{params: RestHistoryParamsDto}>()
+);
+const changeSortingOrder = createAction(
+	'[REST_HISTORY] Change Sorting Order',
+	props<{sortingOrder: RestSortingOrder}>()
 );
 const setHistory = createAction(
 	'[REST_HISTORY] Set History',
@@ -32,6 +37,7 @@ export const restHistoryActions = {
 	changePage,
 	changePageSize,
 	searchHistory,
+	changeSortingOrder,
 	setHistory,
 	setPaging,
 	historyLoadFailure,

@@ -37,6 +37,7 @@ function toParams([
 	statusCodes,
 	responseSources,
 	requestMethods,
+	timeSort,
 ]: any[]): RestHistoryParamsDto {
 	return {
 		page,
@@ -47,6 +48,7 @@ function toParams([
 		statusCodes,
 		responseSources,
 		requestMethods,
+		timeSort,
 	};
 }
 
@@ -76,6 +78,7 @@ export class RestHistoryEffects {
 			this.store$.select(fromRestHistory.getStatusCodes),
 			this.store$.select(fromRestHistory.getResponseSources),
 			this.store$.select(fromRestHistory.getRequestMethods),
+			this.store$.select(fromRestHistory.getSortingOrder),
 		]).pipe(
 			debounceTime(0),
 			map(toParams),

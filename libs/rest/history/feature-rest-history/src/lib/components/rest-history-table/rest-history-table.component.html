@@ -27,11 +27,19 @@
 </tui-loader>
 
 <ng-template #table let-history>
-	<table class="table tui-table tui-space_bottom-3">
+	<table
+		*tuiLet="sortingOrder$ | async as sortingOrder"
+		tuiTable
+		class="table tui-table tui-space_bottom-3"
+		[columns]="columns"
+		[tuiSortBy]="!!sortingOrder ? 'responseTime' : null"
+		[direction]="sortingOrder | tuiMapper : getSortingOrder"
+		(directionChange)="changeSortingOrder(sortingOrder)">
 		<thead>
 			<tr
+				tuiThGroup
 				class="tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
-				<th class="history-expand tui-table__th">
+				<th class="history-expand tui-table__th" tuiTh>
 					<button
 						tuiIconButton
 						type="button"
@@ -43,15 +51,51 @@
 						"
 						(click)="expandAllRows(history)"></button>
 				</th>
-				<th class="history-date tui-table__th">Время</th>
-				<th class="history-method tui-table__th">Метод</th>
-				<th class="history-status tui-table__th">Код ответа</th>
-				<th class="history-url tui-table__th">Путь запроса</th>
-				<th class="history-source tui-table__th">Источник</th>
-				<th class="history-response tui-table__th">Ответ</th>
+				<th
+					*tuiHead="'responseTime'"
+					tuiTh
+					tuiSortable
+					class="history-date tui-table__th">
+					Время
+				</th>
+				<th
+					*tuiHead="'method'"
+					tuiTh
+					class="history-method tui-table__th"
+					[sorter]="null">
+					Метод
+				</th>
+				<th
+					*tuiHead="'statusCode'"
+					tuiTh
+					class="history-status tui-table__th"
+					[sorter]="null">
+					Код ответа
+				</th>
+				<th
+					*tuiHead="'queryUrl'"
+					tuiTh
+					class="history-url tui-table__th"
+					[sorter]="null">
+					Путь запроса
+				</th>
+				<th
+					*tuiHead="'responseSource'"
+					tuiTh
+					class="history-source tui-table__th"
+					[sorter]="null">
+					Источник
+				</th>
+				<th
+					*tuiHead="'response'"
+					tuiTh
+					class="history-response tui-table__th"
+					[sorter]="null">
+					Ответ
+				</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody tuiTbody>
 			<ng-container *ngFor="let item of history">
 				<ng-container
 					*tuiLet="
@@ -59,8 +103,12 @@
 							| tuiMapper : getExpanded : item.id as expanded
 					">
 					<tr
+						tuiTr
 						class="table-row tui-table__tr tui-table__tr_hover_disabled tui-table__tr_border_none">
-						<td class="history-expand tui-table__td">
+						<td
+							*tuiCell="'expand'"
+							tuiTd
+							class="history-expand tui-table__td">
 							<button
 								tuiIconButton
 								type="button"
@@ -69,22 +117,40 @@
 								[icon]="expanded | tuiMapper : getExpandedIcon"
 								(click)="expandRow(item.id, expanded)"></button>
 						</td>
-						<td class="history-date tui-table__td">
+						<td
+							*tuiCell="'responseTime'"
+							tuiTd
+							class="history-date tui-table__td">
 							{{ item.responseTime | tuiMapper : formatDate }}
 						</td>
-						<td class="history-method tui-table__td">
+						<td
+							*tuiCell="'method'"
+							tuiTd
+							class="history-method tui-table__td">
 							{{ item.method }}
 						</td>
-						<td class="history-status tui-table__td">
+						<td
+							*tuiCell="'statusCode'"
+							tuiTd
+							class="history-status tui-table__td">
 							{{ item.statusCode }}
 						</td>
-						<td class="history-url tui-table__td">
+						<td
+							*tuiCell="'queryUrl'"
+							tuiTd
+							class="history-url tui-table__td">
 							{{ item.queryUrl }}
 						</td>
-						<td class="history-source tui-table__td">
+						<td
+							*tuiCell="'responseSource'"
+							tuiTd
+							class="history-source tui-table__td">
 							{{ item.responseSource | tuiMapper : getSource }}
 						</td>
-						<td class="history-response tui-table__td">
+						<td
+							*tuiCell="'response'"
+							tuiTd
+							class="history-response tui-table__td">
 							<div class="preview">
 								<code>{{ item.response }}</code>
 							</div>

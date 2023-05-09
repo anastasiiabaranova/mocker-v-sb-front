@@ -3,6 +3,7 @@ import {
 	RestHistoryFacade,
 	RestHistoryItemDto,
 	RestResponseSource,
+	RestSortingOrder,
 } from '@mocker/rest/history/domain';
 import {format} from 'date-fns';
 import {tap} from 'rxjs';
@@ -34,6 +35,7 @@ export class RestHistoryTableComponent {
 	readonly pageSize$ = this.facade.pageSize$;
 	readonly totalItems$ = this.facade.totalItems$;
 	readonly loading$ = this.facade.loading$;
+	readonly sortingOrder$ = this.facade.sortingOrder$;
 
 	readonly columns = [
 		'expand',
@@ -59,6 +61,9 @@ export class RestHistoryTableComponent {
 
 	readonly getExpandedIcon = (expanded: boolean) =>
 		expanded ? 'tuiIconMinusSquare' : 'tuiIconPlusSquare';
+
+	readonly getSortingOrder = (sortingOrder?: RestSortingOrder | null) =>
+		sortingOrder === RestSortingOrder.Asc ? 1 : -1;
 
 	constructor(private readonly facade: RestHistoryFacade) {}
 
@@ -86,5 +91,14 @@ export class RestHistoryTableComponent {
 		}
 
 		this.expandedRows = history.map(({id}) => id);
+	}
+
+	changeSortingOrder(currentDirestion?: RestSortingOrder | null) {
+		const sortingOrder =
+			currentDirestion === RestSortingOrder.Asc
+				? RestSortingOrder.Desc
+				: RestSortingOrder.Asc;
+
+		this.facade.changeSortingOrder(sortingOrder);
 	}
 }

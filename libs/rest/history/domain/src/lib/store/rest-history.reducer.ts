@@ -40,6 +40,11 @@ const restHistoryReducer = createReducer(
 		page: 0,
 		loading: searchChanged(state, params),
 	})),
+	on(restHistoryActions.changeSortingOrder, (state, {sortingOrder}) => ({
+		...state,
+		sortingOrder,
+		loading: state.sortingOrder !== sortingOrder,
+	})),
 	on(restHistoryActions.setPaging, (state, {paging}) => ({
 		...state,
 		...paging,

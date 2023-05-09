@@ -36,6 +36,10 @@ const getRequestMethods = createSelector(
 	restHistoryFeature,
 	({requestMethods}) => requestMethods
 );
+const getSortingOrder = createSelector(
+	restHistoryFeature,
+	({sortingOrder}) => sortingOrder
+);
 const getHistory = createSelector(restHistoryFeature, ({items}) => items);
 const getLoading = createSelector(restHistoryFeature, ({loading}) => loading);
 
@@ -51,6 +55,7 @@ export const fromRestHistory = {
 	getStatusCodes,
 	getResponseSources,
 	getRequestMethods,
+	getSortingOrder,
 	getHistory,
 	getLoading,
 };
