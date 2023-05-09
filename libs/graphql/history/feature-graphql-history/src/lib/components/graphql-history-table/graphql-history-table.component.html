@@ -37,7 +37,7 @@
 		(directionChange)="changeSortingOrder(sortingOrder)">
 		<thead>
 			<tr tuiThGroup>
-				<th tuiTh>
+				<th tuiTh class="history-expand">
 					<button
 						tuiIconButton
 						type="button"
@@ -49,11 +49,41 @@
 						"
 						(click)="expandAllRows(history)"></button>
 				</th>
-				<th *tuiHead="'createdAt'" tuiTh tuiSortable>Время</th>
-				<th *tuiHead="'redirected'" tuiTh [sorter]="null">Редирект</th>
-				<th *tuiHead="'request'" tuiTh [sorter]="null">Запрос</th>
-				<th *tuiHead="'response'" tuiTh [sorter]="null">Ответ</th>
-				<th *tuiHead="'isError'" tuiTh [sorter]="null">Ошибка</th>
+				<th
+					*tuiHead="'createdAt'"
+					tuiTh
+					tuiSortable
+					class="history-date">
+					Время
+				</th>
+				<th
+					*tuiHead="'redirected'"
+					tuiTh
+					[sorter]="null"
+					class="history-redirect">
+					Редирект
+				</th>
+				<th
+					*tuiHead="'request'"
+					tuiTh
+					[sorter]="null"
+					class="history-request">
+					Запрос
+				</th>
+				<th
+					*tuiHead="'response'"
+					tuiTh
+					[sorter]="null"
+					class="history-response">
+					Ответ
+				</th>
+				<th
+					*tuiHead="'isError'"
+					tuiTh
+					[sorter]="null"
+					class="history-error">
+					Ошибка
+				</th>
 			</tr>
 		</thead>
 		<tbody tuiTbody [data]="history">
@@ -84,30 +114,31 @@
 							src="tuiIconCheck"></tui-svg>
 					</td>
 					<td *tuiCell="'request'" tuiTd class="history-request">
-						<div
-							class="history-request__data preview"
-							[class.preview_expanded]="expanded">
+						<code
+							*ngIf="!expanded"
+							class="history-request__data preview">
 							{{ item.request }}
-						</div>
+						</code>
 						<tui-expand [expanded]="expanded">
 							<ng-template tuiExpandContent>
-								<div class="full-content">
-									{{ item.request }}
-								</div>
+								<pre class="full-content">{{
+									item.request | tuiMapper : getRequest
+								}}</pre>
 							</ng-template>
 						</tui-expand>
 					</td>
 					<td *tuiCell="'response'" tuiTd class="history-response">
-						<div
-							class="history-response__data preview"
-							[class.preview_expanded]="expanded">
+						<code
+							*ngIf="!expanded"
+							class="history-response__data preview">
 							{{ item.response }}
-						</div>
+						</code>
 						<tui-expand [expanded]="expanded">
 							<ng-template tuiExpandContent>
-								<div class="full-content">
+								<pre class="full-content">
 									{{ item.response }}
-								</div>
+								</pre
+								>
 							</ng-template>
 						</tui-expand>
 					</td>

@@ -50,6 +50,8 @@ export class GraphQLHistoryTableComponent {
 	readonly getSortingOrder = (sortingOrder?: SortingOrder | null) =>
 		sortingOrder === SortingOrder.Asc ? 1 : -1;
 
+	readonly getRequest = (request: string) => request.replace('\n    ', '\n');
+
 	constructor(private readonly facade: GraphQLHistoryFacade) {}
 
 	expandRow(id: number, expanded: boolean) {

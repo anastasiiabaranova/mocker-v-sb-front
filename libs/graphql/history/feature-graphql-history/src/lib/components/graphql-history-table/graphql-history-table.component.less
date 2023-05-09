@@ -6,6 +6,7 @@
 
 .table {
 	width: 100%;
+	table-layout: fixed;
 }
 
 td,
@@ -65,23 +66,16 @@ tr:nth-child(odd) td {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
-
-	&_expanded {
-		display: block;
-		line-height: 20px;
-		overflow: hidden;
-		text-overflow: unset;
-	}
 }
 
 .full-content {
 	margin-top: -20px;
-
-	&::first-line {
-		visibility: hidden;
-	}
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
 }
-
-.no-history {
+˝ .no-history {
 	color: var(--tui-text-03);
 }
