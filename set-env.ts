@@ -34,6 +34,7 @@ const setEnv = async () => {
 	const envTargetFilename = 'environment.ts';
 	const envConfigFile = `export const environment = {
 	gatewayUrl: '${GATEWAY}',
+	production: true,
 };
 `;
 

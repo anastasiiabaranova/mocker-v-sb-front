@@ -47,6 +47,10 @@
 			<tui-error
 				formControlName="path"
 				[error]="[] | tuiFieldError | async"></tui-error>
+			<tui-error
+				*ngIf="form.controls.path.valid"
+				[error]="pathError$ | async">
+			</tui-error>
 		</div>
 		<tui-input-date-time
 			class="tui-form__multi-field"

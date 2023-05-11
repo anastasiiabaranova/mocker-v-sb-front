@@ -34,10 +34,7 @@
 					formControlName="path"
 					[error]="[] | tuiFieldError | async">
 				</tui-error>
-				<tui-error
-					*ngIf="form.controls.path.valid"
-					formControlName="path"
-					[error]="pathError">
+				<tui-error *ngIf="form.controls.path.valid" [error]="pathError">
 				</tui-error>
 			</div>
 			<tui-select

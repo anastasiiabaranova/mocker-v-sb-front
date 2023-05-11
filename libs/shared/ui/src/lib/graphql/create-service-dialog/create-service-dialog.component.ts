@@ -18,15 +18,17 @@ import {
 	tuiMarkControlAsTouchedAndValidate,
 	tuiPure,
 	TuiTime,
+	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
 import {GraphQLFacade, GraphQLServiceDto} from '@mocker/graphql/domain';
-import {takeUntil} from 'rxjs/operators';
-import {iif} from 'rxjs';
+import {debounceTime, map, switchMap, takeUntil} from 'rxjs/operators';
+import {iif, of} from 'rxjs';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const NAME_FORMAT_ERROR = 'Некорректный формат имени';
+const NAME_OCCUPIED_ERROR = 'Имя уже используется';
 const URL_REQUIRED_ERROR = 'Укажите URL для редиректа';
 const URL_FORMAT_ERROR = 'Некорректный формат URL';
 
@@ -74,6 +76,16 @@ export class CreateServiceDialogComponent implements OnInit {
 	readonly mockServiceUrl = `${this.appConfig.gatewayUrl}/graphql/{name}`;
 
 	readonly loading$ = this.facade.dialogLoading$;
+
+	readonly nameError$ = this.form.controls.name.valueChanges.pipe(
+		debounceTime(300),
+		switchMap(name =>
+			iif(() => !!name, this.facade.verifyName(name!), of(true))
+		),
+		map(available =>
+			available ? null : new TuiValidationError(NAME_OCCUPIED_ERROR)
+		)
+	);
 
 	constructor(
 		@Inject(ENVIRONMENT) private readonly appConfig: AppConfig,

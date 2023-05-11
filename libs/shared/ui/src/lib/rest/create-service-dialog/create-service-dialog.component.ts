@@ -21,20 +21,31 @@ import {
 	tuiMarkControlAsTouchedAndValidate,
 	tuiPure,
 	TuiTime,
+	TuiValidationError,
 } from '@taiga-ui/cdk';
 import {TuiDialogContext, tuiFadeIn, tuiHeightCollapse} from '@taiga-ui/core';
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus';
-import {iif} from 'rxjs';
-import {map, startWith, takeUntil, tap} from 'rxjs/operators';
+import {iif, of} from 'rxjs';
+import {
+	debounceTime,
+	map,
+	startWith,
+	switchMap,
+	takeUntil,
+	tap,
+} from 'rxjs/operators';
 
 const NAME_REQUIRED_ERROR = 'Укажите имя сервиса';
 const PATH_REQUIRED_ERROR = 'Укажите путь сервиса';
 const PATH_FORMAT_ERROR = 'Некорректный путь';
 const PATH_FORBIDDEN_ERROR = 'Запрещенный путь';
+const PATH_OCCUPIED_ERROR = 'Путь уже используется';
 const DESCRIPTION_LENGTH_ERROR = 'Используйте до 128 символов';
 const URL_FORMAT_ERROR = 'Некорректный формат URL';
 
-const PATH_PATTERN = /^\/?(?![_-])[a-zA-Z0-9_-]+(?<![_-])$/;
+// TODO: обновить, когда будет стабильно на IOS
+// /^\/?(?![_-])[a-zA-Z0-9_-]+(?<![_-])$/;
+const PATH_PATTERN = /^\/?[a-zA-Z0-9_-]+$/;
 const FORBIDDEN_PATH = 'service';
 
 @Component({
@@ -89,6 +100,16 @@ export class CreateServiceDialogComponent implements OnInit {
 		startWith(this.urlControl.value),
 		tap(value => !value && this.form.patchValue({isProxyEnabled: false})),
 		map(value => !!value && this.urlControl.valid)
+	);
+
+	readonly pathError$ = this.form.controls.path.valueChanges.pipe(
+		debounceTime(300),
+		switchMap(path =>
+			iif(() => !!path, this.facade.verifyPath(path!), of(true))
+		),
+		map(available =>
+			available ? null : new TuiValidationError(PATH_OCCUPIED_ERROR)
+		)
 	);
 
 	constructor(

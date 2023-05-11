@@ -13,6 +13,10 @@
 			<tui-error
 				formControlName="name"
 				[error]="[] | tuiFieldError | async"></tui-error>
+			<tui-error
+				*ngIf="form.controls.name.valid"
+				[error]="nameError$ | async">
+			</tui-error>
 		</div>
 	</div>
 	<div class="tui-form__row tui-form__row_multi-fields">

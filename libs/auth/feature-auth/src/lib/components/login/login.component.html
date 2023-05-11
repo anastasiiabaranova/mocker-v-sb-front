@@ -8,6 +8,7 @@
 				[pseudoInvalid]="email.invalid || !!error"
 				(keyup.enter)="goToPassword()">
 				Email
+				<input tuiTextfield type="email" autocomplete="on" />
 			</tui-input>
 			<tui-error
 				formControlName="email"
@@ -20,7 +21,7 @@
 				[pseudoInvalid]="password.invalid || !!error"
 				(keyup.enter)="login()">
 				Пароль
-				<input #passwordField tuiTextfield />
+				<input #passwordField tuiTextfield autocomplete="on" />
 			</tui-input-password>
 			<tui-error
 				formControlName="password"

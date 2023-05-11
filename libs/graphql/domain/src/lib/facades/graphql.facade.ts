@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
+import {Observable} from 'rxjs';
 import {fromGraphQL, graphQLActions} from '../store';
 import {GraphQLMockDto, GraphQLServiceDto} from '../dtos';
+import {GraphQLApiService} from '../services';
 
 @Injectable()
 export class GraphQLFacade {
@@ -36,7 +38,8 @@ export class GraphQLFacade {
 
 	constructor(
 		private readonly store$: Store,
-		private readonly actions$: Actions
+		private readonly actions$: Actions,
+		private readonly apiService: GraphQLApiService
 	) {}
 
 	loadServices(search?: string) {
@@ -77,5 +80,9 @@ export class GraphQLFacade {
 
 	deleteAllMocks() {
 		this.store$.dispatch(graphQLActions.deleteAllMocks());
+	}
+
+	verifyName(serviceName: string): Observable<boolean> {
+		return this.apiService.verifyName(serviceName);
 	}
 }

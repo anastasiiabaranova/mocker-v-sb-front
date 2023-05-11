@@ -1,9 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Actions, ofType} from '@ngrx/effects';
+import {Observable} from 'rxjs';
 import {RestMockDto, RestModelDto, RestServiceDto} from '../dtos';
 import {fromRest, restActions} from '../store';
-import {RestMockApiService, RestModelApiService} from '../services';
+import {
+	RestMockApiService,
+	RestModelApiService,
+	RestServiceApiService,
+} from '../services';
 
 @Injectable()
 export class RestFacade {
@@ -40,6 +45,7 @@ export class RestFacade {
 	constructor(
 		private readonly store$: Store,
 		private readonly actions$: Actions,
+		private readonly serviceApiService: RestServiceApiService,
 		private readonly modelApiService: RestModelApiService,
 		private readonly mockApiService: RestMockApiService
 	) {}
@@ -106,7 +112,11 @@ export class RestFacade {
 		return this.mockApiService.getMock(path, mockId);
 	}
 
-	getModel(path: string, modelId: string) {
+	getModel(path: string, modelId: string): Observable<RestModelDto> {
 		return this.modelApiService.getModel(path, modelId);
+	}
+
+	verifyPath(servicePath: string): Observable<boolean> {
+		return this.serviceApiService.verifyPath(servicePath);
 	}
 }

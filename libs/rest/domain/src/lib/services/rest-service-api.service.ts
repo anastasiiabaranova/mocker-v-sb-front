@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {RestServiceDto, RestServiceListDto, RestServiceShortDto} from '../dtos';
 
 @Injectable()
@@ -56,6 +56,13 @@ export class RestServiceApiService {
 		return this.httpClient.patch<void>(
 			`rest/service/${servicePath}/history`,
 			{isHistoryEnabled}
+		);
+	}
+
+	verifyPath(servicePath: string): Observable<boolean> {
+		return this.httpClient.head<void>(`rest/service/${servicePath}`).pipe(
+			map(() => false),
+			catchError(() => of(true))
 		);
 	}
 }
