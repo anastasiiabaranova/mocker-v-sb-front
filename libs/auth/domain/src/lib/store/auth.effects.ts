@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {map, catchError, switchMap, tap} from 'rxjs/operators';
 import {EMPTY, of} from 'rxjs';
 import {NotificationsFacade} from '@mocker/shared/utils';
 import {TuiNotification} from '@taiga-ui/core';
+import {SHA1} from 'crypto-js';
 
 import {AuthApiService, TokensStorageService} from '../services';
 import {authActions} from './auth.actions';
-import {ActivatedRoute, Router} from '@angular/router';
 
 const LOGIN_ERROR = 'Неверный email или пароль';
 const SIGNUP_ERROR = 'Этот email уже используется';
@@ -17,7 +18,11 @@ export class AuthEffects {
 	login$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(authActions.login),
-			switchMap(({data}) =>
+			map(({data}) => ({
+				email: data.email,
+				password: SHA1(data.password).toString(),
+			})),
+			switchMap(data =>
 				this.apiService.login(data).pipe(
 					tap(({accessToken, refreshToken}) => {
 						this.tokensStorageService.accessToken = accessToken;
@@ -32,7 +37,7 @@ export class AuthEffects {
 					}),
 					map(({email}) => authActions.loginSuccess({email})),
 					catchError(({status}) => {
-						if (status === 404) {
+						if (status === 401) {
 							return of(
 								authActions.requestFailure({error: LOGIN_ERROR})
 							);
@@ -53,9 +58,16 @@ export class AuthEffects {
 	signup$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(authActions.signup),
-			switchMap(({data}) =>
+			map(({data}) => ({
+				data: {
+					email: data.email,
+					password: SHA1(data.password).toString(),
+				},
+				password: data.password,
+			})),
+			switchMap(({data, password}) =>
 				this.apiService.signup(data).pipe(
-					map(() => authActions.login({data})),
+					map(() => authActions.login({data: {...data, password}})),
 					catchError(({status}) => {
 						if (status === 409) {
 							return of(
@@ -94,6 +106,12 @@ export class AuthEffects {
 								content: 'Попробуйте еще раз позже',
 								status: TuiNotification.Error,
 							});
+
+							if (!refreshToken) {
+								this.tokensStorageService.clearTokens();
+								this.router.navigate(['login']);
+							}
+
 							return EMPTY;
 						})
 					)
