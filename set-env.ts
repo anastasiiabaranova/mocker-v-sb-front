@@ -1,13 +1,17 @@
-const GATEWAY = process.env['GATEWAY'];
+const GATEWAY_HOST = process.env['gatewayHost'];
+const GATEWAY_PORT = process.env['gatewayPort'];
 
-if (!GATEWAY) {
-	console.error(`Missing Gateway server adresses. Run command as follows:
-	npm run build --gateway=gateway_url`);
-
-	throw 'Missing command argument';
+if (!GATEWAY_HOST) {
+	throw 'Missing enviroment variable gatewayHost';
 }
 
-console.log('gatewayUrl =', GATEWAY)
+if (!GATEWAY_PORT) {
+	throw 'Missing enviroment variable gatewayPort';
+}
+
+const GATEWAY = `http://${GATEWAY_HOST}:${GATEWAY_PORT}`;
+
+console.log('gateway url =', GATEWAY);
 
 const fs = require('fs');
 const mkdirp = require('mkdirp');
