@@ -18,6 +18,7 @@ import {
 	takeUntil,
 	tap,
 	BehaviorSubject,
+	of,
 } from 'rxjs';
 
 @Component({
@@ -32,7 +33,11 @@ export class GraphQLTriggersDialogComponent {
 
 	readonly triggers$ = this.updateList$.pipe(
 		startWith(null),
-		switchMap(() => this.apiService.getAllTriggers(this.mockId))
+		switchMap(() =>
+			this.apiService
+				.getAllTriggers(this.mockId)
+				.pipe(catchError(() => of([])))
+		)
 	);
 
 	readonly showTriggerForm$ = new BehaviorSubject<boolean>(false);

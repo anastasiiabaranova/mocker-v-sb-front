@@ -40,7 +40,7 @@
 					(click)="showRequestHeaders$.next(!show)"></button>
 				<span>Заголовки запроса</span>
 				<span *ngIf="!show">
-					&nbsp;({{ item.responseHeaders.length }})
+					&nbsp;({{ item.requestHeaders.length }})
 				</span>
 			</div>
 			<tui-expand [expanded]="show">
